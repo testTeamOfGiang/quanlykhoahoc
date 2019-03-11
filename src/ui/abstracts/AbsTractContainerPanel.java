@@ -50,4 +50,8 @@ public abstract class AbsTractContainerPanel extends JPanel {
 		quanLyPanel.setParrent(this);
 	}
 
+	public void setObject(Object obj) {
+		chiTietPanel.setObj(obj);
+		chiTietPanel.loadData();
+	}
 }

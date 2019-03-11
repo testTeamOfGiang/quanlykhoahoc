@@ -11,6 +11,8 @@ public class Lophoc {
 	private int id_GV;
 
 	private int id_PH;
+	
+	private String ten_LH;
 
 	private Date ngaybatdau;
 
@@ -65,6 +67,14 @@ public class Lophoc {
 
 	public void setId_KH(int id_KH) {
 		this.id_KH = id_KH;
+	}
+
+	public String getTen_LH() {
+		return ten_LH;
+	}
+
+	public void setTen_LH(String ten_LH) {
+		this.ten_LH = ten_LH;
 	}
 
 }

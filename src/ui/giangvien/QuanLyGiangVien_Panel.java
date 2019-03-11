@@ -41,7 +41,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
-			
+
 		};
 		table = new JTable(tableModel);
 		table.setSize(1400, 550);
@@ -50,6 +50,9 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
+					int current = table.getSelectedRow();
+					Giangvien gv = data.get(current);
+					containerPanel.setObject(gv);
 					containerPanel.showChiTiet();
 				}
 			}

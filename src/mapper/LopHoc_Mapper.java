@@ -14,6 +14,7 @@ public class LopHoc_Mapper implements Mapper<Lophoc> {
 		lh.setId_GV(resultSet.getInt("id_GV"));
 		lh.setId_KH(resultSet.getInt("id_KH"));
 		lh.setId_PH(resultSet.getInt("id_PH"));
+		lh.setTen_LH(resultSet.getString("ten_LH"));
 		lh.setNgaybatdau(resultSet.getDate("ngaybaudau"));
 		lh.setNgayketthuc(resultSet.getDate("ngayketthuc"));
 		return lh;
