@@ -1,4 +1,24 @@
+use master
+go
+	if (exists(select * from sys.sysdatabases where name='quanlykhoahoc'))
+		drop database quanlykhoahoc
+
+go
 create database quanlykhoahoc
+on primary (
+	name='quanlykhoahoc',
+	filename='G:\SQL\quanlykhoahoc.mdf',
+	size=5mb,
+	maxsize=unlimited,
+	filegrowth=10%
+)
+log on(
+	name='quanlykhoahoc_log',
+	filename='G:\SQL\quanlykhoahoc_log.ldf',
+	size=5mb,
+	maxsize=unlimited,
+	filegrowth=10%
+)
 go
 use quanlykhoahoc
 go
