@@ -18,6 +18,7 @@ import entity.Hocvien;
 import exception.ChuaChonException;
 import main.MainApp;
 import ui.abstracts.AbsTractQuanLyPanel;
+import ui.hocvien.HocVien_Dialog.Type;
 
 public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 
@@ -68,10 +69,33 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 
 		JButton btnThm = new JButton("Thêm");
 		btnThm.setBounds(389, 676, 106, 40);
+		btnThm.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new HocVien_Dialog(Type.ADD, QuanLyHocVien_Panel.this, null).setVisible(true);
+			}
+		});
 		add(btnThm);
 
 		JButton btnSa = new JButton("Sửa");
 		btnSa.setBounds(644, 676, 106, 40);
+		btnSa.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int current = table.getSelectedRow();
+					if (current == -1) {
+						throw new ChuaChonException();
+					}
+					Hocvien hv = data.get(current);
+					new HocVien_Dialog(Type.UPDATE, QuanLyHocVien_Panel.this, hv).setVisible(true);
+				} catch (ChuaChonException ex) {
+					JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Hãy Chọn Học Viên Cần Sửa");
+				}
+			}
+		});
 		add(btnSa);
 
 		JButton btnXa = new JButton("Xóa");
@@ -140,6 +164,7 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 				tableModel.addRow(
 						new Object[] { stt, hv.getId_HV(), hv.getTen_HV(), hv.getSodt_HV(), hv.getDiachi_HV() });
 				data.put(stt - 1, hv);
+				stt+=1;
 			}
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Không Thể load dữ liệu");

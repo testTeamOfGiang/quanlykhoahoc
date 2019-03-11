@@ -46,6 +46,7 @@ public class GiangVien_Dialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 650, 600);
 		getContentPane().setLayout(null);
+		setLocationRelativeTo(panel);
 
 		JButton btnOk = new JButton("OK");
 		btnOk.setBounds(121, 478, 97, 40);
