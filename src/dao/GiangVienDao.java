@@ -107,6 +107,7 @@ public class GiangVienDao {
 			Lophoc lopHoc = new LopHoc_Mapper().map(resultSet);
 			lop.add(lopHoc);
 		}
+		con.close();
 		return lop;
 	}
 }

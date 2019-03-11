@@ -109,7 +109,7 @@ public class ChiTietGiangVien_Panel extends AbsTractChiTietPanel {
 
 		textArea = new JTextArea();
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		textArea.setBounds(946, 270, 239, 40);
+		textArea.setBounds(946, 270, 239, 100);
 		add(textArea);
 
 		textField_3 = new JTextField();

@@ -7,15 +7,15 @@ import javax.swing.JPanel;
 public abstract class AbsTractContainerPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	protected AbsTractChiTietPanel chiTietPanel;
+	protected AbsTractQuanLyPanel quanLyPanel;
+	protected AbstractTimKiemPanel timKiemPanel;
 
 	public AbsTractContainerPanel() {
 		this.setSize(1400, 800);
 		this.setLayout(new CardLayout());
-	}
 
-	private AbsTractChiTietPanel chiTietPanel;
-	private AbsTractQuanLyPanel quanLyPanel;
-	private AbstractTimKiemPanel timKiemPanel;
+	}
 
 	public void showChiTiet() {
 		quanLyPanel.setVisible(false);
@@ -38,16 +38,19 @@ public abstract class AbsTractContainerPanel extends JPanel {
 	public void setChiTietPanel(AbsTractChiTietPanel chiTietPanel) {
 		this.chiTietPanel = chiTietPanel;
 		chiTietPanel.setParrent(this);
+		add(chiTietPanel);
 	}
 
 	public void setTimKiemPanel(AbstractTimKiemPanel timKiemPanel) {
 		this.timKiemPanel = timKiemPanel;
 		timKiemPanel.setParrent(this);
+		add(timKiemPanel);
 	}
 
 	public void setQuanLyPanel(AbsTractQuanLyPanel quanLyPanel) {
 		this.quanLyPanel = quanLyPanel;
 		quanLyPanel.setParrent(this);
+		add(quanLyPanel);
 	}
 
 	public void setObject(Object obj) {
