@@ -19,5 +19,6 @@ public class MainApp {
 		init();
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		new MainFrame().setVisible(true);
+		System.out.println("exit");
 	}
 }
