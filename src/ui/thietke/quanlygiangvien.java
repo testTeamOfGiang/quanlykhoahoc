@@ -7,9 +7,10 @@ import java.awt.event.ActionEvent;
 
 public class quanlygiangvien extends JPanel {
 
-	/**
-	 * Create the panel.
-	 */
+	
+	private static final long serialVersionUID = 1L;
+
+	
 	public quanlygiangvien() {
 		this.setLayout(null);
 		

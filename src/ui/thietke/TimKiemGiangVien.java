@@ -26,7 +26,7 @@ public class TimKiemGiangVien extends JPanel {
 		lblTmKimGing.setBounds(500, 53, 400, 60);
 		add(lblTmKimGing);
 
-		JComboBox comboBox = new JComboBox(new String[] { "Theo Tên", "Theo Mã" });
+		JComboBox<String> comboBox = new JComboBox<String>(new String[] { "Theo Tên", "Theo Mã" });
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		comboBox.setBounds(354, 188, 155, 40);
 		add(comboBox);
