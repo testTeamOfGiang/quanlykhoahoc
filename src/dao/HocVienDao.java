@@ -89,4 +89,26 @@ public class HocVienDao {
 		con.close();
 		return hv;
 	}
+
+	public int addLop(int id_HV, int id_LH) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "insert into HOCVIEN_LOPHOC values(?,?)";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_HV);
+		preparedStatement.setInt(2, id_LH);
+		int result = preparedStatement.executeUpdate();
+		con.close();
+		return result;
+	}
+
+	public int deleteLop(int id_HV, int id_LH) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "delete from HOCVIEN_LOPHOC where id_HV=? and id_LH=?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_HV);
+		preparedStatement.setInt(2, id_LH);
+		int result = preparedStatement.executeUpdate();
+		con.close();
+		return result;
+	}
 }

@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 
 import entity.Hocvien;
 import ui.abstracts.AbsTractChiTietPanel;
+import ui.hocvien.HocVien_LopHoc_Dialog.Type;
 
 public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 
@@ -86,10 +87,26 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 
 		JButton btnngKLp = new JButton("Đăng Ký Lớp");
 		btnngKLp.setBounds(945, 253, 114, 40);
+		btnngKLp.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Hocvien hv = (Hocvien) obj;
+				new HocVien_LopHoc_Dialog(Type.ADD, ChiTietHocVien_Panel.this, hv.getId_HV()).setVisible(true);
+			}
+		});
 		add(btnngKLp);
 
 		JButton btnHyLp = new JButton("Hủy Lớp");
 		btnHyLp.setBounds(1079, 253, 106, 40);
+		btnHyLp.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Hocvien hv = (Hocvien) obj;
+				new HocVien_LopHoc_Dialog(Type.DELETE, ChiTietHocVien_Panel.this, hv.getId_HV()).setVisible(true);
+			}
+		});
 		add(btnHyLp);
 
 		loadData();

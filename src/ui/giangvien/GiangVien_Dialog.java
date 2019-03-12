@@ -75,10 +75,10 @@ public class GiangVien_Dialog extends JDialog {
 						try {
 							MainApp.giangVienDao.add(gv);
 							panel.loadData();
-							JOptionPane.showMessageDialog(null, "Thành công");
+							JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Thành công");
 							dispose();
 						} catch (SQLException e1) {
-							JOptionPane.showMessageDialog(null, "Thất bại");
+							JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Thất bại");
 							e1.printStackTrace();
 						}
 					} else {
@@ -86,18 +86,18 @@ public class GiangVien_Dialog extends JDialog {
 							gv.setId_GV(GV.getId_GV());
 							MainApp.giangVienDao.update(gv);
 							panel.loadData();
-							JOptionPane.showMessageDialog(null, "Thành công");
+							JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Thành công");
 							dispose();
 						} catch (SQLException e1) {
-							JOptionPane.showMessageDialog(null, "Thất bại");
+							JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Thất bại");
 							e1.printStackTrace();
 						}
 					}
 				} catch (ParseException e1) {
-					JOptionPane.showMessageDialog(null, "Sai định dạng ngày tháng");
+					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Sai định dạng ngày tháng");
 					e1.printStackTrace();
 				} catch (ThieuThongTinException e1) {
-					JOptionPane.showMessageDialog(null, "Hãy nhập đầy đủ thông tin");
+					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Hãy nhập đầy đủ thông tin");
 					e1.printStackTrace();
 				}
 
