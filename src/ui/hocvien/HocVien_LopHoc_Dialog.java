@@ -32,8 +32,8 @@ public class HocVien_LopHoc_Dialog extends JDialog {
 		setModal(true);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setLocationRelativeTo(panel);
 		setSize(440, 300);
+		setLocationRelativeTo(panel);
 
 		JLabel lblMLp = new JLabel("Mã Lớp");
 		lblMLp.setFont(new Font("Tahoma", Font.PLAIN, 16));

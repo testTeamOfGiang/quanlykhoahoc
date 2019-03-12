@@ -56,14 +56,14 @@ public class GiangVien_Dialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String ten = tenGV.getText().trim();
-					SimpleDateFormat fm = new SimpleDateFormat("yyy/MM/dd");
-					Date date = fm.parse(ngaySinh.getText().trim());
 					String sdt = soDT.getText().trim();
 					String dc = diaChi.getText().trim();
 					String gc = ghiChu.getText().trim();
 					if (ten.equals("") || sdt.equals("") || dc.equals("")) {
 						throw new ThieuThongTinException();
 					}
+					SimpleDateFormat fm = new SimpleDateFormat("yyy/MM/dd");
+					Date date = fm.parse(ngaySinh.getText().trim());
 					Giangvien gv = new Giangvien();
 					gv.setTen_GV(ten);
 					java.sql.Date d = new java.sql.Date(date.getTime());
@@ -94,7 +94,7 @@ public class GiangVien_Dialog extends JDialog {
 						}
 					}
 				} catch (ParseException e1) {
-					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Sai định dạng ngày tháng");
+					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Ngày sinh có định dạng năm/tháng/ngày");
 					e1.printStackTrace();
 				} catch (ThieuThongTinException e1) {
 					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Hãy nhập đầy đủ thông tin");
