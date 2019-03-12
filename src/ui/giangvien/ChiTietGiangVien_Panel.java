@@ -34,8 +34,8 @@ public class ChiTietGiangVien_Panel extends AbsTractChiTietPanel {
 	private static final long serialVersionUID = 1L;
 
 	public ChiTietGiangVien_Panel() {
-		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã Lớp học", "Tên lớp học",
-				 "Phòng học", "Ngày bắt đầu", "Ngày kết thúc" }) {
+		tableModel = new DefaultTableModel(new Object[][] {},
+				new String[] { "STT", "Mã Lớp học", "Tên lớp học", "Phòng học", "Ngày bắt đầu", "Ngày kết thúc" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -164,9 +164,8 @@ public class ChiTietGiangVien_Panel extends AbsTractChiTietPanel {
 				List<Lophoc> lopHocs = MainApp.giangVienDao.getLopHoc(gv);
 				int stt = 1;
 				for (Lophoc lh : lopHocs) {
-					tableModel.addRow(new Object[] {
-						stt,lh.getId_LH(),lh.getTen_LH(),lh.getId_PH(),lh.getNgaybatdau().toString(),lh.getNgayketthuc().toString()
-					});
+					tableModel.addRow(new Object[] { stt, lh.getId_LH(), lh.getTen_LH(), lh.getId_PH(),
+							lh.getNgaybatdau().toString(), lh.getNgayketthuc().toString() });
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

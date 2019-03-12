@@ -43,6 +43,7 @@ public class GiangVien_Dialog extends JDialog {
 		}
 		this.GV = GV;
 
+		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 650, 600);
 		getContentPane().setLayout(null);

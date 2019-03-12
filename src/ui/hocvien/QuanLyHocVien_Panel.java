@@ -2,6 +2,8 @@ package ui.hocvien;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +47,16 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 
 		table = new JTable(tableModel);
 		table.setRowHeight(40);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int current = table.getSelectedRow();
+					containerPanel.setObject(data.get(current));
+					containerPanel.showChiTiet();
+				}
+			}
+		});
 
 		JScrollPane jScrollPane = new JScrollPane(table);
 		jScrollPane.setBounds(0, 0, 1400, 550);
@@ -108,7 +120,7 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 					try {
 						throw new ChuaChonException();
 					} catch (ChuaChonException e1) {
-						JOptionPane.showMessageDialog(null, "Hãy Chọn Học Viên Muốn Xóa");
+						JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Hãy Chọn Học Viên Muốn Xóa");
 						e1.printStackTrace();
 					}
 				} else {
@@ -116,9 +128,9 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 					try {
 						MainApp.hocVienDao.delete(hv);
 						loadData();
-						JOptionPane.showConfirmDialog(null, "Xóa Học Viên Thành Công");
+						JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Xóa Học Viên Thành Công");
 					} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(null, "Xóa Không Thành Công");
+						JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Xóa Không Thành Công");
 						e1.printStackTrace();
 					}
 				}
@@ -164,10 +176,10 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 				tableModel.addRow(
 						new Object[] { stt, hv.getId_HV(), hv.getTen_HV(), hv.getSodt_HV(), hv.getDiachi_HV() });
 				data.put(stt - 1, hv);
-				stt+=1;
+				stt += 1;
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Không Thể load dữ liệu");
+			JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Không Thể load dữ liệu");
 			e.printStackTrace();
 		}
 

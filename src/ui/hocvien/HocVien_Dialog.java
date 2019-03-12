@@ -35,6 +35,7 @@ public class HocVien_Dialog extends JDialog {
 		} else {
 			setTitle("Sửa Học Viên");
 		}
+		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		setSize(700, 500);

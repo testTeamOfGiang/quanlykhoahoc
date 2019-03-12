@@ -12,7 +12,6 @@ public class ChiTietGV extends JPanel {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private JTextField textField_3;
 	private JTextField textField_4;
 
 	/**
@@ -21,7 +20,7 @@ public class ChiTietGV extends JPanel {
 	public ChiTietGV() {
 		this.setLayout(null);
 
-		JLabel lblChiTitGing = new JLabel("Chi Tiết Giảng Viên", JLabel.CENTER);
+		JLabel lblChiTitGing = new JLabel("Chi Tiết Học Viên", JLabel.CENTER);
 		lblChiTitGing.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblChiTitGing.setBounds(500, 38, 400, 70);
 		add(lblChiTitGing);
@@ -30,17 +29,17 @@ public class ChiTietGV extends JPanel {
 		panel.setBounds(0, 400, 1400, 400);
 		add(panel);
 
-		JLabel lblMGingVin = new JLabel("Mã Giảng Viên");
+		JLabel lblMGingVin = new JLabel("Mã Học Viên");
 		lblMGingVin.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblMGingVin.setBounds(221, 121, 173, 40);
 		add(lblMGingVin);
 
-		JLabel lblTnGingVin = new JLabel("Tên Giảng Viên");
+		JLabel lblTnGingVin = new JLabel("Tên Học Viên");
 		lblTnGingVin.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblTnGingVin.setBounds(221, 196, 173, 40);
 		add(lblTnGingVin);
 
-		JLabel lblNgySinh = new JLabel("Ngày sinh");
+		JLabel lblNgySinh = new JLabel("Số Điện Thoại");
 		lblNgySinh.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNgySinh.setBounds(221, 270, 173, 40);
 		add(lblNgySinh);
@@ -63,31 +62,10 @@ public class ChiTietGV extends JPanel {
 		add(textField_2);
 		textField_2.setColumns(10);
 
-		JLabel lblSinThoi = new JLabel("Số điện thoại");
+		JLabel lblSinThoi = new JLabel("Địa Chỉ");
 		lblSinThoi.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSinThoi.setBounds(763, 126, 145, 40);
 		add(lblSinThoi);
-
-		JLabel label = new JLabel("Địa chỉ");
-		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label.setBounds(763, 201, 145, 40);
-		add(label);
-
-		JLabel lblGhiCh = new JLabel("Ghi Chú");
-		lblGhiCh.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblGhiCh.setBounds(763, 275, 145, 40);
-		add(lblGhiCh);
-
-		JTextArea textArea = new JTextArea();
-		textArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
-		textArea.setBounds(946, 270, 239, 40);
-		add(textArea);
-
-		textField_3 = new JTextField();
-		textField_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_3.setColumns(10);
-		textField_3.setBounds(946, 196, 240, 40);
-		add(textField_3);
 
 		textField_4 = new JTextField();
 		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -95,7 +73,7 @@ public class ChiTietGV extends JPanel {
 		textField_4.setBounds(945, 120, 240, 42);
 		add(textField_4);
 
-		JLabel lblCcLpang = new JLabel("Các lớp đang dạy", JLabel.CENTER);
+		JLabel lblCcLpang = new JLabel("Các Lớp Theo Học", JLabel.CENTER);
 		lblCcLpang.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblCcLpang.setBounds(500, 333, 400, 40);
 		add(lblCcLpang);
@@ -103,5 +81,13 @@ public class ChiTietGV extends JPanel {
 		JButton btnQuayLi = new JButton("Quay Lại");
 		btnQuayLi.setBounds(65, 58, 114, 40);
 		add(btnQuayLi);
+		
+		JButton btnngKLp = new JButton("Đăng Ký Lớp");
+		btnngKLp.setBounds(945, 253, 114, 40);
+		add(btnngKLp);
+		
+		JButton btnHyLp = new JButton("Hủy Lớp");
+		btnHyLp.setBounds(1079, 253, 106, 40);
+		add(btnHyLp);
 	}
 }
