@@ -12,7 +12,6 @@ public class ChiTietGV extends JPanel {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private JTextField textField_4;
 
 	/**
 	 * Create the panel.
@@ -20,7 +19,7 @@ public class ChiTietGV extends JPanel {
 	public ChiTietGV() {
 		this.setLayout(null);
 
-		JLabel lblChiTitGing = new JLabel("Chi Tiết Học Viên", JLabel.CENTER);
+		JLabel lblChiTitGing = new JLabel("Chi Tiết Khóa Học", JLabel.CENTER);
 		lblChiTitGing.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblChiTitGing.setBounds(500, 38, 400, 70);
 		add(lblChiTitGing);
@@ -29,17 +28,17 @@ public class ChiTietGV extends JPanel {
 		panel.setBounds(0, 400, 1400, 400);
 		add(panel);
 
-		JLabel lblMGingVin = new JLabel("Mã Học Viên");
+		JLabel lblMGingVin = new JLabel("Mã Khóa Học");
 		lblMGingVin.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblMGingVin.setBounds(221, 121, 173, 40);
 		add(lblMGingVin);
 
-		JLabel lblTnGingVin = new JLabel("Tên Học Viên");
+		JLabel lblTnGingVin = new JLabel("Tên Khóa Học");
 		lblTnGingVin.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblTnGingVin.setBounds(221, 196, 173, 40);
 		add(lblTnGingVin);
 
-		JLabel lblNgySinh = new JLabel("Số Điện Thoại");
+		JLabel lblNgySinh = new JLabel("Giá Khóa Học");
 		lblNgySinh.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNgySinh.setBounds(221, 270, 173, 40);
 		add(lblNgySinh);
@@ -67,12 +66,6 @@ public class ChiTietGV extends JPanel {
 		lblSinThoi.setBounds(763, 126, 145, 40);
 		add(lblSinThoi);
 
-		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_4.setColumns(10);
-		textField_4.setBounds(945, 120, 240, 42);
-		add(textField_4);
-
 		JLabel lblCcLpang = new JLabel("Các Lớp Theo Học", JLabel.CENTER);
 		lblCcLpang.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblCcLpang.setBounds(500, 333, 400, 40);
@@ -82,12 +75,9 @@ public class ChiTietGV extends JPanel {
 		btnQuayLi.setBounds(65, 58, 114, 40);
 		add(btnQuayLi);
 		
-		JButton btnngKLp = new JButton("Đăng Ký Lớp");
-		btnngKLp.setBounds(945, 253, 114, 40);
-		add(btnngKLp);
-		
-		JButton btnHyLp = new JButton("Hủy Lớp");
-		btnHyLp.setBounds(1079, 253, 106, 40);
-		add(btnHyLp);
+		JTextArea textArea = new JTextArea();
+		textArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
+		textArea.setBounds(945, 139, 300, 97);
+		add(textArea);
 	}
 }

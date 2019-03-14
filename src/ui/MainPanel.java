@@ -5,6 +5,7 @@ import javax.swing.JTabbedPane;
 
 import ui.hocvien.HocVien_Panel;
 import ui.khoahoc.KhoaHoc_Panel;
+import ui.phonghoc.PhongHoc_Panel;
 
 public class MainPanel extends JPanel {
 
@@ -21,5 +22,6 @@ public class MainPanel extends JPanel {
 		tabbedPane.addTab("Quản Lý Giảng Viên", new ui.giangvien.GiangVien_Panel());
 		tabbedPane.addTab("Quản lý Học Viên", new HocVien_Panel());
 		tabbedPane.addTab("Quản Lý Khóa Học", new KhoaHoc_Panel());
+		tabbedPane.addTab("Quản Lý Phòng Học", new PhongHoc_Panel());
 	}
 }

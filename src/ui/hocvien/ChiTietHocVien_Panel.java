@@ -6,7 +6,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import entity.Hocvien;
 import ui.abstracts.AbsTractChiTietPanel;
@@ -19,8 +22,29 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_4;
+	private JTable table;
+	private DefaultTableModel tableModel;
 
 	public ChiTietHocVien_Panel() {
+
+		tableModel = new DefaultTableModel(new Object[][] {},
+				new String[] { "STT", "Mã Lớp", "Tên Lớp", "Ngày Bắt Đầu", "Ngày Kết Thúc" }) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		table = new JTable(tableModel);
+		table.setRowHeight(40);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(0, 400, 1400, 400);
+		add(scrollPane);
+
+		/* ================= */
 		JLabel lblChiTitGing = new JLabel("Chi Tiết Học Viên", JLabel.CENTER);
 		lblChiTitGing.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblChiTitGing.setBounds(500, 38, 400, 70);

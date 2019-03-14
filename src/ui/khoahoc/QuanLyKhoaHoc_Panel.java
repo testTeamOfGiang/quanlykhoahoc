@@ -2,6 +2,8 @@ package ui.khoahoc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +50,17 @@ public class QuanLyKhoaHoc_Panel extends AbsTractQuanLyPanel {
 
 		table = new JTable(tableModel);
 		table.setRowHeight(40);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if(e.getClickCount()==2) {
+					int current = table.getSelectedRow();
+					Khoahoc kh = data.get(current);
+					containerPanel.setObject(kh);
+					containerPanel.showChiTiet();
+				}
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 0, 1400, 550);
