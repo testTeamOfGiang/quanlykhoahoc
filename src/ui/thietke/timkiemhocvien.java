@@ -16,7 +16,7 @@ public class timkiemhocvien extends JPanel {
 	public timkiemhocvien() {
 		this.setLayout(null);
 
-		JLabel lblTmKimGing = new JLabel("Tìm Kiếm Học Viên", JLabel.CENTER);
+		JLabel lblTmKimGing = new JLabel("Tìm Kiếm Khóa Học", JLabel.CENTER);
 		lblTmKimGing.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblTmKimGing.setBounds(500, 53, 400, 60);
 		add(lblTmKimGing);
