@@ -52,6 +52,8 @@ create table LOPHOC(
 	id_GV int not null
 )
 go
+alter table LOPHOC add ten_LH nvarchar(30) not null
+go
 alter table LOPHOC add id_PH int not null
 alter table LOPHOC add constraint LH_GV foreign key(id_GV) references GIANGVIEN(id_GV)
 alter table LOPHOC add constraint LH_KH foreign key(id_KH) references KHOAHOC(id_KH)

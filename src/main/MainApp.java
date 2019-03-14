@@ -5,20 +5,22 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import dao.GiangVienDao;
+import dao.HocVienDao;
 import ui.MainFrame;
 
 public class MainApp {
 
 	public static GiangVienDao giangVienDao;
+	public static HocVienDao hocVienDao;
 
 	public static void init() {
 		giangVienDao = new GiangVienDao();
+		hocVienDao = new HocVienDao();
 	}
 
 	public static void main(String[] args) throws UnsupportedLookAndFeelException {
 		init();
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
 		new MainFrame().setVisible(true);
-		System.out.println("exit");
 	}
 }

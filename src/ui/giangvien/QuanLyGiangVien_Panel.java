@@ -19,7 +19,7 @@ import entity.Giangvien;
 import exception.ChuaChonException;
 import main.MainApp;
 import ui.abstracts.AbsTractQuanLyPanel;
-import ui.giangvien.SubDialog.Type;
+import ui.giangvien.GiangVien_Dialog.Type;
 
 public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 
@@ -41,7 +41,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
-			
+
 		};
 		table = new JTable(tableModel);
 		table.setSize(1400, 550);
@@ -50,6 +50,9 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
+					int current = table.getSelectedRow();
+					Giangvien gv = data.get(current);
+					containerPanel.setObject(gv);
 					containerPanel.showChiTiet();
 				}
 			}
@@ -78,7 +81,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		btnThm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new SubDialog(Type.ADD, QuanLyGiangVien_Panel.this, null).setVisible(true);
+				new GiangVien_Dialog(Type.ADD, QuanLyGiangVien_Panel.this, null).setVisible(true);
 			}
 		});
 		add(btnThm);
@@ -96,7 +99,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 						JOptionPane.showMessageDialog(null, "Hãy Chọn một giảng viên để sửa");
 					}
 				} else {
-					new SubDialog(Type.UPDATE, QuanLyGiangVien_Panel.this, data.get(current)).setVisible(true);
+					new GiangVien_Dialog(Type.UPDATE, QuanLyGiangVien_Panel.this, data.get(current)).setVisible(true);
 					;
 				}
 			}

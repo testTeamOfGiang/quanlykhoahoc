@@ -9,7 +9,9 @@ import java.util.List;
 
 import config.JDBC_Connection;
 import entity.Giangvien;
+import entity.Lophoc;
 import mapper.GiangVien_Mapper;
+import mapper.LopHoc_Mapper;
 
 public class GiangVienDao {
 
@@ -81,7 +83,7 @@ public class GiangVienDao {
 	}
 
 	public Giangvien findByID(int id) throws SQLException {
-		Giangvien gv=null;
+		Giangvien gv = null;
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "select * from GIANGVIEN where id_GV = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
@@ -92,5 +94,20 @@ public class GiangVienDao {
 		}
 		con.close();
 		return gv;
+	}
+
+	public List<Lophoc> getLopHoc(Giangvien gv) throws SQLException {
+		ArrayList<Lophoc> lop = new ArrayList<Lophoc>();
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "select * from LOPHOC as lh where lh.id_GV=?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, gv.getId_GV());
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			Lophoc lopHoc = new LopHoc_Mapper().map(resultSet);
+			lop.add(lopHoc);
+		}
+		con.close();
+		return lop;
 	}
 }
