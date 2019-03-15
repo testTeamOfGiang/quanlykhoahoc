@@ -76,6 +76,9 @@ alter table HOCVIEN_LOPHOC add constraint HVLH_HV foreign key(id_HV) references 
 alter table HOCVIEN_LOPHOC add constraint HVLH_LH foreign key(id_LH) references LOPHOC(id_LH)
 
 
+
+----  VER 1.2 ------
+
 go
 create table LICHHOC(
 	id_LIH int identity primary key,
