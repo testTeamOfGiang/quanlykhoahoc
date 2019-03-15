@@ -75,3 +75,25 @@ go
 alter table HOCVIEN_LOPHOC add constraint HVLH_HV foreign key(id_HV) references HOCVIEN(id_HV)
 alter table HOCVIEN_LOPHOC add constraint HVLH_LH foreign key(id_LH) references LOPHOC(id_LH)
 
+
+go
+create table LICHHOC(
+	id_LIH int identity primary key,
+	id_LH int,
+	thu nchar(10) not null,
+	tiet char(30) not null,
+	ghichu_LIH text
+)
+go
+alter table LICHHOC add constraint FK_LIH_LH foreign key(id_LH) references LOPHOC(id_LH)
+go
+
+create table LOPCHO(
+	id_HV int not null,
+	id_LH int not null,
+	ghichu_LC text,
+	primary key(id_HV,id_LH),
+	constraint FK_LC_HV foreign key (id_HV) references HOCVIEN (id_HV),
+	constraint FK_LC_LH foreign key (id_LH) references LOPHOC (id_LH),
+)
+
