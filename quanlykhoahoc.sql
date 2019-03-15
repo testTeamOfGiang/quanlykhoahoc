@@ -100,3 +100,8 @@ create table LOPCHO(
 	constraint FK_LC_LH foreign key (id_LH) references LOPHOC (id_LH),
 )
 
+---- VER 1.3----
+go
+
+alter table LOPHOC add ghichu_LH text
+
