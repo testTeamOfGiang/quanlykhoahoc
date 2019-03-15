@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.JDBC_Connection;
-import entity.Lophoc;
+import entity.LopHoc;
 import entity.Phonghoc;
 import mapper.LopHoc_Mapper;
 import mapper.PhongHoc_Mapper;
@@ -45,15 +45,15 @@ public class PhongHocDao {
 		con.close();
 	}
 
-	public List<Lophoc> getLop(Phonghoc ph) throws SQLException {
+	public List<LopHoc> getLop(Phonghoc ph) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		List<Lophoc> list = new ArrayList<Lophoc>();
+		List<LopHoc> list = new ArrayList<LopHoc>();
 		String sql = "select * from LOPHOC as lh inner join PHONGHOC as ph on lh.id_PH=ph.id_PH where ph.id_PH=?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, ph.getId_PH());
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
-			Lophoc lh = new LopHoc_Mapper().map(resultSet);
+			LopHoc lh = new LopHoc_Mapper().map(resultSet);
 			list.add(lh);
 		}
 		con.close();

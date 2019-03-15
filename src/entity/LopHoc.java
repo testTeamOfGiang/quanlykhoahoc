@@ -1,6 +1,6 @@
 package entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class LopHoc {
 
@@ -18,8 +18,16 @@ public class LopHoc {
 
 	private Date ngayketthuc;
 
-	private String ghichu_LH;
+	private String ghiChu_LH;
 	
+	public String getGhiChu_LH() {
+		return ghiChu_LH;
+	}
+
+	public void setGhiChu_LH(String ghiChu_LH) {
+		this.ghiChu_LH = ghiChu_LH;
+	}
+
 	public LopHoc() {
 	}
 
@@ -79,12 +87,4 @@ public class LopHoc {
 		this.ten_LH = ten_LH;
 	}
 
-	public String getGhichu_LH() {
-		return ghichu_LH;
-	}
-
-	public void setGhichu_LH(String ghichu_LH) {
-		this.ghichu_LH = ghichu_LH;
-	}
-	
 }

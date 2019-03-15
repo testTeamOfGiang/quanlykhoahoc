@@ -3,13 +3,13 @@ package mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import entity.Lophoc;
+import entity.LopHoc;
 
-public class LopHoc_Mapper implements Mapper<Lophoc> {
+public class LopHoc_Mapper implements Mapper<LopHoc> {
 
 	@Override
-	public Lophoc map(ResultSet resultSet) throws SQLException {
-		Lophoc lh = new Lophoc();
+	public LopHoc map(ResultSet resultSet) throws SQLException {
+		LopHoc lh = new LopHoc();
 		lh.setId_LH(resultSet.getInt("id_LH"));
 		lh.setId_GV(resultSet.getInt("id_GV"));
 		lh.setId_KH(resultSet.getInt("id_KH"));

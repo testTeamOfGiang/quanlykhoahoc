@@ -15,7 +15,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import entity.Lophoc;
+import entity.LopHoc;
 import entity.Phonghoc;
 import main.MainApp;
 import ui.abstracts.AbsTractChiTietPanel;
@@ -118,9 +118,9 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 			}
 
 			try {
-				List<Lophoc> list = MainApp.phongHocDao.getLop(ph);
+				List<LopHoc> list = MainApp.phongHocDao.getLop(ph);
 				int stt = 1;
-				for (Lophoc lh : list) {
+				for (LopHoc lh : list) {
 					tableModel.addRow(new Object[] { stt, lh.getId_LH(), lh.getTen_LH(), lh.getNgaybatdau(),
 							lh.getNgayketthuc() });
 					stt += 1;

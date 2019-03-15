@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import entity.Giangvien;
-import entity.Lophoc;
+import entity.LopHoc;
 import main.MainApp;
 import ui.abstracts.AbsTractChiTietPanel;
 
@@ -161,9 +161,9 @@ public class ChiTietGiangVien_Panel extends AbsTractChiTietPanel {
 			}
 
 			try {
-				List<Lophoc> lopHocs = MainApp.giangVienDao.getLopHoc(gv);
+				List<LopHoc> lopHocs = MainApp.giangVienDao.getLopHoc(gv);
 				int stt = 1;
-				for (Lophoc lh : lopHocs) {
+				for (LopHoc lh : lopHocs) {
 					tableModel.addRow(new Object[] { stt, lh.getId_LH(), lh.getTen_LH(), lh.getId_PH(),
 							lh.getNgaybatdau().toString(), lh.getNgayketthuc().toString() });
 				}

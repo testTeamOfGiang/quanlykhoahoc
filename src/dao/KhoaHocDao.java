@@ -9,7 +9,7 @@ import java.util.List;
 
 import config.JDBC_Connection;
 import entity.Khoahoc;
-import entity.Lophoc;
+import entity.LopHoc;
 import mapper.KhoaHoc_Mapper;
 import mapper.LopHoc_Mapper;
 
@@ -92,15 +92,15 @@ public class KhoaHocDao {
 		return kh;
 	}
 
-	public List<Lophoc> getLop(Khoahoc kh) throws SQLException {
-		List<Lophoc> list = new ArrayList<Lophoc>();
+	public List<LopHoc> getLop(Khoahoc kh) throws SQLException {
+		List<LopHoc> list = new ArrayList<LopHoc>();
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "select * from LOPHOC as lh inner join KHOAHOC as kh on lh.id_KH=kh.id_KH where kh.id_KH=?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, kh.getId_KH());
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
-			Lophoc lh = new LopHoc_Mapper().map(resultSet);
+			LopHoc lh = new LopHoc_Mapper().map(resultSet);
 			list.add(lh);
 		}
 		con.close();
