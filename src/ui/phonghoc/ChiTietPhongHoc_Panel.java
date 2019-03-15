@@ -3,16 +3,21 @@ package ui.phonghoc;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import entity.Lophoc;
 import entity.Phonghoc;
+import main.MainApp;
 import ui.abstracts.AbsTractChiTietPanel;
 
 public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
@@ -26,7 +31,8 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 
 	public ChiTietPhongHoc_Panel() {
 
-		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã Lớp", "Tên Lớp" }) {
+		tableModel = new DefaultTableModel(new Object[][] {},
+				new String[] { "STT", "Mã Lớp", "Tên Lớp", "Ngày Bắt Đầu", "Ngày Kết Thúc" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -106,6 +112,23 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 			textField.setText(ph.getId_PH() + "");
 			textField_1.setText(ph.getTen_PH());
 			textArea.setText(ph.getGhichu_PH());
+
+			while (table.getRowCount() > 0) {
+				tableModel.removeRow(0);
+			}
+
+			try {
+				List<Lophoc> list = MainApp.phongHocDao.getLop(ph);
+				int stt = 1;
+				for (Lophoc lh : list) {
+					tableModel.addRow(new Object[] { stt, lh.getId_LH(), lh.getTen_LH(), lh.getNgaybatdau(),
+							lh.getNgayketthuc() });
+					stt += 1;
+				}
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(ChiTietPhongHoc_Panel.this, "Không Thể Load Dữ Liệu");
+				e.printStackTrace();
+			}
 		}
 	}
 
