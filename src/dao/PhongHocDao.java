@@ -27,7 +27,7 @@ public class PhongHocDao {
 
 	public void delete(Phonghoc ph) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "delete from PHONGHOC where id=?";
+		String sql = "delete from PHONGHOC where id_PH=?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, ph.getId_PH());
 		preparedStatement.executeUpdate();
@@ -74,5 +74,34 @@ public class PhongHocDao {
 		}
 		con.close();
 		return list;
+	}
+
+	public List<Phonghoc> find(String key) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		List<Phonghoc> list = new ArrayList<Phonghoc>();
+		String sql = "select * from PHONGHOC where ten_PH like concat('%',?,'%')";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setString(1, key);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			Phonghoc ph = new PhongHoc_Mapper().map(resultSet);
+			list.add(ph);
+		}
+		con.close();
+		return list;
+	}
+
+	public Phonghoc findById(int id) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		Phonghoc ph = null;
+		String sql = "select * from PHONGHOC where id_PH =?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			ph = new PhongHoc_Mapper().map(resultSet);
+		}
+		con.close();
+		return ph;
 	}
 }

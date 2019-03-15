@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 import ui.hocvien.ChiTietHocVien_Panel;
 
 import javax.swing.JButton;
+import javax.swing.JTextArea;
 
 public class dankyhocdialog extends JPanel {
 	private JTextField textField;
@@ -18,22 +19,31 @@ public class dankyhocdialog extends JPanel {
 	public dankyhocdialog(ChiTietHocVien_Panel panel) {
 		setLayout(null);
 		
-		JLabel lblMLp = new JLabel("Mã Lớp");
+		JLabel lblMLp = new JLabel("Tên Phòng");
 		lblMLp.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblMLp.setBounds(51, 103, 100, 40);
+		lblMLp.setBounds(51, 55, 100, 40);
 		add(lblMLp);
 		
 		textField = new JTextField();
-		textField.setBounds(163, 103, 201, 40);
+		textField.setBounds(163, 55, 201, 40);
 		add(textField);
 		textField.setColumns(10);
 		
 		JButton btnOk = new JButton("OK");
-		btnOk.setBounds(163, 185, 97, 40);
+		btnOk.setBounds(163, 271, 97, 40);
 		add(btnOk);
 		
 		JButton btnHy = new JButton("Hủy");
-		btnHy.setBounds(272, 185, 97, 40);
+		btnHy.setBounds(272, 271, 97, 40);
 		add(btnHy);
+		
+		JLabel lblGhiCh = new JLabel("Ghi Chú");
+		lblGhiCh.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblGhiCh.setBounds(51, 125, 100, 40);
+		add(lblGhiCh);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(163, 135, 201, 95);
+		add(textArea);
 	}
 }

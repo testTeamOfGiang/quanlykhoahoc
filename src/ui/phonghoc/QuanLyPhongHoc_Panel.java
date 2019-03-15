@@ -2,6 +2,8 @@ package ui.phonghoc;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +16,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import entity.Phonghoc;
+import exception.ChuaChonException;
 import main.MainApp;
 import ui.abstracts.AbsTractQuanLyPanel;
+import ui.phonghoc.PhongHoc_Dialog.Type;
 
 public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 
@@ -44,6 +48,17 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 
 		table = new JTable(tableModel);
 		table.setRowHeight(40);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int current = table.getSelectedRow();
+					Phonghoc ph = data.get(current);
+					containerPanel.setObject(ph);
+					containerPanel.showChiTiet();
+				}
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 0, 1400, 550);
@@ -63,14 +78,59 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 
 		JButton btnThm = new JButton("Thêm");
 		btnThm.setBounds(389, 676, 106, 40);
+		btnThm.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new PhongHoc_Dialog(Type.ADD, QuanLyPhongHoc_Panel.this, null).setVisible(true);
+				;
+			}
+		});
 		add(btnThm);
 
 		JButton btnSa = new JButton("Sửa");
 		btnSa.setBounds(644, 676, 106, 40);
+		btnSa.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int current = table.getSelectedRow();
+					if (current == -1) {
+						throw new ChuaChonException();
+					}
+					Phonghoc ph = data.get(current);
+					new PhongHoc_Dialog(Type.UPDATE, QuanLyPhongHoc_Panel.this, ph).setVisible(true);
+				} catch (ChuaChonException ex) {
+					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Hãy Chọn Một Phòng Học Đê Sửa");
+				}
+			}
+		});
 		add(btnSa);
 
 		JButton btnXa = new JButton("Xóa");
 		btnXa.setBounds(910, 676, 106, 40);
+		btnXa.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int current = table.getSelectedRow();
+					if (current == -1) {
+						throw new ChuaChonException();
+					}
+					Phonghoc ph = data.get(current);
+					MainApp.phongHocDao.delete(ph);
+					loadData();
+					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Xóa Phòng Học Thành Công");
+				} catch (ChuaChonException ex) {
+					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Hãy Chọn Một Phòng Học Để Xóa");
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Xóa Phòng Học Không Thành Công");
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		add(btnXa);
 
 		JButton btnTmKim = new JButton("Tìm Kiếm");
@@ -78,13 +138,20 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 		btnTmKim.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				containerPanel.showTimKiem();
 			}
 		});
 		add(btnTmKim);
 
 		JButton btnReload = new JButton("Reload");
 		btnReload.setBounds(177, 677, 97, 39);
+		btnReload.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loadData();
+			}
+		});
 		add(btnReload);
 	}
 
