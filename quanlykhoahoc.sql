@@ -82,7 +82,7 @@ alter table HOCVIEN_LOPHOC add constraint HVLH_LH foreign key(id_LH) references 
 go
 create table LICHHOC(
 	id_LIH int identity primary key,
-	id_LH int,
+	id_LH int not null,
 	thu nchar(10) not null,
 	tiet char(30) not null,
 	ghichu_LIH text

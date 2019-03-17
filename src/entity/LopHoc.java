@@ -18,15 +18,9 @@ public class LopHoc {
 
 	private Date ngayketthuc;
 
-	private String ghiChu_LH;
+	private String ghichu_LH;
 	
-	public String getGhiChu_LH() {
-		return ghiChu_LH;
-	}
-
-	public void setGhiChu_LH(String ghiChu_LH) {
-		this.ghiChu_LH = ghiChu_LH;
-	}
+	
 
 	public LopHoc() {
 	}
@@ -86,5 +80,12 @@ public class LopHoc {
 	public void setTen_LH(String ten_LH) {
 		this.ten_LH = ten_LH;
 	}
+	
+	public String getGhichu_LH() {
+		return ghichu_LH;
+	}
 
+	public void setGhichu_LH(String ghiChu_LH) {
+		this.ghichu_LH = ghiChu_LH;
+	}
 }
