@@ -67,7 +67,6 @@ public class LopHocDAO {
 		con.close();
 	}
 	
-	// Chức năng này chưa xong
 	/**
 	 * Chức năng này chưa xong
 	 * Xoá 1 lớp học khỏi bảng Lớp học.
@@ -76,11 +75,7 @@ public class LopHocDAO {
 	 * @param lh
 	 * @throws SQLException
 	 */
-	public void deleteLopHoc(LopHoc lh) throws SQLException {
-		
-		System.out.println("Chức năng xoá lớp chưa xong. Sử dụng có thể gây lỗi");
-		
-		new LichHocDAO().deleteLichHocByLop(lh);
+	public void deleteLopHoc(LopHoc lh) throws SQLException {		
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "delete from LOPHOC where id_LH = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
@@ -192,6 +187,7 @@ public class LopHocDAO {
 			LopHoc lh = new LopHoc_Mapper().map(resultSet);
 			lstLH.add(lh);
 		}
+		
 		con.close();
 		return lstLH;
 	}

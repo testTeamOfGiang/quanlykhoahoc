@@ -105,3 +105,38 @@ go
 
 alter table LOPHOC add ghichu_LH text
 
+---- VER 1.4 --- xoá bảng LOPCHO
+
+drop table LOPCHO
+
+---- VER 1.5 --- 
+
+-- Thêm trigger cho lớp học. xoá 1 lớp thì xoá cả ở bảng HOCVIEN_LOPHOC, LICHHOC
+
+go
+
+create trigger trg_DelLop_HOCVIEN_LOPHOC
+on LOPHOC
+for delete
+as
+	begin
+		declare @id_LH int
+		set @id_LH = (select id_LH from deleted)
+		delete from HOCVIEN_LOPHOC
+		where id_LH = @id_LH
+	end 
+
+go
+
+create trigger trg_DelLop_LICHHOC
+on LOPHOC
+for delete
+as
+	begin
+		declare @id_LH int
+		set @id_LH = (select id_LH from deleted)
+		delete from LICHHOC
+		where id_LH = @id_LH
+	end 
+
+

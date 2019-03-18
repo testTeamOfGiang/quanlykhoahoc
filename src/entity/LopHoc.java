@@ -39,6 +39,7 @@ public class LopHoc {
 
 	public void setNgaybatdau(Date ngaybatdau) {
 		this.ngaybatdau = ngaybatdau;
+		
 	}
 
 	public Date getNgayketthuc() {
