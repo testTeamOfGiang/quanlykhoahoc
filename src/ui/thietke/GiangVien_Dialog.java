@@ -13,6 +13,11 @@ import javax.swing.JTextPane;
 
 public class GiangVien_Dialog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6737549415297333019L;
+	@SuppressWarnings("unused")
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	private JTextField textField_1;

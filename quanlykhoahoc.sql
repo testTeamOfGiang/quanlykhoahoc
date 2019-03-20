@@ -77,7 +77,7 @@ alter table HOCVIEN_LOPHOC add constraint HVLH_LH foreign key(id_LH) references 
 
 
 
-----  VER 1.2 ------
+----  VER 1.2 ------ GIANG
 
 go
 create table LICHHOC(
@@ -100,16 +100,17 @@ create table LOPCHO(
 	constraint FK_LC_LH foreign key (id_LH) references LOPHOC (id_LH),
 )
 
----- VER 1.3----
+---- VER 1.3---- GIANG
 go
 
 alter table LOPHOC add ghichu_LH text
 
----- VER 1.4 --- xoá bảng LOPCHO
-
+---- VER 1.4 --- GIANG
+ 
+	---xoá bảng LOPCHO
 drop table LOPCHO
 
----- VER 1.5 --- 
+---- VER 1.5 --- GIANG
 
 -- Thêm trigger cho lớp học. xoá 1 lớp thì xoá cả ở bảng HOCVIEN_LOPHOC, LICHHOC
 
@@ -139,4 +140,38 @@ as
 		where id_LH = @id_LH
 	end 
 
+	
+---- VER 1.6 ----- GIANG
+
+	--- Disable 2 cái trigger ở 1.5 ------
+go
+	
+disable trigger trg_DelLop_HOCVIEN_LOPHOC on LOPHOC
+go
+disable trigger trg_DelLop_LICHHOC on LOPHOC
+	
+	--- Thêm thuộc tính sĩ số cho lớp học
+go
+alter table LOPHOC add siso_LH int default 0 not null
+
+	--- Thêm trigger tăng sĩ số nếu có học viên vào học
+go
+create trigger trg_insertHV_LH_tangSiSo
+on HOCVIEN_LOPHOC
+for insert
+as
+	begin
+		declare @id_LH int
+		set @id_LH = (select id_LH from inserted)
+		update LOPHOC set siso_LH = siso_LH + 1 where id_LH = @id_LH
+	end 
+
+	--- Sửa kiểu ghi chú sang NTEXT
+go
+alter table LICHHOC alter column ghichu_LIH nvarchar(100)
+alter table LOPHOC alter column ghichu_LH nvarchar(100)
+
+go
+alter table LICHHOC alter column ghichu_LIH ntext
+alter table LOPHOC alter column ghichu_LH ntext
 

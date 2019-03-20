@@ -20,8 +20,9 @@ public class LopHoc {
 
 	private String ghichu_LH;
 	
+	private int siso_LH;
 	
-
+	
 	public LopHoc() {
 	}
 
@@ -89,4 +90,13 @@ public class LopHoc {
 	public void setGhichu_LH(String ghiChu_LH) {
 		this.ghichu_LH = ghiChu_LH;
 	}
+	
+	public int getSiso_LH() {
+		return siso_LH;
+	}
+
+	public void setSiso_LH(int siso_LH) {
+		this.siso_LH = siso_LH;
+	}
+
 }

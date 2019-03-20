@@ -10,6 +10,11 @@ import javax.swing.JTextArea;
 
 public class hocviendiaog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8453225231394141750L;
+	@SuppressWarnings("unused")
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	private JTextField textField_1;

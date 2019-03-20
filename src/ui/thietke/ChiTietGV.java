@@ -9,6 +9,10 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 
 public class ChiTietGV extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3700370625867400955L;
 	private JTextField textField;
 	private JTextField textField_1;
 

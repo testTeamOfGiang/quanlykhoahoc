@@ -11,6 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 
 public class dankyhocdialog extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6630418773802447002L;
 	private JTextField textField;
 
 	/**

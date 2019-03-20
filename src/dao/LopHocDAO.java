@@ -15,17 +15,17 @@ import mapper.LopHoc_Mapper;
 // Chưa xong
 
 public class LopHocDAO {
-	
+
 	/**
 	 * Thêm một lớp vào bảng LOPHOC
+	 * 
 	 * @param lh đối tượng LopHoc
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public void addLopHoc(LopHoc lh) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "insert into LOPHOC "
-				+ "(id_KH, ngaybatdau, ngayketthuc, id_GV, ten_LH, id_PH, ghichu_LH) "
-				+ "values(?,?,?,?,?,?,?)";
+		String sql = "insert into LOPHOC " + "(id_KH, ngaybatdau, ngayketthuc, id_GV, ten_LH, id_PH, ghichu_LH) "
+				+ "values(?,?,?,?,?,?,?,0)"; // 0 cuối là sĩ số. đã cài default. cứ để đây lúc edit đỡ bị lẫn
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, lh.getId_KH());
 		preparedStatement.setDate(2, lh.getNgaybatdau());
@@ -37,24 +37,25 @@ public class LopHocDAO {
 		preparedStatement.executeUpdate();
 		con.close();
 	}
-	
+
 	/**
-	 * Cập nhật thông tin lớp học
-	 * Yêu cầu lớp học phải đầy đủ thông tin.
+	 * Cập nhật thông tin lớp học Yêu cầu lớp học phải đầy đủ thông tin.
+	 * 
 	 * @param lh đối tượng LopHoc
 	 * @throws SQLException
 	 */
 	public void updateLopHoc(LopHoc lh) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "update LOPHOC "
-				+ "set id_KH = ?, "
-				+ "set ngaybatdau = ?, "
-				+ "set ngayketthuc = ?, "
-				+ "set id_GV = ?, "
-				+ "set ten_LH = ?, "
-				+ "set id_PH = ?,"
-				+ "set ghichu_LH = ?"
-				+ "where id_LH = ?";
+		String sql = " update LOPHOC " + 
+				" set id_KH = ?, " + 
+				" set ngaybatdau = ?, " + 
+				" set ngayketthuc = ?, " +
+				" set id_GV = ?, " + 
+				" set ten_LH = ?, " + 
+				" set id_PH = ?, " + 
+				" set ghichu_LH = ? " + 
+				" set siso_LH = ?" +
+				" where id_LH = ?";
 		PreparedStatement preStatement = con.prepareStatement(sql);
 		preStatement.setInt(1, lh.getId_KH());
 		preStatement.setDate(2, lh.getNgaybatdau());
@@ -63,34 +64,120 @@ public class LopHocDAO {
 		preStatement.setString(5, lh.getTen_LH());
 		preStatement.setInt(6, lh.getId_PH());
 		preStatement.setString(7, lh.getGhichu_LH());
+		int siso_LH = new HocVien_LopHocDAO().getSiSoById_LH(lh.getId_LH());
+		preStatement.setInt(8, siso_LH);
 		preStatement.executeUpdate();
 		con.close();
 	}
-	
+
 	/**
-	 * Chức năng này chưa xong
-	 * Xoá 1 lớp học khỏi bảng Lớp học.
-	 * Xoá cả lịch học
-	 * Xoá ..
+	 * Chức năng này chưa xong Xoá 1 lớp học khỏi bảng Lớp học. Xoá cả lịch học Xoá
+	 * ..
+	 * 
 	 * @param lh
 	 * @throws SQLException
 	 */
-	public void deleteLopHoc(LopHoc lh) throws SQLException {		
+	public void deleteLopHoc(LopHoc lh) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
+		new LichHocDAO().deleteLichHocById_LH(lh.getId_LH());
+		new HocVien_LopHocDAO().deleteHocVien_LopHocById_LH(lh.getId_LH());
+
 		String sql = "delete from LOPHOC where id_LH = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, lh.getId_LH());
 		preparedStatement.executeUpdate();
 		con.close();
 	}
-	
+
+	/**
+	 * Xoá tất cả lớp thông qua id_GV
+	 * 
+	 * @param id_GV
+	 * @throws SQLException
+	 */
+	public void deleteLopHocById_GV(int id_GV) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "delete from LOPHOC where id_GV = ?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_GV);
+		preparedStatement.executeUpdate();
+		con.close();
+	}
+
+	/**
+	 * Xoá tất cả lớp thông qua id_KH
+	 * 
+	 * @param id_KH
+	 * @throws SQLException
+	 */
+	public void deleteLopHocById_KH(int id_KH) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "delete from LOPHOC where id_KH = ?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_KH);
+		preparedStatement.executeUpdate();
+		con.close();
+	}
+
+	/**
+	 * Xoá tất cả lớp thông qua id_PH
+	 * 
+	 * @param id_PH
+	 * @throws SQLException
+	 */
+	public void deleteLopHocById_PH(int id_PH) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "delete from LOPHOC where id_PH = ?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_PH);
+		preparedStatement.executeUpdate();
+		con.close();
+	}
+
+	/**
+	 * Chuyển sang phòng học khác
+	 * 
+	 * @param lh    lớp học
+	 * @param id_PH phòng mới
+	 * @throws SQLException
+	 */
+	public void chuyenPhongHoc(LopHoc lh, int id_PH) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "update LOPHOC set id_PH = ? where id_LH = ?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_PH);
+		preparedStatement.setInt(2, lh.getId_LH());
+		preparedStatement.executeUpdate();
+		con.close();
+	}
+
+	/**
+	 * Kiểm tra lớp có tồn tại hay k
+	 * @param id_LH
+	 * @return true nếu tồn tại. false ngược lại
+	 * @throws SQLException
+	 */
+	public boolean isExist(int id_LH) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "select count(*) as 'dem' from LOPHOC where id_LH = ?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_LH);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		resultSet.next();
+		int dem = resultSet.getInt("dem");
+		con.close();
+
+		return dem > 0;
+	}
+
 	/**
 	 * Tìm Lớp by ID lớp
+	 * 
 	 * @param id_LH
 	 * @return
 	 * @throws SQLException
 	 */
-	LopHoc findById_LH(int id_LH) throws SQLException{
+	LopHoc findById_LH(int id_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "select * from LOPHOC where id_LH = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
@@ -101,7 +188,7 @@ public class LopHocDAO {
 		con.close();
 		return lh;
 	}
-	
+
 	/**
 	 * Tìm lớp by ID Khoá học
 	 * 
@@ -123,7 +210,7 @@ public class LopHocDAO {
 		con.close();
 		return lstLH;
 	}
-	
+
 	/**
 	 * Tìm lớp theo id giáo viên
 	 * 
@@ -145,9 +232,10 @@ public class LopHocDAO {
 		con.close();
 		return lstLH;
 	}
-	
+
 	/**
 	 * Tìm lớp theo id Phòng
+	 * 
 	 * @param id_PH
 	 * @return List<LopHoc>
 	 * @throws SQLException
@@ -157,7 +245,7 @@ public class LopHocDAO {
 		String sql = "select * from LOPHOC where id_PH = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, id_PH);
-		
+
 		ResultSet resultSet = preparedStatement.executeQuery();
 		List<LopHoc> lstLH = new ArrayList<LopHoc>();
 		while (resultSet.next()) {
@@ -167,7 +255,7 @@ public class LopHocDAO {
 		con.close();
 		return lstLH;
 	}
-	
+
 	/**
 	 * Tìm lớp theo tên
 	 * 
@@ -180,21 +268,20 @@ public class LopHocDAO {
 		String sql = "select * from LOPHOC where ten_LH like concat('%',?,'%') order by id_LH DESC";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, ten_LH);
-		
+
 		ResultSet resultSet = preparedStatement.executeQuery();
 		List<LopHoc> lstLH = new ArrayList<LopHoc>();
 		while (resultSet.next()) {
 			LopHoc lh = new LopHoc_Mapper().map(resultSet);
 			lstLH.add(lh);
 		}
-		
+
 		con.close();
 		return lstLH;
 	}
-	
+
 	/**
-	 * Tìm lớp in ghi chú.
-	 * Sắp xếp giảm dần theo id
+	 * Tìm lớp in ghi chú. Sắp xếp giảm dần theo id
 	 * 
 	 * @param ghiChu
 	 * @return
@@ -205,7 +292,7 @@ public class LopHocDAO {
 		String sql = "select * from LOPHOC where ghichu_LH like concat('%',?,'%') order by id_LH DESC";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, ghiChu);
-		
+
 		ResultSet resultSet = preparedStatement.executeQuery();
 		List<LopHoc> lstLH = new ArrayList<LopHoc>();
 		while (resultSet.next()) {
@@ -215,29 +302,29 @@ public class LopHocDAO {
 		con.close();
 		return lstLH;
 	}
-	
+
 	/**
-	 * Tìm xem có lớp nào học trong khoảng thời gian này 
+	 * Tìm xem có lớp nào học trong khoảng thời gian này
 	 * 
 	 * @param date
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<LopHoc> findInPeriod(Date date) throws SQLException{
+	public List<LopHoc> findInPeriod(Date date) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "select * from LOPHOC where ? between ngaybatdau and ngayketthuc";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setDate(1, date);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		List<LopHoc> lstLH = new ArrayList<LopHoc>();
-		while(resultSet.next()) {
+		while (resultSet.next()) {
 			LopHoc lh = new LopHoc_Mapper().map(resultSet);
 			lstLH.add(lh);
 		}
 		con.close();
 		return lstLH;
 	}
-	
+
 	public List<LopHoc> getPage(int page) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		List<LopHoc> lstLH = new ArrayList<LopHoc>();

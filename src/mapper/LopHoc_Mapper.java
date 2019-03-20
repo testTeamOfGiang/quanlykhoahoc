@@ -17,6 +17,7 @@ public class LopHoc_Mapper implements Mapper<LopHoc> {
 		lh.setTen_LH(resultSet.getString("ten_LH"));
 		lh.setNgaybatdau(resultSet.getDate("ngaybaudau"));
 		lh.setNgayketthuc(resultSet.getDate("ngayketthuc"));
+		lh.setSiso_LH(resultSet.getInt("siso_LH"));
 		return lh;
 	}
 

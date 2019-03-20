@@ -9,7 +9,6 @@ import java.util.List;
 
 import config.JDBC_Connection;
 import entity.LichHoc;
-import entity.LopHoc;
 import mapper.LichHoc_Mapper;
 
 public class LichHocDAO {
@@ -68,11 +67,11 @@ public class LichHocDAO {
 		con.close();
 	}
 
-	public void deleteLichHocByLop(LopHoc lh) throws SQLException {
+	public void deleteLichHocById_LH(int id_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "delete from LICHHOC where id_LH = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		preparedStatement.setInt(1, lh.getId_LH());
+		preparedStatement.setInt(1, id_LH);
 		preparedStatement.execute();
 		con.close();
 	}
