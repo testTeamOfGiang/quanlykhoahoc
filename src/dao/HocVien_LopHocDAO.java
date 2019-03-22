@@ -9,7 +9,7 @@ import config.JDBC_Connection;
 import entity.HocVien_LopHoc;
 
 public class HocVien_LopHocDAO {
-	
+
 	public void addHocVien_LopHoc(HocVien_LopHoc hvlh) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "insert into HOCVIEN_LOPHOC values(?,?)";
@@ -19,9 +19,10 @@ public class HocVien_LopHocDAO {
 		preparedStatement.executeUpdate();
 		con.close();
 	}
-	
+
 	/**
 	 * Xoá khi có cả mã Lớp và mã Học viên
+	 * 
 	 * @param hvlh
 	 * @throws SQLException
 	 */
@@ -37,8 +38,9 @@ public class HocVien_LopHocDAO {
 
 	/**
 	 * Xoá theo mã Lớp
+	 * 
 	 * @param id_LH
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public void deleteHocVien_LopHocById_LH(int id_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
@@ -48,9 +50,10 @@ public class HocVien_LopHocDAO {
 		preparedStatement.executeUpdate();
 		con.close();
 	}
-	
+
 	/**
 	 * Tính sĩ số của một lớp
+	 * 
 	 * @param id_LH
 	 * @return
 	 * @throws SQLException
@@ -66,5 +69,5 @@ public class HocVien_LopHocDAO {
 		con.close();
 		return dem;
 	}
-	
+
 }

@@ -24,7 +24,7 @@ public class LopHocDAO {
 	 */
 	public void addLopHoc(LopHoc lh) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "insert into LOPHOC " + "(id_KH, ngaybatdau, ngayketthuc, id_GV, ten_LH, id_PH, ghichu_LH) "
+		String sql = "insert into LOPHOC " + "(id_KH, ngaybatdau, ngayketthuc, id_GV, ten_LH, id_PH, ghichu_LH, siso_LH) "
 				+ "values(?,?,?,?,?,?,?,0)"; // 0 cuối là sĩ số. đã cài default. cứ để đây lúc edit đỡ bị lẫn
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, lh.getId_KH());
@@ -46,16 +46,9 @@ public class LopHocDAO {
 	 */
 	public void updateLopHoc(LopHoc lh) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = " update LOPHOC " + 
-				" set id_KH = ?, " + 
-				" set ngaybatdau = ?, " + 
-				" set ngayketthuc = ?, " +
-				" set id_GV = ?, " + 
-				" set ten_LH = ?, " + 
-				" set id_PH = ?, " + 
-				" set ghichu_LH = ? " + 
-				" set siso_LH = ?" +
-				" where id_LH = ?";
+		String sql = " update LOPHOC " + " set id_KH = ?, " + " ngaybatdau = ?, " + " ngayketthuc = ?, "
+				+ " id_GV = ?, " + " ten_LH = ?, " + " id_PH = ?, " + " ghichu_LH = ?, "
+				+ " siso_LH = ?" + " where id_LH = ?";
 		PreparedStatement preStatement = con.prepareStatement(sql);
 		preStatement.setInt(1, lh.getId_KH());
 		preStatement.setDate(2, lh.getNgaybatdau());
@@ -66,6 +59,7 @@ public class LopHocDAO {
 		preStatement.setString(7, lh.getGhichu_LH());
 		int siso_LH = new HocVien_LopHocDAO().getSiSoById_LH(lh.getId_LH());
 		preStatement.setInt(8, siso_LH);
+		preStatement.setInt(9, lh.getId_LH());
 		preStatement.executeUpdate();
 		con.close();
 	}
@@ -153,6 +147,7 @@ public class LopHocDAO {
 
 	/**
 	 * Kiểm tra lớp có tồn tại hay k
+	 * 
 	 * @param id_LH
 	 * @return true nếu tồn tại. false ngược lại
 	 * @throws SQLException
@@ -325,6 +320,12 @@ public class LopHocDAO {
 		return lstLH;
 	}
 
+	/**
+	 * 
+	 * @param page
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<LopHoc> getPage(int page) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		List<LopHoc> lstLH = new ArrayList<LopHoc>();
@@ -339,5 +340,29 @@ public class LopHocDAO {
 		}
 		con.close();
 		return lstLH;
+	}
+
+//-------------------------- EXTRA ---------------------------//
+
+	/**
+	 * 
+	 * @param id_KH
+	 * @param id_PH
+	 * @return String[0] = tên Khoá học, String[1] = tên phòng học
+	 * @throws SQLException
+	 */
+	public String[] getTenKH_TenPH(int id_KH, int id_PH) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "select ten_KH, ten_PH from KHOAHOC, PHONGHOC where id_KH = ? and id_PH=?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_KH);
+		preparedStatement.setInt(2, id_PH);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		resultSet.next();
+		String ten_KH = resultSet.getString("ten_KH");
+		String ten_PH = resultSet.getString("ten_PH");
+		con.close();
+		String result[] = { ten_KH, ten_PH };
+		return result;
 	}
 }

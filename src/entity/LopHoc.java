@@ -11,7 +11,7 @@ public class LopHoc {
 	private int id_GV;
 
 	private int id_PH;
-	
+
 	private String ten_LH;
 
 	private Date ngaybatdau;
@@ -19,10 +19,9 @@ public class LopHoc {
 	private Date ngayketthuc;
 
 	private String ghichu_LH;
-	
+
 	private int siso_LH;
-	
-	
+
 	public LopHoc() {
 	}
 
@@ -40,7 +39,7 @@ public class LopHoc {
 
 	public void setNgaybatdau(Date ngaybatdau) {
 		this.ngaybatdau = ngaybatdau;
-		
+
 	}
 
 	public Date getNgayketthuc() {
@@ -82,7 +81,7 @@ public class LopHoc {
 	public void setTen_LH(String ten_LH) {
 		this.ten_LH = ten_LH;
 	}
-	
+
 	public String getGhichu_LH() {
 		return ghichu_LH;
 	}
@@ -90,7 +89,7 @@ public class LopHoc {
 	public void setGhichu_LH(String ghiChu_LH) {
 		this.ghichu_LH = ghiChu_LH;
 	}
-	
+
 	public int getSiso_LH() {
 		return siso_LH;
 	}
