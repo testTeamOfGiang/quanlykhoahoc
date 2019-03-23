@@ -11,15 +11,19 @@ public class DateSQL {
 	/**
 	 * Chuyển string sang kiểu date SQL
 	 * 
-	 * @param input String định dạng dd/MM/yyyy or yyyy/MM/dd
+	 * @param input String định dạng dd/MM/yyyy or yyyy/MM/dd 
+	 * 		  or dd-MM-yyyy or yyyy-MM-dd
 	 * @return SQLDate
 	 * @throws DateSaiException
 	 * @throws NhapLungTungException
 	 */
 	public static Date parseDate(String input) throws DateSaiException {
-
-		// Phải đủ 3 phần
-		String[] data = input.split("/");
+		String[] data;
+		if (input.indexOf('/') != -1) {
+			data = input.split("/");
+		} else {
+			data = input.split("-");
+		}
 		if (data.length != 3)
 			throw new DateSaiException();
 

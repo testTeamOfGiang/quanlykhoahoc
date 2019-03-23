@@ -24,7 +24,8 @@ public class LopHocDAO {
 	 */
 	public void addLopHoc(LopHoc lh) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "insert into LOPHOC " + "(id_KH, ngaybatdau, ngayketthuc, id_GV, ten_LH, id_PH, ghichu_LH, siso_LH) "
+		String sql = "insert into LOPHOC "
+				+ "(id_KH, ngaybatdau, ngayketthuc, id_GV, ten_LH, id_PH, ghichu_LH, siso_LH) "
 				+ "values(?,?,?,?,?,?,?,0)"; // 0 cuối là sĩ số. đã cài default. cứ để đây lúc edit đỡ bị lẫn
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, lh.getId_KH());
@@ -47,8 +48,8 @@ public class LopHocDAO {
 	public void updateLopHoc(LopHoc lh) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		String sql = " update LOPHOC " + " set id_KH = ?, " + " ngaybatdau = ?, " + " ngayketthuc = ?, "
-				+ " id_GV = ?, " + " ten_LH = ?, " + " id_PH = ?, " + " ghichu_LH = ?, "
-				+ " siso_LH = ?" + " where id_LH = ?";
+				+ " id_GV = ?, " + " ten_LH = ?, " + " id_PH = ?, " + " ghichu_LH = ?, " + " siso_LH = ?"
+				+ " where id_LH = ?";
 		PreparedStatement preStatement = con.prepareStatement(sql);
 		preStatement.setInt(1, lh.getId_KH());
 		preStatement.setDate(2, lh.getNgaybatdau());
@@ -172,14 +173,15 @@ public class LopHocDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	LopHoc findById_LH(int id_LH) throws SQLException {
+	public LopHoc findById_LH(int id_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "select * from LOPHOC where id_LH = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, id_LH);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		resultSet.next();
-		LopHoc lh = new LopHoc_Mapper().map(resultSet);
+		LopHoc lh = null;
+		while (resultSet.next())
+			lh = new LopHoc_Mapper().map(resultSet);
 		con.close();
 		return lh;
 	}
@@ -358,9 +360,12 @@ public class LopHocDAO {
 		preparedStatement.setInt(1, id_KH);
 		preparedStatement.setInt(2, id_PH);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		resultSet.next();
-		String ten_KH = resultSet.getString("ten_KH");
-		String ten_PH = resultSet.getString("ten_PH");
+		String ten_KH = null;
+		String ten_PH = null;
+		while (resultSet.next()) {
+			ten_KH = resultSet.getString("ten_KH");
+			ten_PH = resultSet.getString("ten_PH");
+		}
 		con.close();
 		String result[] = { ten_KH, ten_PH };
 		return result;

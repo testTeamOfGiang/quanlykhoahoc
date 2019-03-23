@@ -157,8 +157,8 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 				String[] tenKH_PH = new LopHocDAO().getTenKH_TenPH(lh.getId_KH(), lh.getId_PH());
 				String ten_KH = tenKH_PH[0];
 				String ten_PH = tenKH_PH[1];
-				tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(), lh.getNgaybatdau(), ten_PH,
-						lh.getSiso_LH(), lh.getGhichu_LH() });
+				tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(), lh.getNgaybatdau(),
+						lh.getNgayketthuc(), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
 				data.put(stt - 1, lh);
 				stt += 1;
 			}
@@ -170,7 +170,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 
 	private void initTable() {
 		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã lớp", "Khoá học", "Tên Lớp Học",
-				"Ngày học", "Phòng học", "Sĩ số", "Ghi chú" }) {
+				"Ngày bắt đầu", "Ngày kết thúc", "Phòng học", "Sĩ số", "Ghi chú" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -178,7 +178,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 				return false;
 			}
 		};
-		
+
 		table = new JTable(tableModel);
 		table.setRowHeight(40);
 		table.addMouseListener(new MouseAdapter() {
@@ -194,23 +194,26 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 		});
 
 		TableColumn column;
-		for (int i=0; i< 8; i++) {
+		for (int i = 0; i < table.getColumnCount(); i++) {
 			column = table.getColumnModel().getColumn(i);
 			// 0: STT
 			// 1: Mã lớp
 			// 2: Tên khoá học
 			// 3: Tên lớp học
-			// 4: Ngày học
-			// 5: Phòng học
-			// 6: Sĩ số
-			// 7: Ghi chú
-			if(i==0 || i == 1 || i == 6) {
-				column.setPreferredWidth(40);
-			}else {
+			// 4: Ngày bắt đầu
+			// 5: Ngày kết thúc
+			// 6: Phòng học
+			// 7: Sĩ số
+			// 8: Ghi chú
+			if (i == 0 || i == 1 || i == 7) {
+				column.setPreferredWidth(20);
+			} else if (i == 6) {
+				column.setPreferredWidth(45);
+			} else {
 				column.setPreferredWidth(150);
 			}
 		}
-		
+
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 0, 1400, 550);
 		add(scrollPane);
