@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,11 +21,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import dao.GiangVienDao;
+import dao.HocVienDao;
 import dao.HocVien_LopHocDAO;
 import dao.KhoaHocDao;
-import dao.LopHocDAO;
 import dao.PhongHocDao;
 import entity.HocVien_LopHoc;
+import entity.Hocvien;
+import entity.LichHoc;
 import entity.LopHoc;
 import ui.abstracts.AbsTractChiTietPanel;
 
@@ -46,17 +49,26 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 	private JLabel lbTen_GV;
 	private JLabel lbTen_KH;
 	private JTextArea taGhiChu_LH;
-	private HashMap<Integer, LopHoc> data;
+	private JButton btnNhapDiem;
+	private JButton btnCapNhatDS;
+	private JButton btnXemDSHV;
+	private JButton btnXemLIH;
+	private JButton btnSuaLIH;
+	private HashMap<Integer, HocVien_LopHoc> dataHV;
+	private HashMap<Integer, LichHoc> dataLIH;
 	private int page;
 
 	public ChiTiet_LopHoc() {
+		dataHV = new HashMap<Integer, HocVien_LopHoc>();
+		dataLIH = new HashMap<Integer, LichHoc>();
 		font = new Font("Tahoma", Font.PLAIN, 16);
 		page = 0;
 		this.status = 1;
 
-		initLabels();
 		initTables();
 		initButons();
+		initLabels();
+		loadData();
 		onTableHocVien();
 	}
 
@@ -73,7 +85,29 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		});
 		add(btnQuayLai);
 
-		JButton btnXemDSHV = new JButton("Xem DS Học viên");
+		btnNhapDiem = new JButton("Nhập điểm");
+		btnNhapDiem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnNhapDiem_Click();
+			}
+		});
+		btnNhapDiem.setBounds(247, 293, 100, 40);
+		add(btnNhapDiem);
+
+		btnCapNhatDS = new JButton("Cập nhật DS");
+		btnCapNhatDS.setBounds(247, 349, 100, 40);
+		btnCapNhatDS.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnCapNhatDS_Click();
+			}
+		});
+		add(btnCapNhatDS);
+
+		btnXemDSHV = new JButton("Xem DS Học viên");
 		btnXemDSHV.setBounds(500, 330, 125, 40);
 		btnXemDSHV.addActionListener(new ActionListener() {
 
@@ -84,7 +118,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		});
 		add(btnXemDSHV);
 
-		JButton btnXemLIH = new JButton("Xem lịch học");
+		btnXemLIH = new JButton("Xem lịch học");
 		btnXemLIH.setBounds(794, 330, 125, 40);
 		btnXemLIH.addActionListener(new ActionListener() {
 
@@ -95,10 +129,28 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		});
 		add(btnXemLIH);
 
-		JButton btnSuaLIH = new JButton("Sửa lịch học");
+		btnSuaLIH = new JButton("Sửa lịch học");
 		btnSuaLIH.setBounds(1034, 330, 125, 40);
 		add(btnSuaLIH);
 
+	}
+
+	private void btnNhapDiem_Click() {
+		int current = table.getSelectedRow();
+		if (current != -1) {
+			new ChiTiet_NhapDiem_Dialog(ChiTiet_LopHoc.this, dataHV.get(current)).setVisible(true);;
+		} else {
+			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Bạn chưa chọn học viên!");
+		}
+
+	}
+
+	private void btnCapNhatDS_Click() {
+		if (obj != null) {
+			LopHoc lh = (LopHoc) obj;
+			new ChiTiet_CapNhatDSHV(ChiTiet_LopHoc.this, lh).setVisible(true);
+			loadDataHocVien();
+		}
 	}
 
 	private void onTableLichHoc() {
@@ -120,6 +172,10 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 		table.setModel(tbLichHoc);
 
+		btnSuaLIH.setVisible(true);
+
+		btnCapNhatDS.setVisible(false);
+		btnNhapDiem.setVisible(false);
 	}
 
 	private void onTableHocVien() {
@@ -127,7 +183,8 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			return;
 		else
 			this.status = 0;
-		// = 0 là đang hiển thị Học viên
+
+		// = 0 là đang hiển thị Học viên rồi
 
 		table.setModel(tbHocVien);
 
@@ -139,14 +196,17 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			column = table.getColumnModel().getColumn(i);
 			// 0: STT // 4: Điểm 2
 			// 1: Mã // 5: Điểm 3
-			// 2: Tên // 6: Tổng kết
-			// 3: Điểm 1 // 7: Ghi chú
-			column.setCellRenderer(centerRenderer);
+			// 2: Tên // 6: Điểm 4
+			// 3: Điểm 1 // 6: Điểm TB
+			// 7: Ghi chú
 			if (i == 0) {
+				column.setCellRenderer(centerRenderer);
 				column.setMaxWidth(50);
 			} else if (i == 1) {
+				column.setCellRenderer(centerRenderer);
 				column.setMaxWidth(80);
-			} else if (i == 3 || i == 4 || i == 5 || i == 6) {
+			} else if (i == 3 || i == 4 || i == 5 || i == 6 || i == 7) {
+				//column.setCellRenderer(centerRenderer);
 				column.setMaxWidth(250);
 				column.setPreferredWidth(150);
 			} else {
@@ -154,13 +214,18 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 				column.setPreferredWidth(300);
 			}
 		}
+		btnNhapDiem.setVisible(true);
+		btnCapNhatDS.setVisible(true);
+
+		btnSuaLIH.setVisible(false);
+		loadDataHocVien();
 	}
 
 	private void initTables() {
 
 		// Table Hoc Vien
 		tbHocVien = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã", "Họ tên", "Điểm số 1",
-				"Điểm số 2", "Điểm số 3", "Điểm tổng kết", "Ghi chú" }) {
+				"Điểm số 2", "Điểm số 3", "Điểm số 4", "Điểm TB", "Ghi chú" }) {
 
 			private static final long serialVersionUID = 7000351210690643616L;
 
@@ -188,17 +253,17 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 		lbSiso_LH = new JLabel("...");
 		lbSiso_LH.setFont(font);
-		lbSiso_LH.setBounds(293, 242, 155, 40);
+		lbSiso_LH.setBounds(264, 242, 155, 40);
 		add(lbSiso_LH);
 
 		lbTen_LH = new JLabel("...");
 		lbTen_LH.setFont(font);
-		lbTen_LH.setBounds(293, 191, 155, 40);
+		lbTen_LH.setBounds(264, 191, 155, 40);
 		add(lbTen_LH);
 
 		lbID_LH = new JLabel("...");
 		lbID_LH.setFont(font);
-		lbID_LH.setBounds(293, 140, 155, 40);
+		lbID_LH.setBounds(264, 140, 155, 40);
 		add(lbID_LH);
 
 		lbTen_PH = new JLabel("...");
@@ -218,17 +283,17 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 		JLabel maLop = new JLabel("Mã lớp");
 		maLop.setFont(font);
-		maLop.setBounds(174, 140, 94, 40);
+		maLop.setBounds(174, 140, 80, 40);
 		add(maLop);
 
 		JLabel tenLop = new JLabel("Tên lớp");
 		tenLop.setFont(font);
-		tenLop.setBounds(174, 191, 94, 40);
+		tenLop.setBounds(174, 191, 80, 40);
 		add(tenLop);
 
 		JLabel siSo = new JLabel("Sĩ số");
 		siSo.setFont(font);
-		siSo.setBounds(174, 242, 94, 40);
+		siSo.setBounds(174, 242, 80, 40);
 		add(siSo);
 
 		JLabel khoaHoc = new JLabel("Khoá học");
@@ -264,51 +329,122 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		scrollPane1.setLocation(919, 191);
 		add(scrollPane1);
 
-		loadData();
 	}
 
+	/**
+	 * Load dữ liệu cho các labels chi tiết
+	 */
 	@Override
 	public void loadData() {
 
 		if (obj != null) {
-			LopHoc lopHoc = (LopHoc) obj;
+			LopHoc lh = (LopHoc) obj;
 
-			lbID_LH.setText(lopHoc.getId_LH() + "");
-			lbSiso_LH.setText(lopHoc.getSiso_LH() + "");
+			lbID_LH.setText(lh.getId_LH() + "");
+			lbSiso_LH.setText(lh.getSiso_LH() + "");
 			try {
-				lbTen_GV.setText(new GiangVienDao().findByID(lopHoc.getId_GV()).getTen_GV());
+				lbTen_GV.setText(lh.getId_GV() + " - " + new GiangVienDao().findByID(lh.getId_GV()).getTen_GV());
 			} catch (SQLException e) {
 				lbTen_GV.setText("Error while loading!");
 				lbTen_GV.setForeground(Color.RED);
 				e.printStackTrace();
 			}
 			try {
-				lbTen_KH.setText(new KhoaHocDao().findById(lopHoc.getId_KH()).getTen_KH());
+				lbTen_KH.setText(lh.getId_KH() + " - " + new KhoaHocDao().findById(lh.getId_KH()).getTen_KH());
 			} catch (SQLException e) {
 				lbTen_KH.setText("Error while loading!");
 				lbTen_KH.setForeground(Color.RED);
 				e.printStackTrace();
 			}
-			lbTen_LH.setText(lopHoc.getTen_LH());
+			lbTen_LH.setText(lh.getTen_LH());
 			try {
-				lbTen_PH.setText(new PhongHocDao().findById(lopHoc.getId_PH()).getTen_PH());
+				lbTen_PH.setText(lh.getId_PH() + " - " + new PhongHocDao().findById(lh.getId_PH()).getTen_PH());
 			} catch (SQLException e) {
 				lbTen_PH.setText("Error while loading!");
 				lbTen_KH.setForeground(Color.RED);
 				e.printStackTrace();
 			}
-			taGhiChu_LH.setText(lopHoc.getGhichu_LH());
+			taGhiChu_LH.setText(lh.getGhichu_LH());
 		}
+		if (this.status == 0)
+			loadDataHocVien();
+		else
+			loadDataLichHoc();
+	}
+
+	private void loadDataLichHoc() {
+		dataLIH.clear();
+		while (table.getRowCount() > 0) {
+			tbLichHoc.removeRow(0);
+		}
+
+		if (obj == null) {
+			return;
+		}
+
+		/*LopHoc lh = (LopHoc) obj;
+		
+		try {
+			List<HocVien_LopHoc> lstHocViensLop = new HocVien_LopHocDAO().getPageByID_LH(lh.getId_LH(), page);
+			int stt = 1;
+			// 0: STT // 4: Điểm 2
+			// 1: Mã // 5: Điểm 3
+			// 2: Tên // 6: Tổng kết
+			// 3: Điểm 1 // 7: Ghi chú
+
+			DecimalFormat f = new DecimalFormat("#.#");
+
+			for (HocVien_LopHoc hvlh : lstHocViensLop) {
+
+				// thằng này lấy tên học viên thôi
+				Hocvien hv = new HocVienDao().findById(hvlh.getId_HV());
+
+				float diem_1 = hvlh.getDiem_1();
+				float diem_2 = hvlh.getDiem_2();
+				float diem_3 = hvlh.getDiem_3();
+				float diem_4 = hvlh.getDiem_4();
+				int heso = 0;
+				float tong = 0;
+
+				// = -1 tức chưa có điểm. Đại diện cho null trong SQL
+
+				if (diem_1 != -1) {
+					heso += 1;
+					tong += diem_1;
+				}
+				if (diem_2 != -1) {
+					heso += 1;
+					tong += diem_2;
+				}
+				if (diem_3 != -1) {
+					heso += 1;
+					tong += diem_3;
+				}
+				if (diem_4 != -1) {
+					heso += 2;
+					tong += diem_4*2;
+				}
+				float diemTB = tong / heso;
+				tbLichHoc.addRow(new Object[] { stt, hvlh.getId_HV(), hv.getTen_HV(), (diem_1 == -1 ? "*" : diem_1),
+						(diem_2 == -1 ? "*" : diem_2), (diem_3 == -1 ? "*" : diem_3), (diem_4 == -1 ? "*" : diem_4),
+						(heso == 0 ? "*" : f.format(diemTB)), hvlh.getGhichu_HVLH() });
+				dataHV.put(stt - 1, hvlh);
+				stt += 1;
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL!", "ERROR", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}*/
+		
 	}
 
 	public void loadDataHocVien() {
-		data.clear();
+		dataHV.clear();
 		while (table.getRowCount() > 0) {
 			tbHocVien.removeRow(0);
 		}
 
 		if (obj == null) {
-			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Không thể load data học viên");
 			return;
 		}
 
@@ -321,20 +457,47 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			// 2: Tên // 6: Tổng kết
 			// 3: Điểm 1 // 7: Ghi chú
 
-			// UNDONE
+			DecimalFormat f = new DecimalFormat("#.#");
 
-			for (@SuppressWarnings("unused")
-			HocVien_LopHoc hvLop : lstHocViensLop) {
-				String[] tenKH_PH = new LopHocDAO().getTenKH_TenPH(lh.getId_KH(), lh.getId_PH());
-				String ten_KH = tenKH_PH[0];
-				String ten_PH = tenKH_PH[1];
-				tbHocVien.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(), lh.getNgaybatdau(),
-						lh.getNgayketthuc(), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
-				data.put(stt - 1, lh);
+			for (HocVien_LopHoc hvlh : lstHocViensLop) {
+
+				// thằng này lấy tên học viên thôi
+				Hocvien hv = new HocVienDao().findById(hvlh.getId_HV());
+
+				float diem_1 = hvlh.getDiem_1();
+				float diem_2 = hvlh.getDiem_2();
+				float diem_3 = hvlh.getDiem_3();
+				float diem_4 = hvlh.getDiem_4();
+				int heso = 0;
+				float tong = 0;
+
+				// = -1 tức chưa có điểm. Đại diện cho null trong SQL
+
+				if (diem_1 != -1) {
+					heso += 1;
+					tong += diem_1;
+				}
+				if (diem_2 != -1) {
+					heso += 1;
+					tong += diem_2;
+				}
+				if (diem_3 != -1) {
+					heso += 1;
+					tong += diem_3;
+				}
+				if (diem_4 != -1) {
+					heso += 2;
+					tong += diem_4*2;
+				}
+				float diemTB = tong / heso;
+				tbHocVien.addRow(new Object[] { stt, hvlh.getId_HV(), hv.getTen_HV(), (diem_1 == -1 ? "*" : diem_1),
+						(diem_2 == -1 ? "*" : diem_2), (diem_3 == -1 ? "*" : diem_3), (diem_4 == -1 ? "*" : diem_4),
+						(heso == 0 ? "*" : f.format(diemTB)), hvlh.getGhichu_HVLH() });
+				dataHV.put(stt - 1, hvlh);
 				stt += 1;
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL!");
+			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL!", "ERROR", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}

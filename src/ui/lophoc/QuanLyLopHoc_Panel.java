@@ -37,6 +37,42 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 		loadData();
 	}
 
+	private void btnXoa_Click() {
+		int current = table.getSelectedRow();
+		if (current == -1) {
+			JOptionPane.showMessageDialog(null, "Hãy chọn một lớp để xoá!");
+		} else {
+			int result = JOptionPane.showOptionDialog(QuanLyLopHoc_Panel.this, "Bạn có chắc muốn xoá?",
+					"Xác nhận xoá", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+					new String[] { "Đồng ý", "Không" }, JOptionPane.NO_OPTION);
+			if (result == JOptionPane.YES_OPTION) {
+				LopHoc lh = data.get(current);
+				try {
+					new LopHocDAO().deleteLopHoc(lh);
+					loadData();
+					JOptionPane.showMessageDialog(QuanLyLopHoc_Panel.this, "Xóa lớp học thành công!");
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(QuanLyLopHoc_Panel.this, "Lỗi! Không thể kết nối CSDL!");
+					e1.printStackTrace();
+				}
+			}
+
+		}
+	}
+
+	private void btnSua_Click() {
+		int current = table.getSelectedRow();
+		if (current == -1) {
+			try {
+				throw new ChuaChonException();
+			} catch (ChuaChonException e1) {
+				JOptionPane.showMessageDialog(null, "Bạn chưa chọn lớp học!");
+			}
+		} else {
+			new LopHoc_Diaglog(QuanLyLopHoc_Panel.this, data.get(current)).setVisible(true);
+		}
+	}
+	
 	private void initComponent() {
 		initTable();
 		initButton();
@@ -73,16 +109,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int current = table.getSelectedRow();
-				if (current == -1) {
-					try {
-						throw new ChuaChonException();
-					} catch (ChuaChonException e1) {
-						JOptionPane.showMessageDialog(null, "Bạn chưa chọn lớp học!");
-					}
-				} else {
-					new LopHoc_Diaglog(QuanLyLopHoc_Panel.this, data.get(current)).setVisible(true);
-				}
+				btnSua_Click();
 			}
 		});
 		add(btnSua);
@@ -92,26 +119,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 		btnXoa.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int current = table.getSelectedRow();
-				if (current == -1) {
-					JOptionPane.showMessageDialog(null, "Hãy chọn một lớp để xoá!");
-				} else {
-					int result = JOptionPane.showOptionDialog(QuanLyLopHoc_Panel.this, "Bạn có chắc muốn xoá?",
-							"Xác nhận xoá", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-							new String[] { "Đồng ý", "Không" }, JOptionPane.NO_OPTION);
-					if (result == JOptionPane.YES_OPTION) {
-						LopHoc lh = data.get(current);
-						try {
-							new LopHocDAO().deleteLopHoc(lh);
-							loadData();
-							JOptionPane.showMessageDialog(QuanLyLopHoc_Panel.this, "Xóa lớp học thành công!");
-						} catch (SQLException e1) {
-							JOptionPane.showMessageDialog(QuanLyLopHoc_Panel.this, "Lỗi! Không thể kết nối CSDL!");
-							e1.printStackTrace();
-						}
-					}
-
-				}
+				btnXoa_Click();
 			}
 
 		});
@@ -144,20 +152,20 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 		while (table.getRowCount() > 0) {
 			tableModel.removeRow(0);
 		}
-		/* ================== */
 
 		try {
 			List<LopHoc> lstLopHocs = new LopHocDAO().getPage(page);
 			int stt = 1;
 			/*
-			 * "STT", "Mã lớp", "Khoá học", "Tên Lớp Học", "Ngày học", "Phòng học", "Sĩ số",
+			 * "STT", "Mã lớp", "Khoá học", "Tên Lớp Học", "Tên giảng viên",  "Ngày học", "Phòng học", "Sĩ số",
 			 * "Ghi chú"
 			 */
 			for (LopHoc lh : lstLopHocs) {
-				String[] tenKH_PH = new LopHocDAO().getTenKH_TenPH(lh.getId_KH(), lh.getId_PH());
-				String ten_KH = tenKH_PH[0];
-				String ten_PH = tenKH_PH[1];
-				tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(), lh.getNgaybatdau(),
+				String[] tenKH_PH_GV = new LopHocDAO().getTenKH_PH_GV(lh.getId_KH(), lh.getId_PH(), lh.getId_GV());
+				String ten_KH = tenKH_PH_GV[0];
+				String ten_PH = tenKH_PH_GV[1];
+				String ten_GV = tenKH_PH_GV[2];
+				tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(),ten_GV, lh.getNgaybatdau(),
 						lh.getNgayketthuc(), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
 				data.put(stt - 1, lh);
 				stt += 1;
@@ -169,8 +177,8 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 	}
 
 	private void initTable() {
-		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã lớp", "Khoá học", "Tên Lớp Học",
-				"Ngày bắt đầu", "Ngày kết thúc", "Phòng học", "Sĩ số", "Ghi chú" }) {
+		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã lớp", "Khoá học", "Tên lớp học",
+				"Giảng viên", "Ngày bắt đầu", "Ngày kết thúc", "Phòng học", "Sĩ số", "Ghi chú" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -200,15 +208,18 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 			// 1: Mã lớp
 			// 2: Tên khoá học
 			// 3: Tên lớp học
-			// 4: Ngày bắt đầu
-			// 5: Ngày kết thúc
-			// 6: Phòng học
-			// 7: Sĩ số
-			// 8: Ghi chú
-			if (i == 0 || i == 1 || i == 7) {
-				column.setPreferredWidth(20);
-			} else if (i == 6) {
-				column.setPreferredWidth(45);
+			// 4: Tên giảng viên
+			// 5: Ngày bắt đầu
+			// 6: Ngày kết thúc
+			// 7: Phòng học
+			// 8: Sĩ số
+			// 9: Ghi chú
+			if (i == 0) {
+				column.setMaxWidth(50);
+			} else if (i == 1 || i == 8) {
+				column.setMaxWidth(80);
+			} else if (i == 7 || i == 5 || i == 6) {
+				column.setWidth(100);
 			} else {
 				column.setPreferredWidth(150);
 			}

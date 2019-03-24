@@ -262,7 +262,7 @@ public class LopHocDAO {
 	 */
 	public List<LopHoc> findByName(String ten_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "select * from LOPHOC where ten_LH like concat('%',?,'%') order by id_LH DESC";
+		String sql = "select * from fn_findLopByName(?) order by id_LH DESC";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, ten_LH);
 
@@ -350,24 +350,28 @@ public class LopHocDAO {
 	 * 
 	 * @param id_KH
 	 * @param id_PH
-	 * @return String[0] = tên Khoá học, String[1] = tên phòng học
+	 * @param id_GV
+	 * @return String[0] = tên Khoá học, String[1] = tên phòng học, String[2] = tên giảng viên
 	 * @throws SQLException
 	 */
-	public String[] getTenKH_TenPH(int id_KH, int id_PH) throws SQLException {
+	public String[] getTenKH_PH_GV(int id_KH, int id_PH, int id_GV) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "select ten_KH, ten_PH from KHOAHOC, PHONGHOC where id_KH = ? and id_PH=?";
+		String sql = "select ten_KH, ten_PH, ten_GV from KHOAHOC, PHONGHOC, GIANGVIEN where id_KH = ? and id_PH=? and id_GV = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, id_KH);
 		preparedStatement.setInt(2, id_PH);
+		preparedStatement.setInt(3, id_GV);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		String ten_KH = null;
 		String ten_PH = null;
+		String ten_GV = null;
 		while (resultSet.next()) {
 			ten_KH = resultSet.getString("ten_KH");
 			ten_PH = resultSet.getString("ten_PH");
+			ten_GV = resultSet.getString("ten_GV");
 		}
 		con.close();
-		String result[] = { ten_KH, ten_PH };
+		String result[] = { ten_KH, ten_PH , ten_GV};
 		return result;
 	}
 }

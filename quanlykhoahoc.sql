@@ -175,3 +175,37 @@ go
 alter table LICHHOC alter column ghichu_LIH ntext
 alter table LOPHOC alter column ghichu_LH ntext
 
+
+--- VER 1.7  -- GIANG
+
+	--- Thêm điểm cho học viên vào bảng HOCVIEN_LOPHOC
+	
+alter table HOCVIEN_LOPHOC add diem_1 float not null default -1
+alter table HOCVIEN_LOPHOC add diem_2 float not null default -1
+alter table HOCVIEN_LOPHOC add diem_3 float not null default -1
+alter table HOCVIEN_LOPHOC add diem_4 float not null default -1
+
+alter table HOCVIEN_LOPHOC add ghichu_HVLH ntext null
+
+	--- Thêm Func tìm lớp theo tên
+create function fn_findLopByName(@ten_LH nvarchar(30))
+returns @result table(
+	id_LH int,
+	id_KH int,
+	ngaybatdau date,
+	ngayketthuc date,
+	id_GV int,
+	ten_LH nvarchar(30),
+	id_PH int,
+	ghichu_LH ntext,
+	siso_LH int
+)
+as
+	begin
+		insert into @result 
+			select * 
+			from LOPHOC
+			where LOPHOC.ten_LH like ('%'+@ten_LH+'%')
+		return
+	end
+	
