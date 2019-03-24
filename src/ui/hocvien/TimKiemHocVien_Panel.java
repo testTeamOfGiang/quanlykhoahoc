@@ -3,8 +3,12 @@ package ui.hocvien;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,9 +30,10 @@ public class TimKiemHocVien_Panel extends AbstractTimKiemPanel {
 	private JTable table;
 	private DefaultTableModel tableModel;
 	private JComboBox<String> comboBox;
+	private Map<Integer, Hocvien> data;
 
 	public TimKiemHocVien_Panel() {
-
+		data = new HashMap<Integer, Hocvien>();
 		tableModel = new DefaultTableModel(new Object[][] {},
 				new String[] { "STT", "Mã Học Viên", "Tên Học Viên", "Số Điện Thoại", "Địa Chỉ" }) {
 			private static final long serialVersionUID = 1L;
@@ -40,6 +45,17 @@ public class TimKiemHocVien_Panel extends AbstractTimKiemPanel {
 		};
 
 		table = new JTable(tableModel);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int current = table.getSelectedRow();
+					Hocvien hv = data.get(current);
+					containerPanel.setObject(hv);
+					containerPanel.showChiTiet();
+				}
+			}
+		});
 		table.setRowHeight(40);
 
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -88,6 +104,7 @@ public class TimKiemHocVien_Panel extends AbstractTimKiemPanel {
 
 	@Override
 	public void loadData() {
+		data.clear();
 		while (table.getRowCount() > 0) {
 			tableModel.removeRow(0);
 		}
@@ -100,6 +117,7 @@ public class TimKiemHocVien_Panel extends AbstractTimKiemPanel {
 					for (Hocvien hv : hocViens) {
 						tableModel.addRow(new Object[] { stt, hv.getId_HV(), hv.getTen_HV(), hv.getSodt_HV(),
 								hv.getDiachi_HV() });
+						data.put(stt - 1, hv);
 						stt += 1;
 					}
 				} catch (SQLException e) {
@@ -110,11 +128,14 @@ public class TimKiemHocVien_Panel extends AbstractTimKiemPanel {
 				try {
 					int id = Integer.parseInt(key);
 					Hocvien hv = MainApp.hocVienDao.findById(id);
-					tableModel.addRow(
-							new Object[] { 1, hv.getId_HV(), hv.getTen_HV(), hv.getSodt_HV(), hv.getDiachi_HV() });
+					if (hv != null) {
+						tableModel.addRow(
+								new Object[] { 1, hv.getId_HV(), hv.getTen_HV(), hv.getSodt_HV(), hv.getDiachi_HV() });
+						data.put(0, hv);
+					}
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(TimKiemHocVien_Panel.this, "Không Thể Lấy Dữ Liệu");
-				} catch (Exception e) {
+				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(TimKiemHocVien_Panel.this, "Mã học viên phải là số");
 				}
 			}

@@ -4,9 +4,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,8 +14,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import entity.Giangvien;
+import exception.DateSaiException;
 import exception.ThieuThongTinException;
 import main.MainApp;
+import utils.DateSQL;
 
 public class GiangVien_Dialog extends JDialog {
 
@@ -59,15 +58,14 @@ public class GiangVien_Dialog extends JDialog {
 					String sdt = soDT.getText().trim();
 					String dc = diaChi.getText().trim();
 					String gc = ghiChu.getText().trim();
-					if (ten.equals("") || sdt.equals("") || dc.equals("")) {
+					String ngay = ngaySinh.getText().trim();
+					if (ten.equals("") || sdt.equals("") || dc.equals("") || ngay.equals("")) {
 						throw new ThieuThongTinException();
 					}
-					SimpleDateFormat fm = new SimpleDateFormat("yyy/MM/dd");
-					Date date = fm.parse(ngaySinh.getText().trim());
+					java.sql.Date date = DateSQL.parseDate(ngay);
 					Giangvien gv = new Giangvien();
 					gv.setTen_GV(ten);
-					java.sql.Date d = new java.sql.Date(date.getTime());
-					gv.setNgaysinh_GV(d);
+					gv.setNgaysinh_GV(date);
 					gv.setSodt_GV(sdt);
 					gv.setDiachi_GV(dc);
 					gv.setGhichu_GV(gc);
@@ -93,12 +91,12 @@ public class GiangVien_Dialog extends JDialog {
 							e1.printStackTrace();
 						}
 					}
-				} catch (ParseException e1) {
-					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Ngày sinh có định dạng năm/tháng/ngày");
-					e1.printStackTrace();
 				} catch (ThieuThongTinException e1) {
 					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Hãy nhập đầy đủ thông tin");
 					e1.printStackTrace();
+				} catch (DateSaiException e2) {
+					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Sai Định giạng ngày tháng");
+					e2.printStackTrace();
 				}
 
 			}

@@ -3,15 +3,20 @@ package ui.hocvien;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import entity.Hocvien;
+import entity.LopHoc;
+import main.MainApp;
 import ui.abstracts.AbsTractChiTietPanel;
 import ui.hocvien.HocVien_LopHoc_Dialog.Type;
 
@@ -138,6 +143,9 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 
 	@Override
 	public void loadData() {
+		while (table.getRowCount() > 0) {
+			tableModel.removeRow(0);
+		}
 		Hocvien hv;
 		if (obj != null) {
 			hv = (Hocvien) obj;
@@ -145,6 +153,19 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 			textField_1.setText(hv.getTen_HV());
 			textField_2.setText(hv.getSodt_HV());
 			textField_4.setText(hv.getDiachi_HV());
+
+			try {
+				List<LopHoc> list = MainApp.hocVienDao.getLopHoc(hv);
+				int stt=1;
+				for(LopHoc lh:list) {
+					tableModel.addRow(new Object[] {
+						stt,lh.getId_LH(),lh.getTen_LH(),lh.getNgaybatdau().toString(),lh.getNgayketthuc().toString()
+					});
+				}
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(ChiTietHocVien_Panel.this, "Không thể load dữ liệu");
+				e.printStackTrace();
+			}
 		}
 
 	}

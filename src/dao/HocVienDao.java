@@ -9,7 +9,9 @@ import java.util.List;
 
 import config.JDBC_Connection;
 import entity.Hocvien;
+import entity.LopHoc;
 import mapper.HocVien_Mapper;
+import mapper.LopHoc_Mapper;
 
 public class HocVienDao {
 
@@ -38,10 +40,16 @@ public class HocVienDao {
 
 	public void delete(Hocvien hv) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "delete from HOCVIEN where id_HV=?";
-		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		preparedStatement.setInt(1, hv.getId_HV());
-		preparedStatement.executeUpdate();
+		con.setAutoCommit(false);
+		String sql1 = "delete from HOCVIEN_LOPHOC where id_HV=?";
+		String sql2 = "delete from HOCVIEN where id_HV=?";
+		PreparedStatement preparedStatement1 = con.prepareStatement(sql2);
+		preparedStatement1.setInt(1, hv.getId_HV());
+		PreparedStatement preparedStatement2 = con.prepareStatement(sql1);
+		preparedStatement2.setInt(1, hv.getId_HV());
+		preparedStatement2.executeUpdate();
+		preparedStatement1.executeUpdate();
+		con.commit();
 		con.close();
 	}
 
@@ -92,7 +100,7 @@ public class HocVienDao {
 
 	public int addLop(int id_HV, int id_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "insert into HOCVIEN_LOPHOC values(?,?)";
+		String sql = "insert into HOCVIEN_LOPHOC(id_HV,id_LH,diem_1,diem_2,diem_3,diem_4) values(?,?,-1,-1,-1,-1)";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, id_HV);
 		preparedStatement.setInt(2, id_LH);
@@ -110,5 +118,20 @@ public class HocVienDao {
 		int result = preparedStatement.executeUpdate();
 		con.close();
 		return result;
+	}
+
+	public List<LopHoc> getLopHoc(Hocvien hv) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		List<LopHoc> list = new ArrayList<LopHoc>();
+		String sql = "select LOPHOC.* from LOPHOC inner join HOCVIEN_LOPHOC "
+				+ "on LOPHOC.id_LH=HOCVIEN_LOPHOC.id_LH where HOCVIEN_LOPHOC.id_HV=?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, hv.getId_HV());
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			LopHoc lh = new LopHoc_Mapper().map(resultSet);
+			list.add(lh);
+		}
+		return list;
 	}
 }
