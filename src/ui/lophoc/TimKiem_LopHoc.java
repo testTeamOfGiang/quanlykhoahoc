@@ -19,6 +19,7 @@ import javax.swing.table.TableColumn;
 import dao.LopHocDAO;
 import entity.LopHoc;
 import ui.abstracts.AbstractTimKiemPanel;
+import utils.DateSQL;
 
 public class TimKiem_LopHoc extends AbstractTimKiemPanel {
 
@@ -46,7 +47,6 @@ public class TimKiem_LopHoc extends AbstractTimKiemPanel {
 		if (key.equals("")) {
 			return;
 		}
-		
 
 		try {
 			// 0 == Tìm theo tên
@@ -59,7 +59,7 @@ public class TimKiem_LopHoc extends AbstractTimKiemPanel {
 					String ten_PH = tenKH_PH_GV[1];
 					String ten_GV = tenKH_PH_GV[2];
 					tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(), ten_GV,
-							lh.getNgaybatdau(), lh.getNgayketthuc(), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
+							DateSQL.toVNDate(lh.getNgaybatdau()), DateSQL.toVNDate(lh.getNgayketthuc()), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
 					stt += 1;
 				}
 
@@ -73,15 +73,14 @@ public class TimKiem_LopHoc extends AbstractTimKiemPanel {
 					String ten_PH = tenKH_PH[1];
 					String ten_GV = tenKH_PH[2];
 					tableModel.addRow(new Object[] { 1, lh.getId_LH(), ten_KH, lh.getTen_LH(), ten_GV,
-							lh.getNgaybatdau(), lh.getNgayketthuc(), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
+							DateSQL.toVNDate(lh.getNgaybatdau()), DateSQL.toVNDate(lh.getNgayketthuc()), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
 				}
 
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(TimKiem_LopHoc.this, "Không thể kết nối tới CSDL!");
+			JOptionPane.showMessageDialog(TimKiem_LopHoc.this, "Lỗi khi kết nối CSDL!");
 			e.printStackTrace();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(TimKiem_LopHoc.this, "Có lỗi xảy ra. Hãy liên hệ với nhóm Dev!");
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
 	}

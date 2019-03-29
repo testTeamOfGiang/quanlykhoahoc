@@ -188,6 +188,7 @@ alter table HOCVIEN_LOPHOC add diem_4 float not null default -1
 alter table HOCVIEN_LOPHOC add ghichu_HVLH ntext null
 
 	--- Thêm Func tìm lớp theo tên
+go
 create function fn_findLopByName(@ten_LH nvarchar(30))
 returns @result table(
 	id_LH int,
@@ -209,3 +210,20 @@ as
 		return
 	end
 	
+	
+--- VER 1.8  -- GIANG
+
+	--- Thêm trigger xoá học viên khỏi HOCVIEN_LOPHOC thì giảm sĩ số ở LOPHOC
+go
+
+create trigger trg_deleteHV_LH_giamSiSo
+on HOCVIEN_LOPHOC
+for delete
+as
+	begin
+		declare @id_LH int
+		set @id_LH = (select id_LH from inserted)
+		update LOPHOC set siso_LH = siso_LH - 1 where id_LH = @id_LH
+	end 
+	
+

@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import dao.HocVienDao;
 import dao.HocVien_LopHocDAO;
@@ -29,7 +31,6 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 	private JLabel lbTenHV;
 	private JLabel lbNgaySinh;
 	private JLabel lbSDT;
-	private JLabel lbErrorId_HV;
 	private ChiTiet_LopHoc parentPanel;
 	private LopHoc lh;
 	private Hocvien hv;
@@ -44,30 +45,6 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 		initTextFields();
 		initLabels();
 		initButtons();
-	}
-
-	private void btnCheck_Click() {
-		lbErrorId_HV.setText("");
-		lbTenHV.setText("");
-		lbNgaySinh.setText("");
-		lbSDT.setText("");
-
-		try {
-			int id_HV = Integer.parseInt(tfId_HV.getText().trim());
-			hv = new HocVienDao().findById(id_HV);
-			if (hv != null) {
-				lbTenHV.setText(hv.getTen_HV());
-				lbSDT.setText(hv.getSodt_HV());
-			} else
-				lbErrorId_HV.setText("Không tìm thấy học viên!");
-
-		} catch (NumberFormatException nfe) {
-			lbErrorId_HV.setText("Mã học viên không hợp lệ!");
-			nfe.printStackTrace();
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(this, "Lỗi kết nối tới CSDL! Vui lòng liên hệ team DEV!");
-			e.printStackTrace();
-		}
 	}
 
 	private void btnXoa_Click() {
@@ -85,7 +62,7 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 				e.printStackTrace();
 			}
 		} else {
-			JOptionPane.showMessageDialog(this, "Bạn chưa chọn học viên!");
+			JOptionPane.showMessageDialog(this, "Không thể xoá học viên!");
 		}
 	}
 
@@ -94,20 +71,20 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 			try {
 				new HocVien_LopHocDAO().addHocVien_LopHoc(hv.getId_HV(), lh.getId_LH());
 				JOptionPane.showMessageDialog(this,
-						"Đã thêm học viên " + hv.getTen_HV() + " vào lớp " + lh.getTen_LH() + "!");
+						"Đã thêm " + hv.getTen_HV() + " vào lớp " + lh.getTen_LH() + "!");
 				this.dispose();
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this, "Lỗi kết nối tới CSDL. Vui lòng liên hệ team DEV!");
 				e.printStackTrace();
 			}
 		} else {
-			JOptionPane.showMessageDialog(this, "Bạn chưa chọn học viên!");
+			JOptionPane.showMessageDialog(this, "Không thể thêm học viên!");
 		}
 	}
 
 	private void initButtons() {
 		JButton btnXoa = new JButton("Xoá");
-		btnXoa.setBounds(351, 417, 97, 40);
+		btnXoa.setBounds(298, 342, 97, 40);
 		btnXoa.addActionListener(new ActionListener() {
 
 			@Override
@@ -117,19 +94,8 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 		});
 		getContentPane().add(btnXoa);
 
-		JButton btnCheck = new JButton("Tìm");
-		btnCheck.setBounds(514, 73, 90, 40);
-		btnCheck.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				btnCheck_Click();
-			}
-		});
-		getContentPane().add(btnCheck);
-
 		JButton btnHuy = new JButton("Hủy");
-		btnHuy.setBounds(520, 417, 97, 40);
+		btnHuy.setBounds(467, 342, 97, 40);
 		btnHuy.addActionListener(new ActionListener() {
 
 			@Override
@@ -140,7 +106,7 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 		getContentPane().add(btnHuy);
 
 		JButton btnThem = new JButton("Thêm");
-		btnThem.setBounds(172, 417, 97, 40);
+		btnThem.setBounds(119, 342, 97, 40);
 		btnThem.addActionListener(new ActionListener() {
 
 			@Override
@@ -155,17 +121,69 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
-		setSize(700, 525);
+		setSize(700, 460);
 		setLocationRelativeTo(parentPanel);
 		setTitle("Cập nhật danh sách học viên");
+	}
+
+	// Xử lý khi tf thay đổi dữ liệu
+	private void onTfChange() {
+		try {
+			hv = loadHocVien();
+			if (hv != null) {
+				lbTenHV.setText(hv.getTen_HV());
+				lbTenHV.setForeground(Color.blue);
+				lbSDT.setText(hv.getSodt_HV());
+				lbSDT.setForeground(Color.blue);
+				lbNgaySinh.setText("");
+				lbNgaySinh.setForeground(Color.blue);
+			} else {
+				lbTenHV.setText("Không tồn tại học viên này!");
+				lbTenHV.setForeground(Color.red);
+				lbSDT.setText("");
+				lbSDT.setForeground(Color.red);
+				lbNgaySinh.setText("");
+				lbNgaySinh.setForeground(Color.red);
+			}
+		} catch (NumberFormatException nfe) {
+			nfe.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Hocvien loadHocVien() throws NumberFormatException, SQLException {
+		Hocvien hv = null;
+		String text = tfId_HV.getText();
+		if (!text.equals("") && text.matches("\\d*")) {
+			hv = new HocVienDao().findById(Integer.parseInt(text));
+		}
+		return hv;
 	}
 
 	private void initTextFields() {
 
 		tfId_HV = new JTextField();
 		tfId_HV.setFont(font);
-		tfId_HV.setBounds(267, 73, 210, 40);
+		tfId_HV.setBounds(339, 36, 210, 40);
 		getContentPane().add(tfId_HV);
+		tfId_HV.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				onTfChange();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				onTfChange();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				onTfChange();
+			}
+		});
 		tfId_HV.setColumns(10);
 	}
 
@@ -173,50 +191,43 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 		JLabel lblNhpMHc = new JLabel("Nhập mã học viên");
 		lblNhpMHc.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNhpMHc.setFont(font);
-		lblNhpMHc.setBounds(83, 73, 150, 40);
+		lblNhpMHc.setBounds(155, 36, 150, 40);
 		getContentPane().add(lblNhpMHc);
 
 		JLabel label1 = new JLabel("Tên học viên:");
 		label1.setHorizontalAlignment(SwingConstants.LEFT);
 		label1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label1.setBounds(83, 176, 150, 40);
+		label1.setBounds(99, 117, 129, 40);
 		getContentPane().add(label1);
 
 		JLabel label2 = new JLabel("Ngày sinh:");
 		label2.setHorizontalAlignment(SwingConstants.LEFT);
 		label2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label2.setBounds(83, 227, 150, 40);
+		label2.setBounds(99, 168, 129, 40);
 		getContentPane().add(label2);
 
 		JLabel label3 = new JLabel("Số điện thoại");
 		label3.setHorizontalAlignment(SwingConstants.LEFT);
 		label3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label3.setBounds(83, 278, 150, 40);
+		label3.setBounds(99, 219, 129, 40);
 		getContentPane().add(label3);
 
-		lbTenHV = new JLabel("");
+		lbTenHV = new JLabel("...");
 		lbTenHV.setHorizontalAlignment(SwingConstants.LEFT);
 		lbTenHV.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbTenHV.setBounds(267, 176, 246, 40);
+		lbTenHV.setBounds(238, 117, 326, 40);
 		getContentPane().add(lbTenHV);
 
-		lbNgaySinh = new JLabel("");
+		lbNgaySinh = new JLabel("...");
 		lbNgaySinh.setHorizontalAlignment(SwingConstants.LEFT);
 		lbNgaySinh.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbNgaySinh.setBounds(267, 227, 246, 40);
+		lbNgaySinh.setBounds(238, 168, 326, 40);
 		getContentPane().add(lbNgaySinh);
 
-		lbSDT = new JLabel("");
+		lbSDT = new JLabel("...");
 		lbSDT.setHorizontalAlignment(SwingConstants.LEFT);
 		lbSDT.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbSDT.setBounds(267, 278, 246, 40);
+		lbSDT.setBounds(238, 219, 326, 40);
 		getContentPane().add(lbSDT);
-
-		lbErrorId_HV = new JLabel("");
-		lbErrorId_HV.setForeground(Color.RED);
-		lbErrorId_HV.setHorizontalAlignment(SwingConstants.LEFT);
-		lbErrorId_HV.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lbErrorId_HV.setBounds(267, 118, 256, 20);
-		getContentPane().add(lbErrorId_HV);
 	}
 }

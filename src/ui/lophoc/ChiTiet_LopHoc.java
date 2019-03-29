@@ -139,6 +139,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		int current = table.getSelectedRow();
 		if (current != -1) {
 			new ChiTiet_NhapDiem_Dialog(ChiTiet_LopHoc.this, dataHV.get(current)).setVisible(true);;
+			loadDataHocVien();
 		} else {
 			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Bạn chưa chọn học viên!");
 		}
@@ -225,7 +226,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 		// Table Hoc Vien
 		tbHocVien = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã", "Họ tên", "Điểm số 1",
-				"Điểm số 2", "Điểm số 3", "Điểm số 4", "Điểm TB", "Ghi chú" }) {
+				"Điểm số 2", "Điểm số 3", "Điểm cuối khoá", "Điểm TB", "Ghi chú" }) {
 
 			private static final long serialVersionUID = 7000351210690643616L;
 
@@ -328,7 +329,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		scrollPane1.setSize(300, 91);
 		scrollPane1.setLocation(919, 191);
 		add(scrollPane1);
-
+		
 	}
 
 	/**

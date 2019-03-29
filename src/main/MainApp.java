@@ -26,7 +26,9 @@ public class MainApp {
 
 	public static void main(String[] args) throws UnsupportedLookAndFeelException {
 		init();
+
 		UIManager.setLookAndFeel(new NimbusLookAndFeel());
+
 		new MainFrame().setVisible(true);
 	}
 }

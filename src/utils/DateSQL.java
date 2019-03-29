@@ -11,8 +11,8 @@ public class DateSQL {
 	/**
 	 * Chuyển string sang kiểu date SQL
 	 * 
-	 * @param input String định dạng dd/MM/yyyy or yyyy/MM/dd 
-	 * 		  or dd-MM-yyyy or yyyy-MM-dd
+	 * @param input String định dạng dd/MM/yyyy or yyyy/MM/dd or dd-MM-yyyy or
+	 *              yyyy-MM-dd
 	 * @return SQLDate
 	 * @throws DateSaiException
 	 * @throws NhapLungTungException
@@ -110,5 +110,37 @@ public class DateSQL {
 		} catch (ParseException e) {
 			throw new DateSaiException();
 		}
+	}
+
+	public static int Compare(Date date1, Date date2) {
+		String[] data1 = date1.toString().split("-");
+		String[] data2 = date2.toString().split("-");
+
+		int year1 = Integer.parseInt(data1[0]);
+		int month1 = Integer.parseInt(data1[1]);
+		int day1 = Integer.parseInt(data1[2]);
+
+		int year2 = Integer.parseInt(data2[0]);
+		int month2 = Integer.parseInt(data2[1]);
+		int day2 = Integer.parseInt(data2[2]);
+
+		if (year1 - year2 == 0) {
+			if (month1 - month2 == 0) {
+				if (day1 - day2 == 0)
+					return 0;
+				else
+					return day1 - day2;
+			} else
+				return month1 - month2;
+		} else
+			return year1 - year2;
+	}
+
+	public static String toVNDate(Date date) {
+		String[] data = date.toString().split("-");
+		int year = Integer.parseInt(data[0]);
+		int month = Integer.parseInt(data[1]);
+		int day = Integer.parseInt(data[2]);
+		return day + "-" + month + "-" + year;
 	}
 }

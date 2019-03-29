@@ -59,10 +59,10 @@ public class ChiTiet_NhapDiem_Dialog extends JDialog {
 			String sDiem4 = tfDiem4.getText().trim();
 			String sGhiChu = taGhichu_LH.getText().trim();
 
-			hvlh.setDiem_1(sDiem1 == "" ? -1 : Float.parseFloat(sDiem1));
-			hvlh.setDiem_2(sDiem2 == "" ? -1 : Float.parseFloat(sDiem2));
-			hvlh.setDiem_3(sDiem3 == "" ? -1 : Float.parseFloat(sDiem3));
-			hvlh.setDiem_4(sDiem4 == "" ? -1 : Float.parseFloat(sDiem4));
+			hvlh.setDiem_1(sDiem1.equals("") ? -1 : Float.parseFloat(sDiem1));
+			hvlh.setDiem_2(sDiem2.equals("") ? -1 : Float.parseFloat(sDiem2));
+			hvlh.setDiem_3(sDiem3.equals("") ? -1 : Float.parseFloat(sDiem3));
+			hvlh.setDiem_4(sDiem4.equals("") ? -1 : Float.parseFloat(sDiem4));
 			hvlh.setGhichu_HVLH(sGhiChu);
 			new HocVien_LopHocDAO().updateHocVien_LopHoc(hvlh);
 			JOptionPane.showMessageDialog(ChiTiet_NhapDiem_Dialog.this, "Cập nhật điểm thành công!");
@@ -74,12 +74,11 @@ public class ChiTiet_NhapDiem_Dialog extends JDialog {
 			JOptionPane.showMessageDialog(ChiTiet_NhapDiem_Dialog.this, "Lỗi kết nối tới CSDL!");
 			e1.printStackTrace();
 		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(ChiTiet_NhapDiem_Dialog.this,
-					"Có lỗi xảy ra! Vui lòng liên hệ team DEV!");
+			JOptionPane.showMessageDialog(ChiTiet_NhapDiem_Dialog.this, "Có lỗi xảy ra! Vui lòng liên hệ team DEV!");
 			e1.printStackTrace();
 		}
 	}
-	
+
 	private void initButtons() {
 		JButton btnOk = new JButton("OK");
 		btnOk.setBounds(351, 417, 97, 40);
@@ -150,10 +149,18 @@ public class ChiTiet_NhapDiem_Dialog extends JDialog {
 		getContentPane().add(scrollPane);
 
 		if (hocVien_LopHoc != null) {
-			tfDiem1.setText(hocVien_LopHoc.getDiem_1() == -1 ? "" : hocVien_LopHoc.getDiem_1()+"");
-			tfDiem2.setText(hocVien_LopHoc.getDiem_2() == -1 ? "" : hocVien_LopHoc.getDiem_2()+"");
-			tfDiem3.setText(hocVien_LopHoc.getDiem_3() == -1 ? "" : hocVien_LopHoc.getDiem_3()+"");
-			tfDiem4.setText(hocVien_LopHoc.getDiem_4() == -1 ? "" : hocVien_LopHoc.getDiem_4()+"");
+			tfDiem1.setText(hocVien_LopHoc.getDiem_1() == -1 ? "" : hocVien_LopHoc.getDiem_1() + "");
+			tfDiem2.setText(hocVien_LopHoc.getDiem_2() == -1 ? "" : hocVien_LopHoc.getDiem_2() + "");
+			tfDiem3.setText(hocVien_LopHoc.getDiem_3() == -1 ? "" : hocVien_LopHoc.getDiem_3() + "");
+			tfDiem4.setText(hocVien_LopHoc.getDiem_4() == -1 ? "" : hocVien_LopHoc.getDiem_4() + "");
+			if (tfDiem1.getText().equals(""))
+				tfDiem2.setEditable(false);
+
+			if (tfDiem2.getText().equals("")) {
+				tfDiem3.setEditable(false);
+				tfDiem4.setEditable(false);
+			}
+
 			taGhichu_LH.setText(hocVien_LopHoc.getGhichu_HVLH());
 		}
 	}
@@ -177,7 +184,7 @@ public class ChiTiet_NhapDiem_Dialog extends JDialog {
 		lblimS.setBounds(83, 208, 91, 40);
 		getContentPane().add(lblimS);
 
-		JLabel lbPhongHoc = new JLabel("Điểm số 4");
+		JLabel lbPhongHoc = new JLabel("Điểm cuối");
 		lbPhongHoc.setHorizontalAlignment(SwingConstants.LEFT);
 		lbPhongHoc.setFont(font);
 		lbPhongHoc.setBounds(83, 259, 91, 40);

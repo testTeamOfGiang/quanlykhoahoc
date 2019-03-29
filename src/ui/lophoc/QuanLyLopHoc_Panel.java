@@ -20,6 +20,7 @@ import dao.LopHocDAO;
 import entity.LopHoc;
 import exception.ChuaChonException;
 import ui.abstracts.AbsTractQuanLyPanel;
+import utils.DateSQL;
 
 public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 
@@ -69,7 +70,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 				JOptionPane.showMessageDialog(null, "Bạn chưa chọn lớp học!");
 			}
 		} else {
-			new LopHoc_Diaglog(QuanLyLopHoc_Panel.this, data.get(current)).setVisible(true);
+			new Them_Sua_LopHoc(QuanLyLopHoc_Panel.this, data.get(current)).setVisible(true);
 		}
 	}
 	
@@ -98,7 +99,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new LopHoc_Diaglog(QuanLyLopHoc_Panel.this, null).setVisible(true);
+				new Them_Sua_LopHoc(QuanLyLopHoc_Panel.this, null).setVisible(true);
 			}
 		});
 		add(btnThem);
@@ -165,8 +166,8 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 				String ten_KH = tenKH_PH_GV[0];
 				String ten_PH = tenKH_PH_GV[1];
 				String ten_GV = tenKH_PH_GV[2];
-				tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(),ten_GV, lh.getNgaybatdau(),
-						lh.getNgayketthuc(), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
+				tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(),ten_GV, DateSQL.toVNDate(lh.getNgaybatdau()),
+						DateSQL.toVNDate(lh.getNgayketthuc()), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
 				data.put(stt - 1, lh);
 				stt += 1;
 			}
