@@ -1,8 +1,11 @@
 package ui.giangvien;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -173,6 +176,32 @@ public class GiangVien_Dialog extends JDialog {
 			diaChi.setText(GV.getDiachi_GV());
 			ghiChu.setText(GV.getGhichu_GV());
 		}
+		addTextFildEvent();
+	}
+
+	public void addTextFildEvent() {
+		ngaySinh.setText("yyyy/mm/dd");
+		ngaySinh.setForeground(Color.LIGHT_GRAY);
+		ngaySinh.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (ngaySinh.getText().equals("")) {
+					ngaySinh.setText("yyyy/mm/dd");
+					ngaySinh.setForeground(Color.LIGHT_GRAY);
+				}
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(ngaySinh.getText().equals("yyyy/mm/dd")) {
+					ngaySinh.setText("");
+					ngaySinh.setForeground(Color.black);
+				}
+			}
+		});
+
 	}
 
 	public JPanel getContentPanel() {
