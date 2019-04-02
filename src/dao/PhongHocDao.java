@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.JDBC_Connection;
-import entity.LichHoc;
 import entity.LopHoc;
 import entity.Phonghoc;
 import mapper.LopHoc_Mapper;

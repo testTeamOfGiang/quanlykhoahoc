@@ -180,14 +180,14 @@ public class GiangVien_Dialog extends JDialog {
 	}
 
 	public void addTextFildEvent() {
-		ngaySinh.setText("yyyy/mm/dd");
+		ngaySinh.setText("dd/mm/yyyy");
 		ngaySinh.setForeground(Color.LIGHT_GRAY);
 		ngaySinh.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (ngaySinh.getText().equals("")) {
-					ngaySinh.setText("yyyy/mm/dd");
+					ngaySinh.setText("dd/mm/yyyy");
 					ngaySinh.setForeground(Color.LIGHT_GRAY);
 				}
 
@@ -195,7 +195,7 @@ public class GiangVien_Dialog extends JDialog {
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				if(ngaySinh.getText().equals("yyyy/mm/dd")) {
+				if(ngaySinh.getText().equals("dd/mm/yyyy")) {
 					ngaySinh.setText("");
 					ngaySinh.setForeground(Color.black);
 				}

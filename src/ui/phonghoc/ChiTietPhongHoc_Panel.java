@@ -13,7 +13,6 @@ import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -22,9 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import config.JDBC_Connection;
 import entity.Phonghoc;
-import exception.DateSaiException;
 import ui.abstracts.AbsTractChiTietPanel;
-import utils.DateSQL;
 
 public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 

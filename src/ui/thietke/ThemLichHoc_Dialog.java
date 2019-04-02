@@ -1,28 +1,21 @@
 package ui.thietke;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Checkbox;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import entity.Hocvien;
 import entity.LopHoc;
 import ui.lophoc.ChiTiet_LopHoc;
-import javax.swing.JComboBox;
-import javax.swing.JSeparator;
-import java.awt.Checkbox;
-import java.awt.Color;
 
 public class ThemLichHoc_Dialog extends JDialog {
 
