@@ -39,7 +39,7 @@ import ui.abstracts.AbsTractChiTietPanel;
 public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 	private static final long serialVersionUID = -6867270404171857479L;
-	
+
 	private JTable table;
 	private DefaultTableModel tbHocVien;
 	private LIH_TableModel tbLichHoc;
@@ -248,7 +248,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		};
 
 		table = new JTable();
-		((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+		((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 400, 1400, 400);
 		add(scrollPane);
@@ -423,25 +423,26 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 				// key tính toán theo toạ độ của cell
 				// Thứ 2 thì index là 1.
-				for (int i = tiet_dau; i <= tiet_cuoi; i++)
+				for (int i = tiet_dau - 1; i < tiet_cuoi; i++)
 					map.put(i * 8 + lih.getThu() - 1, new LIH_Cell());
 			}
 		}
 
+		System.out.println("-----");
 		Vector<LIH_Cell> vt;
-		for (int i = 1; i <= LIH_MaxTiet; i++) {
+		for (int i = 0; i <= LIH_MaxTiet; i++) {
 			vt = new Vector<LIH_Cell>();
-			vt.add(new LIH_Cell("Tiết " + i, 0));
-			for (int j = 0; j <= 7; j++) {
-				if (map.get(i * 8 + j - 1) != null)
-					vt.add(new LIH_Cell(i + "", 1));
+			vt.add(new LIH_Cell("Tiết " + (i + 1), 0));
+			for (int j = 1; j <= 7; j++) {
+				if (map.get(i * 8 + j) != null)
+					vt.add(new LIH_Cell((i + 1) + "", 1));
 				else
 					vt.add(new LIH_Cell("", 0));
-			}
 
+			}
 			result.add(vt);
 		}
-		
+
 		return result;
 	}
 
