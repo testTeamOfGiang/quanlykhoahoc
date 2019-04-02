@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /config/
 /dao/
 /entity/
@@ -6,3 +7,8 @@
 /mapper/
 /ui/
 /utils/
+=======
+/mycustom/
+/ui/
+/dao/
+>>>>>>> branch 'master' of https://github.com/testTeamOfGiang/quanlykhoahoc.git

@@ -24,7 +24,7 @@ public class LichHocDAO {
 		String sql = "insert into LICHHOC(id_LH, thu, tiet, ghichu_LIH) values(?,?,?,?)";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, lih.getId_LH());
-		preparedStatement.setString(2, lih.getThu());
+		preparedStatement.setInt(2, lih.getThu());
 		preparedStatement.setString(3, lih.getTiet());
 		preparedStatement.setString(4, lih.getGhichu_LIH());
 		preparedStatement.executeUpdate();
@@ -43,7 +43,7 @@ public class LichHocDAO {
 				+ "where id_LIH = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, lih.getId_LH());
-		preparedStatement.setString(2, lih.getThu());
+		preparedStatement.setInt(2, lih.getThu());
 		preparedStatement.setString(3, lih.getTiet());
 		preparedStatement.setString(4, lih.getGhichu_LIH());
 		preparedStatement.setInt(5, lih.getId_LIH());

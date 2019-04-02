@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import config.JDBC_Connection;
+import entity.LichHoc;
 import entity.LopHoc;
 import entity.Phonghoc;
 import mapper.LopHoc_Mapper;
@@ -104,4 +105,17 @@ public class PhongHocDao {
 		con.close();
 		return ph;
 	}
+	/*
+	public boolean isFree(LopHoc lh, LichHoc lih) {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "select * from PHONGHOC inner join where id_PH =?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			ph = new PhongHoc_Mapper().map(resultSet);
+		}
+		con.close();
+		return false;
+	}*/
 }

@@ -3,14 +3,14 @@ package entity;
 public class LichHoc {
 	private int id_LIH;
 	private int id_LH;
-	private String thu;
+	private int thu;
 	private String tiet;
 	private String ghichu_LIH;
 
 	public LichHoc() {
 	}
 
-	public LichHoc(int id_LH, String thu, String tiet, String ghichu_LIH) {
+	public LichHoc(int id_LH, int thu, String tiet, String ghichu_LIH) {
 		super();
 		this.id_LH = id_LH;
 		this.thu = thu;
@@ -34,11 +34,11 @@ public class LichHoc {
 		this.id_LH = id_LH;
 	}
 
-	public String getThu() {
+	public int getThu() {
 		return thu;
 	}
 
-	public void setThu(String thu) {
+	public void setThu(int thu) {
 		this.thu = thu;
 	}
 

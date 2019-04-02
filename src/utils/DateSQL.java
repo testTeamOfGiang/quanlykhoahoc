@@ -38,7 +38,7 @@ public class DateSQL {
 				month = Integer.parseInt(data[1]);
 				day = Integer.parseInt(data[0]);
 			}
-
+			
 			if (year < 1900)
 				throw new DateSaiException();
 
