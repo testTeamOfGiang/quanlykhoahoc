@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.management.relation.Relation;
@@ -18,7 +22,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import config.JDBC_Connection;
 import entity.LopHoc;
+import utils.DateSQL;
 
 public class ThemLichHoc_Dialog extends JDialog {
 
@@ -93,10 +99,42 @@ public class ThemLichHoc_Dialog extends JDialog {
 		// thu 2 = 0
 		// chu nhat = 6
 		int thu = cbThu.getSelectedIndex() + 2;
+		String tietsChecked = getTietsChecked();
+		if (tietsChecked == null) {
+			JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Bạn chưa chọn tiết học!", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		
-		if (getTietsChecked() == null)
-			JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Bạn chưa chọn tiết học!", "ERROR", JOptionPane.ERROR_MESSAGE);
+		ArrayList<String> buois = new ArrayList<String>();
+		try {
+			for(String s: getLstLich(thu)) {
+				for (String sub: s.split(";")) {
+					buois.add(sub);
+				}
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Lỗi khi kết nối tới CSDL!", "ERROR", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		
+		
+	}
 
+	private ArrayList<String> getLstLich(int thu) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "select ten_LH, tiet from fn_GetLichHoc(?, ?, ?) where thu = ?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, lh.getId_PH());
+		preparedStatement.setDate(2, lh.getNgaybatdau());
+		preparedStatement.setDate(3, lh.getNgayketthuc());
+		preparedStatement.setInt(4, thu);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		ArrayList<String> tiets = new ArrayList<>();
+		while (resultSet.next()) {
+			tiets.add(resultSet.getString("tiet"));
+		}
+		return tiets;
 	}
 
 	private String getTietsChecked() {
