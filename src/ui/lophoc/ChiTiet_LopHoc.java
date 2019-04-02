@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,19 +25,24 @@ import dao.GiangVienDao;
 import dao.HocVienDao;
 import dao.HocVien_LopHocDAO;
 import dao.KhoaHocDao;
+import dao.LichHocDAO;
 import dao.PhongHocDao;
 import entity.HocVien_LopHoc;
 import entity.Hocvien;
 import entity.LichHoc;
 import entity.LopHoc;
+import mycustom.LIH_Cell;
+import mycustom.LIH_TableCellRenderer;
+import mycustom.LIH_TableModel;
 import ui.abstracts.AbsTractChiTietPanel;
 
 public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 	private static final long serialVersionUID = -6867270404171857479L;
+	
 	private JTable table;
 	private DefaultTableModel tbHocVien;
-	private DefaultTableModel tbLichHoc;
+	private LIH_TableModel tbLichHoc;
 	private Font font;
 	/*
 	 * 0 = đang hiển thị DSHV, 1 = đang hiển thị Lich hoc
@@ -56,6 +62,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 	private JButton btnSuaLIH;
 	private HashMap<Integer, HocVien_LopHoc> dataHV;
 	private HashMap<Integer, LichHoc> dataLIH;
+	private int LIH_MaxTiet;
 	private int page;
 
 	public ChiTiet_LopHoc() {
@@ -64,6 +71,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		font = new Font("Tahoma", Font.PLAIN, 16);
 		page = 0;
 		this.status = 1;
+		LIH_MaxTiet = 20;
 
 		initTables();
 		initButons();
@@ -138,7 +146,8 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 	private void btnNhapDiem_Click() {
 		int current = table.getSelectedRow();
 		if (current != -1) {
-			new ChiTiet_NhapDiem_Dialog(ChiTiet_LopHoc.this, dataHV.get(current)).setVisible(true);;
+			new ChiTiet_NhapDiem_Dialog(ChiTiet_LopHoc.this, dataHV.get(current)).setVisible(true);
+			;
 			loadDataHocVien();
 		} else {
 			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Bạn chưa chọn học viên!");
@@ -160,23 +169,18 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			return;
 		this.status = 1;
 
-		tbLichHoc = new DefaultTableModel(new Object[][] {},
-				new String[] { "", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật" }) {
-
-			private static final long serialVersionUID = 179939617947351123L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-
 		table.setModel(tbLichHoc);
-
+		table.setRowHeight(30);
+		table.setDefaultRenderer(String.class, new LIH_TableCellRenderer());
 		btnSuaLIH.setVisible(true);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 
 		btnCapNhatDS.setVisible(false);
 		btnNhapDiem.setVisible(false);
+		loadDataLichHoc();
 	}
 
 	private void onTableHocVien() {
@@ -188,6 +192,8 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		// = 0 là đang hiển thị Học viên rồi
 
 		table.setModel(tbHocVien);
+		table.setRowHeight(40);
+		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer());
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -207,7 +213,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 				column.setCellRenderer(centerRenderer);
 				column.setMaxWidth(80);
 			} else if (i == 3 || i == 4 || i == 5 || i == 6 || i == 7) {
-				//column.setCellRenderer(centerRenderer);
+				// column.setCellRenderer(centerRenderer);
 				column.setMaxWidth(250);
 				column.setPreferredWidth(150);
 			} else {
@@ -236,9 +242,13 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			}
 		};
 
-		table = new JTable();
-		table.setRowHeight(40);
+		tbLichHoc = new LIH_TableModel(new Object[][] {},
+				new String[] { "", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật" }) {
+			private static final long serialVersionUID = -5270395411369071077L;
+		};
 
+		table = new JTable();
+		((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 400, 1400, 400);
 		add(scrollPane);
@@ -329,7 +339,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		scrollPane1.setSize(300, 91);
 		scrollPane1.setLocation(919, 191);
 		add(scrollPane1);
-		
+
 	}
 
 	/**
@@ -375,7 +385,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 	private void loadDataLichHoc() {
 		dataLIH.clear();
-		while (table.getRowCount() > 0) {
+		while (tbLichHoc.getRowCount() > 0) {
 			tbLichHoc.removeRow(0);
 		}
 
@@ -383,65 +393,61 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			return;
 		}
 
-		/*LopHoc lh = (LopHoc) obj;
-		
+		LopHoc lh = (LopHoc) obj;
+
 		try {
-			List<HocVien_LopHoc> lstHocViensLop = new HocVien_LopHocDAO().getPageByID_LH(lh.getId_LH(), page);
-			int stt = 1;
-			// 0: STT // 4: Điểm 2
-			// 1: Mã // 5: Điểm 3
-			// 2: Tên // 6: Tổng kết
-			// 3: Điểm 1 // 7: Ghi chú
-
-			DecimalFormat f = new DecimalFormat("#.#");
-
-			for (HocVien_LopHoc hvlh : lstHocViensLop) {
-
-				// thằng này lấy tên học viên thôi
-				Hocvien hv = new HocVienDao().findById(hvlh.getId_HV());
-
-				float diem_1 = hvlh.getDiem_1();
-				float diem_2 = hvlh.getDiem_2();
-				float diem_3 = hvlh.getDiem_3();
-				float diem_4 = hvlh.getDiem_4();
-				int heso = 0;
-				float tong = 0;
-
-				// = -1 tức chưa có điểm. Đại diện cho null trong SQL
-
-				if (diem_1 != -1) {
-					heso += 1;
-					tong += diem_1;
-				}
-				if (diem_2 != -1) {
-					heso += 1;
-					tong += diem_2;
-				}
-				if (diem_3 != -1) {
-					heso += 1;
-					tong += diem_3;
-				}
-				if (diem_4 != -1) {
-					heso += 2;
-					tong += diem_4*2;
-				}
-				float diemTB = tong / heso;
-				tbLichHoc.addRow(new Object[] { stt, hvlh.getId_HV(), hv.getTen_HV(), (diem_1 == -1 ? "*" : diem_1),
-						(diem_2 == -1 ? "*" : diem_2), (diem_3 == -1 ? "*" : diem_3), (diem_4 == -1 ? "*" : diem_4),
-						(heso == 0 ? "*" : f.format(diemTB)), hvlh.getGhichu_HVLH() });
-				dataHV.put(stt - 1, hvlh);
-				stt += 1;
+			List<LichHoc> lstLIH = new LichHocDAO().findById_LH(lh.getId_LH());
+			for (Vector<LIH_Cell> vt : toVectorCell(lstLIH)) {
+				tbLichHoc.addRow(vt);
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL!", "ERROR", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
-		}*/
-		
+		}
+
 	}
 
-	public void loadDataHocVien() {
+	private Vector<Vector<LIH_Cell>> toVectorCell(List<LichHoc> lstLIH) {
+		Vector<Vector<LIH_Cell>> result = new Vector<Vector<LIH_Cell>>();
+		HashMap<Integer, LIH_Cell> map = new HashMap<Integer, LIH_Cell>();
+		// duyệt theo thứ (ngày)
+		for (LichHoc lih : lstLIH) {
+
+			// duyệt theo buổi trong ngày
+			String[] buoi = lih.getTiet().trim().split(";");
+			for (String partBuoi : buoi) {
+				String[] tiets = partBuoi.trim().split(",");
+				int tiet_dau = Integer.parseInt(tiets[0]);
+				int tiet_cuoi = Integer.parseInt(tiets[1]);
+
+				// key tính toán theo toạ độ của cell
+				// Thứ 2 thì index là 1.
+				for (int i = tiet_dau; i <= tiet_cuoi; i++)
+					map.put(i * 8 + lih.getThu() - 1, new LIH_Cell());
+			}
+		}
+
+		Vector<LIH_Cell> vt;
+		for (int i = 1; i <= LIH_MaxTiet; i++) {
+			vt = new Vector<LIH_Cell>();
+			vt.add(new LIH_Cell("Tiết " + i, 0));
+			for (int j = 0; j <= 7; j++) {
+				if (map.get(i * 8 + j - 1) != null)
+					vt.add(new LIH_Cell(i + "", 1));
+				else
+					vt.add(new LIH_Cell("", 0));
+			}
+
+			result.add(vt);
+		}
+		
+		return result;
+	}
+
+	private void loadDataHocVien() {
 		dataHV.clear();
-		while (table.getRowCount() > 0) {
+		while (tbHocVien.getRowCount() > 0) {
 			tbHocVien.removeRow(0);
 		}
 
@@ -488,7 +494,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 				}
 				if (diem_4 != -1) {
 					heso += 2;
-					tong += diem_4*2;
+					tong += diem_4 * 2;
 				}
 				float diemTB = tong / heso;
 				tbHocVien.addRow(new Object[] { stt, hvlh.getId_HV(), hv.getTen_HV(), (diem_1 == -1 ? "*" : diem_1),
@@ -498,7 +504,8 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 				stt += 1;
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL!", "ERROR", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL!", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}

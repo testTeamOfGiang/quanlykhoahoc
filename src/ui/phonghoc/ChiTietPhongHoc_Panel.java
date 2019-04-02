@@ -45,7 +45,7 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 		table.setRowHeight(40);
 
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(0, 300, 1400, 500);
+		scrollPane.setBounds(0, 400, 1400, 500);
 		add(scrollPane);
 
 		/* ========================== */
@@ -97,6 +97,17 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 		});
 		add(btnQuayLi);
 
+		JButton btnXemLIH = new JButton("Xem lịch học");
+		btnXemLIH.setBounds(950, 300, 125, 40);
+		btnXemLIH.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		add(btnXemLIH);
+		
 		textArea = new JTextArea();
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		textArea.setBounds(945, 158, 300, 97);

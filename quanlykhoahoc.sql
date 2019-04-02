@@ -226,4 +226,30 @@ as
 		update LOPHOC set siso_LH = siso_LH - 1 where id_LH = @id_LH
 	end 
 	
+--- VER 1.9 -- GIANG
 
+	-- đổi lịch học ( thứ ) -> int
+
+alter table LICHHOC alter column thu int not null
+
+--- VER 2.0 -- GIANG
+
+alter function fn_GetLichHoc(@id_PH int, @ngaybatdau date, @ngayketthuc date)
+returns @tbresult table (
+	id_PH int,
+	ten_PH nvarchar(30),
+	id_LH int,
+	ten_LH nvarchar(30),
+	thu int,
+	tiet char(30),
+	ngaybatdau date,
+	ngayketthuc date
+)
+as
+begin
+	insert into @tbresult select PhongHoc.id_PH, ten_PH, LOPHOC.id_LH, ten_LH, thu, tiet, ngaybatdau, ngayketthuc
+	from PHONGHOC inner join LOPHOC on (LOPHOC.id_PH = PHONGHOC.id_PH) 
+						inner join LICHHOC on (LOPHOC.id_LH = LICHHOC.id_LH)
+	where PHONGHOC.id_PH = @id_PH and ((ngaybatdau between @ngaybatdau and @ngayketthuc) or (ngayketthuc between @ngaybatdau and @ngayketthuc))
+	return
+end
