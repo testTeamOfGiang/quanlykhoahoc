@@ -60,15 +60,12 @@ alter table LOPHOC add constraint LH_KH foreign key(id_KH) references KHOAHOC(id
 alter table LOPHOC add constraint LH_PH foreign key(id_PH) references PHONGHOC(id_PH)
 go
 ----------------------------GIANG
-drop table HOCVIEN_LOPHOC
-go
-drop table HOCVIEN
 go
 create table HOCVIEN(
 	id_HV int primary key identity,
 	ten_HV nvarchar(30) not null,
 	sodt_HV varchar(10) not null unique,
-	ngaysinh date not null,
+	ngaysinh_HV date not null,
 	diachi_HV nvarchar(100) not null
 )
 -------------------------------
@@ -291,3 +288,34 @@ begin
 		delete from LICHHOC where id_LH = @id_LH
 end
 
+
+-- VER 2.2 ---- GIANG
+go
+drop table HOCVIEN_LOPHOC
+go
+drop table HOCVIEN
+
+go
+create table HOCVIEN(
+	id_HV int primary key identity,
+	ten_HV nvarchar(30) not null,
+	sodt_HV varchar(10) not null unique,
+	ngaysinh_HV date not null,
+	diachi_HV nvarchar(100) not null
+)
+-------------------------------
+go
+create table HOCVIEN_LOPHOC(
+	id_HV int not null,
+	id_LH int not null,
+	primary key(id_HV,id_LH)
+)
+go
+alter table HOCVIEN_LOPHOC add constraint HVLH_HV foreign key(id_HV) references HOCVIEN(id_HV)
+alter table HOCVIEN_LOPHOC add constraint HVLH_LH foreign key(id_LH) references LOPHOC(id_LH)
+go
+
+alter table HOCVIEN_LOPHOC add diem_1 float not null default -1
+alter table HOCVIEN_LOPHOC add diem_2 float not null default -1
+alter table HOCVIEN_LOPHOC add diem_3 float not null default -1
+alter table HOCVIEN_LOPHOC add diem_4 float not null default -1
