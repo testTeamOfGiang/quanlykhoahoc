@@ -3,21 +3,24 @@ package ui.phonghoc;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import entity.LopHoc;
+import config.JDBC_Connection;
 import entity.Phonghoc;
-import main.MainApp;
 import ui.abstracts.AbsTractChiTietPanel;
 
 public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
@@ -32,7 +35,7 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 	public ChiTietPhongHoc_Panel() {
 
 		tableModel = new DefaultTableModel(new Object[][] {},
-				new String[] { "STT", "Mã Lớp", "Tên Lớp", "Ngày Bắt Đầu", "Ngày Kết Thúc" }) {
+				new String[] { "", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -42,6 +45,7 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 		};
 
 		table = new JTable(tableModel);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		table.setRowHeight(40);
 
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -103,11 +107,11 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				new ChonNgayDialog(ChiTietPhongHoc_Panel.this).setVisible(true);
 			}
 		});
 		add(btnXemLIH);
-		
+
 		textArea = new JTextArea();
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
 		textArea.setBounds(945, 158, 300, 97);
@@ -129,18 +133,46 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 			}
 
 			try {
-				List<LopHoc> list = MainApp.phongHocDao.getLop(ph);
-				int stt = 1;
-				for (LopHoc lh : list) {
-					tableModel.addRow(new Object[] { stt, lh.getId_LH(), lh.getTen_LH(), lh.getNgaybatdau(),
-							lh.getNgayketthuc() });
-					stt += 1;
+				for (int i = 1; i <= 22; i++) {
+					tableModel.addRow(new Object[] { "Tiết" + i, null, null, null, null, null, null, null });
 				}
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(ChiTietPhongHoc_Panel.this, "Không Thể Load Dữ Liệu");
-				e.printStackTrace();
+
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
 		}
+	}
+
+	public void getLichHoc(int idPhong, Date bd, Date kt) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "select * from fn_GetLichHoc(?,?,?)";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, idPhong);
+		preparedStatement.setDate(2, bd);
+		preparedStatement.setDate(3, kt);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		ArrayList<LinkedList<Object>> matric = new ArrayList<LinkedList<Object>>();
+		while (resultSet.next()) {
+			LinkedList<Object> row = new LinkedList<Object>();
+			row.add(resultSet.getString("ten_LH"));
+			row.add(resultSet.getInt("thu"));
+			row.add(resultSet.getString("tiet"));
+			matric.add(row);
+		}
+		matric.stream().forEach(row -> {
+			String tenLop = (String) row.get(0);
+			int thu = (int) row.get(1);
+			String grt = (String) row.get(2);
+			String[] lt = grt.split(";");
+			for (String str : lt) {
+				String[] listT = str.split(",");
+				int k = Integer.parseInt(listT[0].trim());
+				int h = Integer.parseInt(listT[1].trim());
+				for (int j = k; j <= h; j++) {
+					tableModel.setValueAt(tenLop, j - 1, thu - 1);
+				}
+			}
+		});
 	}
 
 }

@@ -11,12 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.management.relation.Relation;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
@@ -24,7 +21,6 @@ import javax.swing.SwingConstants;
 
 import config.JDBC_Connection;
 import entity.LopHoc;
-import utils.DateSQL;
 
 public class ThemLichHoc_Dialog extends JDialog {
 
