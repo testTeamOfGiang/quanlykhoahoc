@@ -13,17 +13,16 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import entity.Hocvien;
-import entity.LopHoc;
 import ui.lophoc.ChiTiet_LopHoc;
 
 public class ThemLichHoc_Dialog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2505373032096896088L;
 	Font font;
 	private ChiTiet_LopHoc parentPanel;
-	private LopHoc lh;
-	private Hocvien hv;
-	
 	public static void main(String[] args) {
 		try {
 			ThemLichHoc_Dialog dialog = new ThemLichHoc_Dialog();
@@ -74,7 +73,8 @@ public class ThemLichHoc_Dialog extends JDialog {
 		});
 		getContentPane().add(btnThem);
 		
-		JComboBox comboBox = new JComboBox<String>(new String[] {"Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Chủ Nhật"});
+		//JComboBox<String> comboBox = new JComboBox<String>(new String[] {"Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Chủ Nhật"});
+		JComboBox<?> comboBox = new JComboBox<Object>();
 		comboBox.setFont(font);
 		comboBox.setBounds(131, 19, 171, 30);
 		getContentPane().add(comboBox);

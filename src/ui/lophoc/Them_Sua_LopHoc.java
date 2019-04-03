@@ -67,7 +67,7 @@ public class Them_Sua_LopHoc extends JDialog {
 		initLabels();
 		initButtons();
 		addTextFieldEvents();
-		
+
 		if (lh != null) {
 			setTitle("Sửa thông tin lớp");
 			this.lh = lh;
@@ -76,7 +76,7 @@ public class Them_Sua_LopHoc extends JDialog {
 			setTitle("Thêm lớp");
 			setTipText();
 		}
-		
+
 		addPlaceHolder();
 	}
 
@@ -471,10 +471,10 @@ public class Them_Sua_LopHoc extends JDialog {
 		if (id_KH.isEmpty() || ten_LH.isEmpty() || ngayHoc.isEmpty() || id_PH.isEmpty() || ngayketthuc.isEmpty()) {
 			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Hãy nhập đầy đủ thông tin!");
 			return;
-		} 
-		
+		}
+
 		try {
-			if(DateSQL.Compare(DateSQL.parseDate(ngayHoc), DateSQL.parseDate(ngayketthuc)) > 0) {
+			if (DateSQL.Compare(DateSQL.parseDate(ngayHoc), DateSQL.parseDate(ngayketthuc)) > 0) {
 				JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Ngày kết thúc phải sau ngày bắt đầu học!");
 				return;
 			}
@@ -501,14 +501,16 @@ public class Them_Sua_LopHoc extends JDialog {
 			parentPanel.loadData();
 			dispose();
 		} catch (NumberFormatException e1) {
-			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Ngày tháng hoặc ID không hợp lệ!");
+			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Ngày tháng hoặc ID không hợp lệ!", "Thông báo",
+					JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		} catch (DateSaiException e1) {
 			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this,
-					"Ngày tháng phải có định dạng dd/MM/yyyy hoặc yyyy/MM/dd!");
+					"Ngày tháng phải có định dạng dd/MM/yyyy hoặc yyyy/MM/dd!", "Thông báo", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Lỗi! Thêm lớp học thất bại!");
+			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Lỗi khi kết nối CSDL!", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}
 	}

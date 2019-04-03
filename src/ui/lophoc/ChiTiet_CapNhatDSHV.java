@@ -19,6 +19,7 @@ import dao.HocVienDao;
 import dao.HocVien_LopHocDAO;
 import entity.Hocvien;
 import entity.LopHoc;
+import utils.DateSQL;
 
 public class ChiTiet_CapNhatDSHV extends JDialog {
 
@@ -135,7 +136,7 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 				lbTenHV.setForeground(Color.blue);
 				lbSDT.setText(hv.getSodt_HV());
 				lbSDT.setForeground(Color.blue);
-				lbNgaySinh.setText("");
+				lbNgaySinh.setText(DateSQL.toVNDate(hv.getNgaysinh_HV()));
 				lbNgaySinh.setForeground(Color.blue);
 			} else {
 				lbTenHV.setText("Không tồn tại học viên này!");

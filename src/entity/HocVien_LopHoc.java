@@ -66,16 +66,8 @@ public class HocVien_LopHoc {
 		return id_HV;
 	}
 
-	public void setId_HV(int id_HV) {
-		this.id_HV = id_HV;
-	}
-
 	public int getId_LH() {
 		return id_LH;
-	}
-
-	public void setId_LH(int id_LH) {
-		this.id_LH = id_LH;
 	}
 
 	public String getGhichu_HVLH() {
@@ -84,6 +76,14 @@ public class HocVien_LopHoc {
 
 	public void setGhichu_HVLH(String ghichu_HVLH) {
 		this.ghichu_HVLH = ghichu_HVLH;
+	}
+
+	public void setId_HV(int id_HV) {
+		this.id_HV = id_HV;
+	}
+	
+	public void setId_LH(int id_LH) {
+		this.id_LH = id_LH;
 	}
 
 }

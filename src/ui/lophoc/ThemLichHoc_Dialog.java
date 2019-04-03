@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -20,6 +19,8 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import config.JDBC_Connection;
+import dao.LichHocDAO;
+import entity.LichHoc;
 import entity.LopHoc;
 
 public class ThemLichHoc_Dialog extends JDialog {
@@ -32,13 +33,6 @@ public class ThemLichHoc_Dialog extends JDialog {
 	private ArrayList<Checkbox> ckTiets;
 	private JComboBox<String> cbThu;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ThemLichHoc_Dialog dialog = new ThemLichHoc_Dialog(null, null);
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setVisible(true);
-	}
-
 	public ThemLichHoc_Dialog(ChiTiet_LopHoc parentPanel, LopHoc lh) {
 		getContentPane().setForeground(Color.GRAY);
 		font = new Font("Tahoma", Font.PLAIN, 16);
@@ -47,17 +41,13 @@ public class ThemLichHoc_Dialog extends JDialog {
 
 		initDialog();
 		initLabels();
-		iniTCheckBoxes();
+		initCheckBoxes();
 		initButtons();
-	}
-
-	private void initDialog() {
-		setModal(true);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		getContentPane().setLayout(null);
-		setSize(700, 460);
-		setLocationRelativeTo(parentPanel);
-		setTitle("Thêm lịch học");
+		try {
+			checkTheBox();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void initButtons() {
@@ -73,13 +63,18 @@ public class ThemLichHoc_Dialog extends JDialog {
 		});
 		getContentPane().add(btnHuy);
 
-		JButton btnThem = new JButton("Thêm");
+		JButton btnThem = new JButton("Cập nhật");
 		btnThem.setBounds(455, 370, 97, 40);
 		btnThem.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				btnThem_Click();
+				try {
+					btnThem_Click();
+				} catch (SQLException e1) {
+
+					e1.printStackTrace();
+				}
 			}
 		});
 		getContentPane().add(btnThem);
@@ -87,53 +82,122 @@ public class ThemLichHoc_Dialog extends JDialog {
 		cbThu = new JComboBox<String>(new String[] { "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Chủ Nhật" });
 		cbThu.setFont(font);
 		cbThu.setBounds(131, 19, 171, 30);
+		cbThu.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					uncheckAllBoxes();
+					checkTheBox();
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Lỗi khi kết nối tới CSDL", "ERROR",JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
+				}
+			}
+		});
 		getContentPane().add(cbThu);
 
 	}
 
-	protected void btnThem_Click() {
+	protected void btnThem_Click() throws SQLException {
 		// thu 2 = 0
-		// chu nhat = 6
+		// chu nhat = 6 trong combobox
 		int thu = cbThu.getSelectedIndex() + 2;
-		String tietsChecked = getTietsChecked();
-		if (tietsChecked == null) {
-			JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Bạn chưa chọn tiết học!", "ERROR",
+		ArrayList<String> lstTietsChecked = getTietsChecked();
+		if (lstTietsChecked.size() == 0) {
+			new LichHocDAO().deleteLichHocById_LH_Thu(lh.getId_LH(), thu);
+			dispose();
+			return;
+		}
+
+		ArrayList<String> lstTietsBusy;
+		lstTietsBusy = getLstTietsBusy(thu);
+
+		if (isLichBiTrung(lstTietsBusy, lstTietsChecked)) {
+			JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Lịch đã bị trùng", "Thông báo",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+
+		// Xoá lịch cũ
+		new LichHocDAO().deleteLichHocById_LH_Thu(lh.getId_LH(), thu);
 		
-		ArrayList<String> buois = new ArrayList<String>();
-		try {
-			for(String s: getLstLich(thu)) {
-				for (String sub: s.split(";")) {
-					buois.add(sub);
-				}
-			}
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Lỗi khi kết nối tới CSDL!", "ERROR", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-		}
+		// Thêm vào CSDL
+		String tiet = "";
+		for (String s : lstTietsChecked)
+			tiet += s + ";";
 		
-		
+		LichHoc lih = new LichHoc();
+		lih.setId_LH(lh.getId_LH());
+		lih.setThu(thu);
+		lih.setTiet(tiet);
+		new LichHocDAO().addLichHoc(lih);
+		dispose();
+		JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Cập nhật thành công!");
 	}
 
-	private ArrayList<String> getLstLich(int thu) throws SQLException {
+	private boolean isLichBiTrung(ArrayList<String> lstTietsBusy, ArrayList<String> lstTietsChecked) {
+		// Kiểm tra lịch trùng
+		for (String buoi : lstTietsBusy) {
+			
+			for (String sub : buoi.split(";")) {
+				
+				String[] tiets = sub.split(",");
+				
+				// Lấy tiết đầu, tiết cuối trong 1 buổi theo lịch sử dụng phòng
+				int dau = Integer.parseInt(tiets[0]);
+				int cuoi = tiets.length != 1 ? Integer.parseInt(tiets[1]) : dau;
+				
+				// kiểm tra xem người dùng chọn có bị trùng?
+				for (String tietsUserChecked : lstTietsChecked) {
+					
+					String[] tietsChecked = tietsUserChecked.split(",");
+					int dauChecked = Integer.parseInt(tietsChecked[0]);
+					int cuoiChecked = tietsChecked.length == 1 ? dauChecked : Integer.parseInt(tietsChecked[1]);
+					
+					if (dauChecked >= dau && dauChecked <= cuoi)
+						return true;
+					else if (cuoiChecked >= dau && cuoiChecked <= cuoi)
+						return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Lấy các tiết bận của phòng
+	private ArrayList<String> getLstTietsBusy(int thu) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "select ten_LH, tiet from fn_GetLichHoc(?, ?, ?) where thu = ?";
+		String sql = "select ten_LH, tiet from fn_GetLichHoc(?, ?, ?) where thu = ? and id_LH != ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, lh.getId_PH());
 		preparedStatement.setDate(2, lh.getNgaybatdau());
 		preparedStatement.setDate(3, lh.getNgayketthuc());
 		preparedStatement.setInt(4, thu);
+		preparedStatement.setInt(5, lh.getId_LH());
 		ResultSet resultSet = preparedStatement.executeQuery();
-		ArrayList<String> tiets = new ArrayList<>();
+		ArrayList<String> buois = new ArrayList<>();
 		while (resultSet.next()) {
-			tiets.add(resultSet.getString("tiet"));
+			String s = resultSet.getString("tiet");
+			buois.add(s);
 		}
+
+		ArrayList<String> tiets = new ArrayList<String>();
+		for (String s : buois) {
+			for (String sub : s.split(";")) {
+				tiets.add(sub);
+			}
+		}
+		con.close();
 		return tiets;
 	}
 
-	private String getTietsChecked() {
+	/**
+	 * Lấy list các tiết đc check VD: [1,6] [3] [7,10]
+	 * 
+	 * @return
+	 */
+	private ArrayList<String> getTietsChecked() {
 		ArrayList<String> lstBuoi = new ArrayList<>();
 		boolean status = false;
 		int i = 0;
@@ -154,7 +218,7 @@ public class ThemLichHoc_Dialog extends JDialog {
 			if (status && !ckTiets.get(i).getState()) {
 				cuoi = i - 1;
 				status = false;
-				String s = dau == cuoi ? (dau + 1) + ";" : (dau + 1) + "," + (cuoi + 1) + ";";
+				String s = dau == cuoi ? (dau + 1) + "" : (dau + 1) + "," + (cuoi + 1);
 				lstBuoi.add(s);
 			}
 
@@ -162,25 +226,40 @@ public class ThemLichHoc_Dialog extends JDialog {
 			if (status && i == ckTiets.size() - 1) {
 				cuoi = i;
 				status = false;
-				String s = dau == cuoi ? (dau + 1) + ";" : (dau + 1) + "," + (cuoi + 1) + ";";
+				String s = dau == cuoi ? (dau + 1) + "" : (dau + 1) + "," + (cuoi + 1);
 				lstBuoi.add(s);
 			}
 
 			if (i == ckTiets.size() - 1)
 				break;
 		}
-
-		StringBuffer result = new StringBuffer();
-		for (String buoi : lstBuoi) {
-			result.append(buoi);
-		}
-		if (result.length() != 0)
-			return result.toString();
-		else
-			return null;
+		return lstBuoi;
 	}
 
-	private void iniTCheckBoxes() {
+	/**
+	 * Check the box follow the combobox
+	 * @throws SQLException
+	 */
+	private void checkTheBox() throws SQLException {
+		ArrayList<LichHoc> lstLichHocs = new LichHocDAO().findById_LH_Thu(lh.getId_LH(), cbThu.getSelectedIndex() + 2);
+		for (LichHoc lih : lstLichHocs) {
+			for (String buoi : lih.getTiet().split(";")) {
+				String[] tiets = buoi.split(",");
+				int dau = Integer.parseInt(tiets[0]);
+				int cuoi = tiets.length != 1 ? Integer.parseInt(tiets[1]) : dau;
+				for (int i = dau; i <= cuoi; i++)
+					ckTiets.get(i-1).setState(true);
+			}
+		}
+	}
+
+	private void uncheckAllBoxes() {
+		for (Checkbox checkbox : ckTiets) {
+			checkbox.setState(false);
+		}
+	}
+	
+	private void initCheckBoxes() {
 
 		Checkbox ckTiet1 = new Checkbox("Tiết 1");
 		ckTiet1.setForeground(Color.BLACK);
@@ -323,6 +402,15 @@ public class ThemLichHoc_Dialog extends JDialog {
 		ckTiets.add(ckTiet18);
 		ckTiets.add(ckTiet19);
 		ckTiets.add(ckTiet20);
+	}
+
+	private void initDialog() {
+		setModal(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		getContentPane().setLayout(null);
+		setSize(700, 460);
+		setLocationRelativeTo(parentPanel);
+		setTitle("Cập nhật lịch học");
 	}
 
 	private void initLabels() {

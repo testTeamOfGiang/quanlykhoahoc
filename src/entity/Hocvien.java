@@ -1,5 +1,7 @@
 package entity;
 
+import java.sql.Date;
+
 public class Hocvien {
 
 	private int id_HV;
@@ -10,6 +12,8 @@ public class Hocvien {
 
 	private String ten_HV;
 
+	private Date ngaysinh_HV;
+	
 	// bi-directional many-to-many association to Lophoc
 
 	public Hocvien() {
@@ -45,6 +49,14 @@ public class Hocvien {
 
 	public void setTen_HV(String ten_HV) {
 		this.ten_HV = ten_HV;
+	}
+
+	public Date getNgaysinh_HV() {
+		return ngaysinh_HV;
+	}
+
+	public void setNgaysinh_HV(Date ngaysinh_HV) {
+		this.ngaysinh_HV = ngaysinh_HV;
 	}
 
 }

@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -48,18 +49,18 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 	 * 0 = đang hiển thị DSHV, 1 = đang hiển thị Lich hoc
 	 */
 	private int status;
-	private JLabel lbSiso_LH;
-	private JLabel lbTen_LH;
-	private JLabel lbID_LH;
-	private JLabel lbTen_PH;
-	private JLabel lbTen_GV;
-	private JLabel lbTen_KH;
+	private JTextField lbSiso_LH;
+	private JTextField lbTen_LH;
+	private JTextField lbID_LH;
+	private JTextField lbTen_PH;
+	private JTextField lbTen_GV;
+	private JTextField lbTen_KH;
 	private JTextArea taGhiChu_LH;
 	private JButton btnNhapDiem;
 	private JButton btnCapNhatDS;
 	private JButton btnXemDSHV;
 	private JButton btnXemLIH;
-	private JButton btnSuaLIH;
+	private JButton btnThemLIH;
 	private HashMap<Integer, HocVien_LopHoc> dataHV;
 	private HashMap<Integer, LichHoc> dataLIH;
 	private int LIH_MaxTiet;
@@ -83,7 +84,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 	private void initButons() {
 
 		JButton btnQuayLai = new JButton("Quay Lại");
-		btnQuayLai.setBounds(34, 38, 114, 40);
+		btnQuayLai.setBounds(34, 30, 90, 40);
 		btnQuayLai.addActionListener(new ActionListener() {
 
 			@Override
@@ -137,10 +138,24 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		});
 		add(btnXemLIH);
 
-		btnSuaLIH = new JButton("Sửa lịch học");
-		btnSuaLIH.setBounds(1034, 330, 125, 40);
-		add(btnSuaLIH);
+		btnThemLIH = new JButton("Cập nhật lịch học");
+		btnThemLIH.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnThemLIH_Click();
+			}
+		});
+		btnThemLIH.setBounds(1034, 330, 125, 40);
+		add(btnThemLIH);
+
+	}
+
+	private void btnThemLIH_Click() {
+		LopHoc lh = (LopHoc) obj;
+		new ThemLichHoc_Dialog(ChiTiet_LopHoc.this, lh).setVisible(true);
+		;
+		loadDataLichHoc();
 	}
 
 	private void btnNhapDiem_Click() {
@@ -172,7 +187,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		table.setModel(tbLichHoc);
 		table.setRowHeight(30);
 		table.setDefaultRenderer(String.class, new LIH_TableCellRenderer());
-		btnSuaLIH.setVisible(true);
+		btnThemLIH.setVisible(true);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
@@ -206,14 +221,14 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			// 2: Tên // 6: Điểm 4
 			// 3: Điểm 1 // 6: Điểm TB
 			// 7: Ghi chú
+			
 			if (i == 0) {
 				column.setCellRenderer(centerRenderer);
 				column.setMaxWidth(50);
 			} else if (i == 1) {
-				column.setCellRenderer(centerRenderer);
 				column.setMaxWidth(80);
 			} else if (i == 3 || i == 4 || i == 5 || i == 6 || i == 7) {
-				// column.setCellRenderer(centerRenderer);
+				column.setCellRenderer(centerRenderer);
 				column.setMaxWidth(250);
 				column.setPreferredWidth(150);
 			} else {
@@ -224,7 +239,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		btnNhapDiem.setVisible(true);
 		btnCapNhatDS.setVisible(true);
 
-		btnSuaLIH.setVisible(false);
+		btnThemLIH.setVisible(false);
 		loadDataHocVien();
 	}
 
@@ -259,72 +274,78 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 		JLabel chiTietLopHoc = new JLabel("Chi Tiết Lớp Học", JLabel.CENTER);
 		chiTietLopHoc.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		chiTietLopHoc.setBounds(500, 38, 400, 70);
+		chiTietLopHoc.setBounds(500, 28, 400, 70);
 		add(chiTietLopHoc);
 
-		lbSiso_LH = new JLabel("...");
+		lbSiso_LH = new JTextField("...");
 		lbSiso_LH.setFont(font);
-		lbSiso_LH.setBounds(264, 242, 155, 40);
+		lbSiso_LH.setEditable(false);
+		lbSiso_LH.setBounds(264, 232, 155, 40);
 		add(lbSiso_LH);
 
-		lbTen_LH = new JLabel("...");
+		lbTen_LH = new JTextField("...");
 		lbTen_LH.setFont(font);
-		lbTen_LH.setBounds(264, 191, 155, 40);
+		lbTen_LH.setEditable(false);
+		lbTen_LH.setBounds(264, 181, 155, 40);
 		add(lbTen_LH);
 
-		lbID_LH = new JLabel("...");
+		lbID_LH = new JTextField("...");
 		lbID_LH.setFont(font);
-		lbID_LH.setBounds(264, 140, 155, 40);
+		lbID_LH.setEditable(false);
+		lbID_LH.setBounds(264, 130, 155, 40);
 		add(lbID_LH);
 
-		lbTen_PH = new JLabel("...");
+		lbTen_PH = new JTextField("...");
 		lbTen_PH.setFont(font);
-		lbTen_PH.setBounds(619, 242, 190, 40);
+		lbTen_PH.setEditable(false);
+		lbTen_PH.setBounds(619, 232, 190, 40);
 		add(lbTen_PH);
 
-		lbTen_GV = new JLabel("...");
+		lbTen_GV = new JTextField("...");
 		lbTen_GV.setFont(font);
-		lbTen_GV.setBounds(619, 191, 190, 40);
+		lbTen_GV.setEditable(false);
+		lbTen_GV.setBounds(619, 181, 190, 40);
 		add(lbTen_GV);
 
-		lbTen_KH = new JLabel("...");
+		lbTen_KH = new JTextField("...");
 		lbTen_KH.setFont(font);
-		lbTen_KH.setBounds(619, 140, 190, 40);
+		lbTen_KH.setEditable(false);
+		lbTen_KH.setBounds(619, 130, 190, 40);
 		add(lbTen_KH);
 
 		JLabel maLop = new JLabel("Mã lớp");
 		maLop.setFont(font);
-		maLop.setBounds(174, 140, 80, 40);
+		maLop.setBounds(174, 130, 80, 40);
 		add(maLop);
 
 		JLabel tenLop = new JLabel("Tên lớp");
 		tenLop.setFont(font);
-		tenLop.setBounds(174, 191, 80, 40);
+		tenLop.setBounds(174, 181, 80, 40);
 		add(tenLop);
 
 		JLabel siSo = new JLabel("Sĩ số");
 		siSo.setFont(font);
-		siSo.setBounds(174, 242, 80, 40);
+		siSo.setBounds(174, 232, 80, 40);
 		add(siSo);
 
 		JLabel khoaHoc = new JLabel("Khoá học");
 		khoaHoc.setFont(font);
-		khoaHoc.setBounds(500, 140, 94, 40);
+		khoaHoc.setBounds(500, 130, 94, 40);
 		add(khoaHoc);
 
 		JLabel giangVien = new JLabel("Giảng viên");
 		giangVien.setFont(font);
-		giangVien.setBounds(500, 191, 94, 40);
+		giangVien.setBounds(500, 181, 94, 40);
 		add(giangVien);
 
 		JLabel phongHoc = new JLabel("Phòng học");
 		phongHoc.setFont(font);
-		phongHoc.setBounds(500, 242, 94, 40);
+		phongHoc.setBounds(500, 232, 94, 40);
 		add(phongHoc);
 
 		JLabel ghichu = new JLabel("Ghi chú");
 		ghichu.setFont(font);
-		ghichu.setBounds(919, 140, 94, 40);
+		ghichu.setBounds(919, 130, 94, 40);
 		add(ghichu);
 
 		taGhiChu_LH = new JTextArea();
@@ -337,7 +358,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		JScrollPane scrollPane1 = new JScrollPane(taGhiChu_LH, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane1.setSize(300, 91);
-		scrollPane1.setLocation(919, 191);
+		scrollPane1.setLocation(919, 181);
 		add(scrollPane1);
 
 	}
@@ -419,7 +440,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			for (String partBuoi : buoi) {
 				String[] tiets = partBuoi.trim().split(",");
 				int tiet_dau = Integer.parseInt(tiets[0]);
-				int tiet_cuoi = Integer.parseInt(tiets[1]);
+				int tiet_cuoi = tiets.length != 1 ? Integer.parseInt(tiets[1]) : tiet_dau;
 
 				// key tính toán theo toạ độ của cell
 				// Thứ 2 thì index là 1.

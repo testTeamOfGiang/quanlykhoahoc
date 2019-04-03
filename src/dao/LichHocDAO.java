@@ -67,6 +67,17 @@ public class LichHocDAO {
 		con.close();
 	}
 
+
+	public void deleteLichHocById_LH_Thu(int id_LH, int thu) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "delete from LICHHOC where id_LH = ? and thu = ?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_LH);
+		preparedStatement.setInt(2, thu);
+		preparedStatement.execute();
+		con.close();
+	}
+	
 	public void deleteLichHocById_LH(int id_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "delete from LICHHOC where id_LH = ?";
@@ -83,13 +94,13 @@ public class LichHocDAO {
 	 * @return List<LichHoc> list lịch học
 	 * @throws SQLException
 	 */
-	public List<LichHoc> findById_LH(int id_LH) throws SQLException {
+	public ArrayList<LichHoc> findById_LH(int id_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "select * from LICHHOC where id_LH = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, id_LH);
 		
-		List<LichHoc> lstLIH = new ArrayList<LichHoc>();
+		ArrayList<LichHoc> lstLIH = new ArrayList<LichHoc>();
 		ResultSet result = preparedStatement.executeQuery();
 		while (result.next()) {
 			LichHoc lih = new LichHoc_Mapper().map(result);
@@ -99,6 +110,30 @@ public class LichHocDAO {
 		return lstLIH;
 	}
 
+	/**
+	 * Tìm tiết theo lớp học và thứ mà lớp đó học
+	 * 
+	 * @param lh lớp học
+	 * @param thu thứ
+	 * @return List<LichHoc> list lịch học
+	 * @throws SQLException
+	 */
+	public ArrayList<LichHoc> findById_LH_Thu(int id_LH, int thu) throws SQLException {
+		Connection con = JDBC_Connection.getConnection();
+		String sql = "select * from LICHHOC where id_LH = ? and thu = ?";
+		PreparedStatement preparedStatement = con.prepareStatement(sql);
+		preparedStatement.setInt(1, id_LH);
+		preparedStatement.setInt(2, thu);
+		ArrayList<LichHoc> lstLIH = new ArrayList<LichHoc>();
+		ResultSet result = preparedStatement.executeQuery();
+		while (result.next()) {
+			LichHoc lih = new LichHoc_Mapper().map(result);
+			lstLIH.add(lih);
+		}
+		con.close();
+		return lstLIH;
+	}
+	
 	/**
 	 * Tìm lịch by ID_LIH
 	 * 

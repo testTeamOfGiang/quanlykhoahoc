@@ -21,6 +21,7 @@ import exception.ChuaChonException;
 import main.MainApp;
 import ui.abstracts.AbsTractQuanLyPanel;
 import ui.hocvien.HocVien_Dialog.Type;
+import utils.DateSQL;
 
 public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 
@@ -36,7 +37,7 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 
 		/* ======================================= */
 		tableModel = new DefaultTableModel(new Object[][] {},
-				new String[] { "STT", "Mã Học Viên", "Tên Học Viên", "Số Điện Thoại", "Địa Chỉ" }) {
+				new String[] { "STT", "Mã Học Viên", "Tên Học Viên", "Ngày Sinh", "Số Điện Thoại", "Địa Chỉ" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -173,8 +174,8 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 			List<Hocvien> hocViens = MainApp.hocVienDao.getPage(page);
 			int stt = 1;
 			for (Hocvien hv : hocViens) {
-				tableModel.addRow(
-						new Object[] { stt, hv.getId_HV(), hv.getTen_HV(), hv.getSodt_HV(), hv.getDiachi_HV() });
+				tableModel.addRow(new Object[] { stt, hv.getId_HV(), hv.getTen_HV(),
+						DateSQL.toVNDate(hv.getNgaysinh_HV()), hv.getSodt_HV(), hv.getDiachi_HV() });
 				data.put(stt - 1, hv);
 				stt += 1;
 			}

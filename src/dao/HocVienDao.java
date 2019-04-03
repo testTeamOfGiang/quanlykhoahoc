@@ -17,23 +17,25 @@ public class HocVienDao {
 
 	public void add(Hocvien hv) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "insert into HOCVIEN(ten_HV,sodt_HV,diachi_HV) values(?,?,?)";
+		String sql = "insert into HOCVIEN(ten_HV,sodt_HV, ngaysinh_HV,diachi_HV) values(?,?,?,?)";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, hv.getTen_HV());
 		preparedStatement.setString(2, hv.getSodt_HV());
-		preparedStatement.setString(3, hv.getDiachi_HV());
+		preparedStatement.setDate(3, hv.getNgaysinh_HV());
+		preparedStatement.setString(4, hv.getDiachi_HV());
 		preparedStatement.executeUpdate();
 		con.close();
 	}
 
 	public void update(Hocvien hv) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "update HOCVIEN set ten_HV=?,sodt_HV=?,diachi_HV=? where id_HV=?";
+		String sql = "update HOCVIEN set ten_HV=?,sodt_HV=?,ngaysinh_HV = ?,diachi_HV=? where id_HV=?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, hv.getTen_HV());
 		preparedStatement.setString(2, hv.getSodt_HV());
-		preparedStatement.setString(3, hv.getDiachi_HV());
-		preparedStatement.setInt(4, hv.getId_HV());
+		preparedStatement.setDate(3, hv.getNgaysinh_HV());
+		preparedStatement.setString(4, hv.getDiachi_HV());
+		preparedStatement.setInt(5, hv.getId_HV());
 		preparedStatement.executeUpdate();
 		con.close();
 	}

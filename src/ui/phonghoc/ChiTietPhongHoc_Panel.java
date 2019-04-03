@@ -167,7 +167,7 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 			for (String str : lt) {
 				String[] listT = str.split(",");
 				int k = Integer.parseInt(listT[0].trim());
-				int h = Integer.parseInt(listT[1].trim());
+				int h = listT.length != 1 ? Integer.parseInt(listT[1].trim()) : k;
 				for (int j = k; j <= h; j++) {
 					tableModel.setValueAt(tenLop, j - 1, thu - 1);
 				}

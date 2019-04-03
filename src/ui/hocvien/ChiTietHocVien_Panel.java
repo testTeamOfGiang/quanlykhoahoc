@@ -19,6 +19,7 @@ import entity.LopHoc;
 import main.MainApp;
 import ui.abstracts.AbsTractChiTietPanel;
 import ui.hocvien.HocVien_LopHoc_Dialog.Type;
+import utils.DateSQL;
 
 public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 
@@ -27,6 +28,7 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_4;
+	private JTextField txtNgaySinh;
 	private JTable table;
 	private DefaultTableModel tableModel;
 
@@ -92,6 +94,17 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 		lblSinThoi.setBounds(763, 126, 145, 40);
 		add(lblSinThoi);
 
+		JLabel lblSinThoi2 = new JLabel("Ngày Sinh");
+		lblSinThoi2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSinThoi2.setBounds(763, 196, 145, 40);
+		add(lblSinThoi2);
+		
+		txtNgaySinh = new JTextField();
+		txtNgaySinh.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtNgaySinh.setColumns(10);
+		txtNgaySinh.setBounds(945, 196, 240, 42);
+		add(txtNgaySinh);
+		
 		textField_4 = new JTextField();
 		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textField_4.setColumns(10);
@@ -153,7 +166,7 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 			textField_1.setText(hv.getTen_HV());
 			textField_2.setText(hv.getSodt_HV());
 			textField_4.setText(hv.getDiachi_HV());
-
+			txtNgaySinh.setText(DateSQL.toVNDate(hv.getNgaysinh_HV()));
 			try {
 				List<LopHoc> list = MainApp.hocVienDao.getLopHoc(hv);
 				int stt=1;

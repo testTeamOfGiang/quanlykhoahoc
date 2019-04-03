@@ -105,7 +105,7 @@ public class TimKiem_LopHoc extends AbstractTimKiemPanel {
 		add(btnTimKiem);
 
 		JButton btnQuayLai = new JButton("Quay Lại");
-		btnQuayLai.setBounds(34, 38, 114, 40);
+		btnQuayLai.setBounds(34, 30, 90, 40);
 		btnQuayLai.addActionListener(new ActionListener() {
 
 			@Override
