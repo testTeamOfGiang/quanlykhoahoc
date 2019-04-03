@@ -428,7 +428,6 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 			}
 		}
 
-		System.out.println("-----");
 		Vector<LIH_Cell> vt;
 		for (int i = 0; i <= LIH_MaxTiet; i++) {
 			vt = new Vector<LIH_Cell>();
