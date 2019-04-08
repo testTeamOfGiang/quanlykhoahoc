@@ -49,17 +49,15 @@ create table LOPHOC(
 	id_KH int not null,
 	ngaybatdau date not null,
 	ngayketthuc date not null,
-	id_GV int not null
+	id_GV int not null,
+	ten_LH nvarchar(30) not null,
+	id_PH int not null,
+	ghichu_LH ntext,
+	constraint LH_GV foreign key(id_GV) references GIANGVIEN(id_GV),
+	constraint LH_KH foreign key(id_KH) references KHOAHOC(id_KH),
+	constraint LH_PH foreign key(id_PH) references PHONGHOC(id_PH)
 )
-go
-alter table LOPHOC add ten_LH nvarchar(30) not null
-go
-alter table LOPHOC add id_PH int not null
-alter table LOPHOC add constraint LH_GV foreign key(id_GV) references GIANGVIEN(id_GV)
-alter table LOPHOC add constraint LH_KH foreign key(id_KH) references KHOAHOC(id_KH)
-alter table LOPHOC add constraint LH_PH foreign key(id_PH) references PHONGHOC(id_PH)
-go
-----------------------------GIANG
+
 go
 create table HOCVIEN(
 	id_HV int primary key identity,
@@ -68,18 +66,21 @@ create table HOCVIEN(
 	ngaysinh_HV date not null,
 	diachi_HV nvarchar(100) not null
 )
+
 -------------------------------
 go
 create table HOCVIEN_LOPHOC(
 	id_HV int not null,
 	id_LH int not null,
-	primary key(id_HV,id_LH)
+	primary key(id_HV,id_LH),
+	diem_1 float not null default -1,
+	diem_2 float not null default -1,
+	diem_3 float not null default -1,
+	diem_4 float not null default -1,
+	ghichu_HVLH ntext null,
+	constraint HVLH_HV foreign key(id_HV) references HOCVIEN(id_HV),
+	constraint HVLH_LH foreign key(id_LH) references LOPHOC(id_LH),	
 )
-go
-alter table HOCVIEN_LOPHOC add constraint HVLH_HV foreign key(id_HV) references HOCVIEN(id_HV)
-alter table HOCVIEN_LOPHOC add constraint HVLH_LH foreign key(id_LH) references LOPHOC(id_LH)
-
-
 
 ----  VER 1.2 ------ GIANG
 
@@ -87,39 +88,16 @@ go
 create table LICHHOC(
 	id_LIH int identity primary key,
 	id_LH int not null,
-	thu nchar(10) not null,
-	tiet char(30) not null,
-	ghichu_LIH text
+	thu int not null,
+	tiet varchar(30) not null,
+	ghichu_LIH ntext,
+	constraint FK_LIH_LH foreign key(id_LH) references LOPHOC(id_LH)
 )
-go
-alter table LICHHOC add constraint FK_LIH_LH foreign key(id_LH) references LOPHOC(id_LH)
-go
-
-create table LOPCHO(
-	id_HV int not null,
-	id_LH int not null,
-	ghichu_LC text,
-	primary key(id_HV,id_LH),
-	constraint FK_LC_HV foreign key (id_HV) references HOCVIEN (id_HV),
-	constraint FK_LC_LH foreign key (id_LH) references LOPHOC (id_LH),
-)
-
----- VER 1.3---- GIANG
-go
-
-alter table LOPHOC add ghichu_LH text
-
----- VER 1.4 --- GIANG
- 
-	---xoá bảng LOPCHO
-drop table LOPCHO
-
 ---- VER 1.5 --- GIANG
 
 -- Thêm trigger cho lớp học. xoá 1 lớp thì xoá cả ở bảng HOCVIEN_LOPHOC, LICHHOC
 
 go
-
 create trigger trg_DelLop_HOCVIEN_LOPHOC
 on LOPHOC
 for delete
@@ -171,25 +149,6 @@ as
 	end 
 
 	--- Sửa kiểu ghi chú sang NTEXT
-go
-alter table LICHHOC alter column ghichu_LIH nvarchar(100)
-alter table LOPHOC alter column ghichu_LH nvarchar(100)
-
-go
-alter table LICHHOC alter column ghichu_LIH ntext
-alter table LOPHOC alter column ghichu_LH ntext
-
-
---- VER 1.7  -- GIANG
-
-	--- Thêm điểm cho học viên vào bảng HOCVIEN_LOPHOC
-	
-alter table HOCVIEN_LOPHOC add diem_1 float not null default -1
-alter table HOCVIEN_LOPHOC add diem_2 float not null default -1
-alter table HOCVIEN_LOPHOC add diem_3 float not null default -1
-alter table HOCVIEN_LOPHOC add diem_4 float not null default -1
-
-alter table HOCVIEN_LOPHOC add ghichu_HVLH ntext null
 
 	--- Thêm Func tìm lớp theo tên
 go
@@ -229,12 +188,6 @@ as
 		set @id_LH = (select id_LH from inserted)
 		update LOPHOC set siso_LH = siso_LH - 1 where id_LH = @id_LH
 	end 
-	
---- VER 1.9 -- GIANG
-
-	-- đổi lịch học ( thứ ) -> int
-
-alter table LICHHOC alter column thu int not null
 
 --- VER 2.0 -- GIANG
 	-- Lấy ra lịch sử dụng theo mã phòng trong 1 khoảng thời gian
@@ -264,10 +217,6 @@ begin
 end
 
 --- VER 2.1 -- GIANG
-
-go
-alter table LICHHOC alter column tiet varchar(30)
-
 go
 	-- Trigger nếu cập nhật lớp mà cập nhật mã phòng thì xoá lịch học
 alter trigger trg_updateLH_PhongHoc_dellLIH
@@ -288,34 +237,3 @@ begin
 		delete from LICHHOC where id_LH = @id_LH
 end
 
-
--- VER 2.2 ---- GIANG
-go
-drop table HOCVIEN_LOPHOC
-go
-drop table HOCVIEN
-
-go
-create table HOCVIEN(
-	id_HV int primary key identity,
-	ten_HV nvarchar(30) not null,
-	sodt_HV varchar(10) not null unique,
-	ngaysinh_HV date not null,
-	diachi_HV nvarchar(100) not null
-)
--------------------------------
-go
-create table HOCVIEN_LOPHOC(
-	id_HV int not null,
-	id_LH int not null,
-	primary key(id_HV,id_LH)
-)
-go
-alter table HOCVIEN_LOPHOC add constraint HVLH_HV foreign key(id_HV) references HOCVIEN(id_HV)
-alter table HOCVIEN_LOPHOC add constraint HVLH_LH foreign key(id_LH) references LOPHOC(id_LH)
-go
-
-alter table HOCVIEN_LOPHOC add diem_1 float not null default -1
-alter table HOCVIEN_LOPHOC add diem_2 float not null default -1
-alter table HOCVIEN_LOPHOC add diem_3 float not null default -1
-alter table HOCVIEN_LOPHOC add diem_4 float not null default -1

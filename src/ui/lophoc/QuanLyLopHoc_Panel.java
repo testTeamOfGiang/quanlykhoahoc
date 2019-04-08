@@ -88,7 +88,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 		});
 		btnTruoc.setBounds(492, 582, 106, 40);
 		add(btnTruoc);
-
+		
 		JButton btnSau = new JButton("Sau");
 		btnSau.setBounds(801, 582, 106, 40);
 		add(btnSau);

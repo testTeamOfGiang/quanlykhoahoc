@@ -174,7 +174,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 		if (obj != null) {
 			LopHoc lh = (LopHoc) obj;
 			new ChiTiet_CapNhatDSHV(ChiTiet_LopHoc.this, lh).setVisible(true);
-			loadDataHocVien();
+			loadData();
 		}
 	}
 
