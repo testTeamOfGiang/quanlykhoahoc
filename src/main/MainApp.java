@@ -9,6 +9,7 @@ import dao.HocVienDao;
 import dao.KhoaHocDao;
 import dao.LopHocDAO;
 import dao.PhongHocDao;
+import dao.UserDAO;
 import ui.MainFrame;
 
 public class MainApp {
@@ -18,6 +19,7 @@ public class MainApp {
 	public static KhoaHocDao khoaHocDao;
 	public static PhongHocDao phongHocDao;
 	public static LopHocDAO lopHocDAO;
+	public static UserDAO userDao;
 
 	public static void init() {
 		giangVienDao = new GiangVienDao();
@@ -25,6 +27,7 @@ public class MainApp {
 		khoaHocDao = new KhoaHocDao();
 		phongHocDao = new PhongHocDao();
 		lopHocDAO = new LopHocDAO();
+		userDao = new UserDAO();
 	}
 
 	public static void main(String[] args) throws UnsupportedLookAndFeelException {
