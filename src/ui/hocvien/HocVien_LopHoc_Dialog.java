@@ -1,5 +1,6 @@
 package ui.hocvien;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +11,10 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import entity.LopHoc;
 import exception.ThieuThongTinException;
 import main.MainApp;
 
@@ -18,6 +22,7 @@ public class HocVien_LopHoc_Dialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
+	private JLabel lbThongBao;
 
 	static enum Type {
 		ADD, DELETE
@@ -34,6 +39,10 @@ public class HocVien_LopHoc_Dialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setSize(440, 300);
 		setLocationRelativeTo(panel);
+
+		lbThongBao = new JLabel("", JLabel.CENTER);
+		lbThongBao.setBounds(163, 60, 200, 40);
+		add(lbThongBao);
 
 		JLabel lblMLp = new JLabel("Mã Lớp");
 		lblMLp.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -86,10 +95,10 @@ public class HocVien_LopHoc_Dialog extends JDialog {
 						dispose();
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Hủy lớp học không thành công");
-						e1.printStackTrace();
+						System.out.println(e1.getMessage());
 					} catch (ThieuThongTinException e1) {
 						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Hãy Nhập mã lớp vào");
-						e1.printStackTrace();
+						System.out.println(e1.getMessage());
 					}
 				}
 			}
@@ -106,5 +115,43 @@ public class HocVien_LopHoc_Dialog extends JDialog {
 			}
 		});
 		getContentPane().add(btnHy);
+		addEvent();
+	}
+
+	public void addEvent() {
+		textField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				try {
+					String idLH = textField.getText().trim();
+					Integer idLop = Integer.parseInt(idLH);
+					LopHoc lh = MainApp.lopHocDAO.findById_LH(idLop);
+					lbThongBao.setForeground(Color.BLUE);
+					lbThongBao.setText(lh.getTen_LH());
+				} catch (Exception ex) {
+					lbThongBao.setForeground(Color.RED);
+					lbThongBao.setText("Không tìm thấy lớp học");
+				}
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				try {
+					String idLH = textField.getText().trim();
+					Integer idLop = Integer.parseInt(idLH);
+					LopHoc lh = MainApp.lopHocDAO.findById_LH(idLop);
+					lbThongBao.setForeground(Color.BLUE);
+					lbThongBao.setText(lh.getTen_LH());
+				} catch (Exception ex) {
+					lbThongBao.setForeground(Color.RED);
+					lbThongBao.setText("Không tìm thấy lớp học");
+				}
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				System.out.println(3);
+			}
+		});
 	}
 }

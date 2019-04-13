@@ -7,6 +7,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import dao.GiangVienDao;
 import dao.HocVienDao;
 import dao.KhoaHocDao;
+import dao.LopHocDAO;
 import dao.PhongHocDao;
 import ui.MainFrame;
 
@@ -16,12 +17,14 @@ public class MainApp {
 	public static HocVienDao hocVienDao;
 	public static KhoaHocDao khoaHocDao;
 	public static PhongHocDao phongHocDao;
+	public static LopHocDAO lopHocDAO;
 
 	public static void init() {
 		giangVienDao = new GiangVienDao();
 		hocVienDao = new HocVienDao();
 		khoaHocDao = new KhoaHocDao();
 		phongHocDao = new PhongHocDao();
+		lopHocDAO = new LopHocDAO();
 	}
 
 	public static void main(String[] args) throws UnsupportedLookAndFeelException {

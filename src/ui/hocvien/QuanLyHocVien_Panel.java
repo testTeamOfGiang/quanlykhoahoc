@@ -71,6 +71,7 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 		JButton btnTrc = new JButton("Trước");
 		btnTrc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				loadData();
 			}
 		});
 		btnTrc.setBounds(492, 582, 106, 40);

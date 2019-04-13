@@ -3,6 +3,8 @@ package ui.khoahoc;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import entity.Khoahoc;
+import entity.LopHoc;
+import main.MainApp;
 import ui.abstracts.AbsTractChiTietPanel;
 
 public class ChiTietKhoaHoc_Panel extends AbsTractChiTietPanel {
@@ -118,7 +122,20 @@ public class ChiTietKhoaHoc_Panel extends AbsTractChiTietPanel {
 			textField_1.setText(kh.getTen_KH());
 			textField_2.setText(kh.getGia_KH() + "");
 			textArea.setText(kh.getGhichu_KH());
+
+			try {
+				List<LopHoc> lopHocList = MainApp.khoaHocDao.getLop(kh);
+				int index = 1;
+				for (LopHoc lh : lopHocList) {
+					tableModel.addRow(new Object[] { index, lh.getId_LH(), lh.getTen_LH(),
+							lh.getNgaybatdau().toString(), lh.getNgayketthuc().toString() });
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 }
