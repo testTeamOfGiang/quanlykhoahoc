@@ -174,6 +174,7 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 					tableModel.addRow(new Object[] {
 						stt,lh.getId_LH(),lh.getTen_LH(),lh.getNgaybatdau().toString(),lh.getNgayketthuc().toString()
 					});
+					stt+=1;
 				}
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(ChiTietHocVien_Panel.this, "Không thể load dữ liệu");

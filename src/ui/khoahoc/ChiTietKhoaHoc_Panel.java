@@ -87,7 +87,7 @@ public class ChiTietKhoaHoc_Panel extends AbsTractChiTietPanel {
 		add(textField_2);
 		textField_2.setColumns(10);
 
-		JLabel lblSinThoi = new JLabel("Địa Chỉ");
+		JLabel lblSinThoi = new JLabel("Ghi chú");
 		lblSinThoi.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSinThoi.setBounds(763, 126, 145, 40);
 		add(lblSinThoi);

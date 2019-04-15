@@ -1,7 +1,5 @@
 package mycustom;
 
-import java.util.Vector;
-
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
@@ -11,9 +9,8 @@ public class LIH_TableModel extends DefaultTableModel {
 		super(data, columnNames);
 	}
 
-	@SuppressWarnings("unchecked")
 	public int getStatus(int row, int col) {
-		return ((Vector<Vector<LIH_Cell>>) dataVector).get(row).get(col).getStatus();
+		return ((LIH_Cell) dataVector.get(row).get(col)).getStatus();
 	}
 
 	@Override
@@ -26,17 +23,15 @@ public class LIH_TableModel extends DefaultTableModel {
 		return 8;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object getValueAt(int row, int col) {
-		return ((Vector<Vector<LIH_Cell>>) dataVector).get(row).get(col).getValue();
+		return ((LIH_Cell) dataVector.get(row).get(col)).getValue();
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void setValueAt(Object aValue, int row, int column) {
-		((Vector<Vector<LIH_Cell>>) dataVector).get(row).get(column).setValue((String) aValue);
+		((LIH_Cell) dataVector.get(row).get(column)).setValue((String) aValue);
 	}
 
 	@Override
@@ -48,5 +43,5 @@ public class LIH_TableModel extends DefaultTableModel {
 	public Class<?> getColumnClass(int columnIndex) {
 		return String.class;
 	}
-	
+
 }

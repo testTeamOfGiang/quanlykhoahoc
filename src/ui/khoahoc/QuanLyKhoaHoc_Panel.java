@@ -53,7 +53,7 @@ public class QuanLyKhoaHoc_Panel extends AbsTractQuanLyPanel {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if(e.getClickCount()==2) {
+				if (e.getClickCount() == 2) {
 					int current = table.getSelectedRow();
 					Khoahoc kh = data.get(current);
 					containerPanel.setObject(kh);
@@ -117,10 +117,13 @@ public class QuanLyKhoaHoc_Panel extends AbsTractQuanLyPanel {
 					if (current == -1) {
 						throw new ThieuThongTinException();
 					}
-					Khoahoc khoaHoc = data.get(current);
-					MainApp.khoaHocDao.delete(khoaHoc);
-					loadData();
-					JOptionPane.showMessageDialog(QuanLyKhoaHoc_Panel.this, "Xóa Khóa Học  Thành Công");
+					int confirm = JOptionPane.showConfirmDialog(QuanLyKhoaHoc_Panel.this, "ban co muon xoa khoa hoc");
+					if (confirm == JOptionPane.YES_OPTION) {
+						Khoahoc khoaHoc = data.get(current);
+						MainApp.khoaHocDao.delete(khoaHoc);
+						loadData();
+						JOptionPane.showMessageDialog(QuanLyKhoaHoc_Panel.this, "Xóa Khóa Học  Thành Công");
+					}
 				} catch (ThieuThongTinException ex) {
 					JOptionPane.showMessageDialog(QuanLyKhoaHoc_Panel.this, "Hãy Chọn Một Khóa Học Để Xóa");
 				} catch (SQLException e1) {

@@ -126,14 +126,17 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 						e1.printStackTrace();
 					}
 				} else {
-					Hocvien hv = data.get(current);
-					try {
-						MainApp.hocVienDao.delete(hv);
-						loadData();
-						JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Xóa Học Viên Thành Công");
-					} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Xóa Không Thành Công");
-						e1.printStackTrace();
+					int confirm = JOptionPane.showConfirmDialog(QuanLyHocVien_Panel.this, "ban co muon xoa hoc vien");
+					if (confirm == JOptionPane.OK_OPTION) {
+						Hocvien hv = data.get(current);
+						try {
+							MainApp.hocVienDao.delete(hv);
+							loadData();
+							JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Xóa Học Viên Thành Công");
+						} catch (SQLException e1) {
+							JOptionPane.showMessageDialog(QuanLyHocVien_Panel.this, "Xóa Không Thành Công");
+							e1.printStackTrace();
+						}
 					}
 				}
 			}

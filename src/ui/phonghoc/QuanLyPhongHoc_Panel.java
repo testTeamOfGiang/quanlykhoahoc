@@ -118,10 +118,14 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 					if (current == -1) {
 						throw new ChuaChonException();
 					}
-					Phonghoc ph = data.get(current);
-					MainApp.phongHocDao.delete(ph);
-					loadData();
-					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Xóa Phòng Học Thành Công");
+					int confirm = JOptionPane.showConfirmDialog(QuanLyPhongHoc_Panel.this,
+							"Bạn có muốn xóa phòng học này");
+					if (confirm == JOptionPane.YES_OPTION) {
+						Phonghoc ph = data.get(current);
+						MainApp.phongHocDao.delete(ph);
+						loadData();
+						JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Xóa Phòng Học Thành Công");
+					}
 				} catch (ChuaChonException ex) {
 					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Hãy Chọn Một Phòng Học Để Xóa");
 				} catch (SQLException e1) {

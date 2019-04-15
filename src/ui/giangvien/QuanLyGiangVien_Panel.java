@@ -121,13 +121,17 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 					}
 				} else {
 					Giangvien gv = data.get(current);
-					try {
-						MainApp.giangVienDao.delete(gv);
-						loadData();
-						JOptionPane.showMessageDialog(null, "Xóa giảng viên thành công");
-					} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(null, "Gặp lỗi lúc xóa giảng viên");
-						e1.printStackTrace();
+					int confirm = JOptionPane.showConfirmDialog(QuanLyGiangVien_Panel.this,
+							"Bạn có muốn xóa giảng viên");
+					if (confirm == JOptionPane.YES_OPTION) {
+						try {
+							MainApp.giangVienDao.delete(gv);
+							loadData();
+							JOptionPane.showMessageDialog(null, "Xóa giảng viên thành công");
+						} catch (SQLException e1) {
+							JOptionPane.showMessageDialog(null, "Gặp lỗi lúc xóa giảng viên");
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
