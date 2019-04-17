@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import entity.Giangvien;
 import main.MainApp;
 import ui.abstracts.AbstractTimKiemPanel;
+import utils.DateSQL;
 
 public class TimKiemGiangVien_Panel extends AbstractTimKiemPanel {
 
@@ -116,8 +117,8 @@ public class TimKiemGiangVien_Panel extends AbstractTimKiemPanel {
 				int id = Integer.parseInt(key);
 				Giangvien gv = MainApp.giangVienDao.findByID(id);
 				if (gv != null) {
-					tableModel.addRow(new Object[] { 1, gv.getId_GV(), gv.getTen_GV(), gv.getNgaysinh_GV(),
-							gv.getSodt_GV(), gv.getDiachi_GV() });
+					tableModel.addRow(new Object[] { 1, gv.getId_GV(), gv.getTen_GV(),
+							DateSQL.toVNDate(gv.getNgaysinh_GV()), gv.getSodt_GV(), gv.getDiachi_GV() });
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

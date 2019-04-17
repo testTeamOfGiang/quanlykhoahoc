@@ -39,11 +39,11 @@ public class HocVien_LopHocDAO {
 	 */
 	public void addHocVien_LopHoc(int id_HV, int id_LH) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "insert into HOCVIEN_LOPHOC values(?,?,-1,-1,-1,-1,?)";
+		String sql = "insert into HOCVIEN_LOPHOC(id_HV,id_LH,diem_1,diem_2,diem_3,diem_4) values(?,?,-1,-1,-1,-1)";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setInt(1, id_HV);
 		preparedStatement.setInt(2, id_LH);
-		preparedStatement.setString(3, "");
+		//preparedStatement.setString(3, "");
 		preparedStatement.executeUpdate();
 		con.close();
 	}

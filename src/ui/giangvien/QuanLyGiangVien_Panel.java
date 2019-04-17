@@ -20,6 +20,7 @@ import exception.ChuaChonException;
 import main.MainApp;
 import ui.abstracts.AbsTractQuanLyPanel;
 import ui.giangvien.GiangVien_Dialog.Type;
+import utils.DateSQL;
 
 public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 
@@ -177,8 +178,8 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 			List<Giangvien> giangViens = MainApp.giangVienDao.getPage(page);
 			int stt = 1;
 			for (Giangvien gv : giangViens) {
-				tableModel.addRow(new Object[] { stt, gv.getId_GV(), gv.getTen_GV(), gv.getNgaysinh_GV(),
-						gv.getSodt_GV(), gv.getDiachi_GV() });
+				tableModel.addRow(new Object[] { stt, gv.getId_GV(), gv.getTen_GV(),
+						DateSQL.toVNDate(gv.getNgaysinh_GV()), gv.getSodt_GV(), gv.getDiachi_GV() });
 				data.put(stt - 1, gv);
 				stt += 1;
 			}

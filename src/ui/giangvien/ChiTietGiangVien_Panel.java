@@ -19,6 +19,7 @@ import entity.Giangvien;
 import entity.LopHoc;
 import main.MainApp;
 import ui.abstracts.AbsTractChiTietPanel;
+import utils.DateSQL;
 
 public class ChiTietGiangVien_Panel extends AbsTractChiTietPanel {
 
@@ -165,15 +166,12 @@ public class ChiTietGiangVien_Panel extends AbsTractChiTietPanel {
 				int stt = 1;
 				for (LopHoc lh : lopHocs) {
 					tableModel.addRow(new Object[] { stt, lh.getId_LH(), lh.getTen_LH(), lh.getId_PH(),
-							lh.getNgaybatdau().toString(), lh.getNgayketthuc().toString() });
+							DateSQL.toVNDate(lh.getNgaybatdau()), DateSQL.toVNDate(lh.getNgayketthuc()) });
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
-
 	}
-
 }

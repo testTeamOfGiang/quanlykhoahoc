@@ -23,5 +23,4 @@ public class JDBC_Connection {
 		}
 		return con;
 	}
-
 }

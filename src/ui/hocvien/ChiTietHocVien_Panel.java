@@ -98,13 +98,13 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 		lblSinThoi2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSinThoi2.setBounds(763, 196, 145, 40);
 		add(lblSinThoi2);
-		
+
 		txtNgaySinh = new JTextField();
 		txtNgaySinh.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtNgaySinh.setColumns(10);
 		txtNgaySinh.setBounds(945, 196, 240, 42);
 		add(txtNgaySinh);
-		
+
 		textField_4 = new JTextField();
 		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textField_4.setColumns(10);
@@ -169,12 +169,11 @@ public class ChiTietHocVien_Panel extends AbsTractChiTietPanel {
 			txtNgaySinh.setText(DateSQL.toVNDate(hv.getNgaysinh_HV()));
 			try {
 				List<LopHoc> list = MainApp.hocVienDao.getLopHoc(hv);
-				int stt=1;
-				for(LopHoc lh:list) {
-					tableModel.addRow(new Object[] {
-						stt,lh.getId_LH(),lh.getTen_LH(),lh.getNgaybatdau().toString(),lh.getNgayketthuc().toString()
-					});
-					stt+=1;
+				int stt = 1;
+				for (LopHoc lh : list) {
+					tableModel.addRow(new Object[] { stt, lh.getId_LH(), lh.getTen_LH(),
+							DateSQL.toVNDate(lh.getNgaybatdau()), lh.getNgayketthuc().toString() });
+					stt += 1;
 				}
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(ChiTietHocVien_Panel.this, "Không thể load dữ liệu");
