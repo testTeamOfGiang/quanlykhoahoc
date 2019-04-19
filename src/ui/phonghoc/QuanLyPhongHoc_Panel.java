@@ -127,7 +127,7 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 						JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Xóa Phòng Học Thành Công");
 					}
 				} catch (ChuaChonException ex) {
-					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Hãy Chọn Một Phòng Học Để Xóa");
+					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Chon phong truoc!");
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Xóa Phòng Học Không Thành Công");
 					e1.printStackTrace();
