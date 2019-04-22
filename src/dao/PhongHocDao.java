@@ -37,11 +37,12 @@ public class PhongHocDao {
 
 	public void update(Phonghoc ph) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "update PHONGHOC set ten_PH=?,ghichu_PH=? where id_PH=?";
+		String sql = "update PHONGHOC set ten_PH=?,ghichu_PH=?, succhua_ph=? where id_PH=?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, ph.getTen_PH());
 		preparedStatement.setString(2, ph.getGhichu_PH());
-		preparedStatement.setInt(3, ph.getId_PH());
+		preparedStatement.setInt(3, ph.getSucChua_PH());
+		preparedStatement.setInt(4, ph.getId_PH());
 		preparedStatement.executeUpdate();
 		con.close();
 	}

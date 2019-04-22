@@ -78,11 +78,13 @@ public class PhongHoc_Dialog extends JDialog {
 				} else {
 					try {
 						String ten = textField.getText().trim();
+						String sucChua = tfSucChua.getText().trim();
 						String ghiChu = textArea.getText().trim();
-						if (ten.equals("") || ghiChu.equals("")) {
+						if (ten.equals("") || ghiChu.equals("") || sucChua.equals("")) {
 							throw new ThieuThongTinException();
 						}
 						ph.setTen_PH(ten);
+						ph.setSucChua_PH(Integer.parseInt(sucChua));
 						ph.setGhichu_PH(ghiChu);
 						MainApp.phongHocDao.update(ph);
 						panel.loadData();
@@ -134,6 +136,7 @@ public class PhongHoc_Dialog extends JDialog {
 		if (ph != null) {
 			textField.setText(ph.getTen_PH());
 			textArea.setText(ph.getGhichu_PH());
+			tfSucChua.setText(ph.getSucChua_PH() + "");
 		}
 	}
 
