@@ -28,6 +28,7 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JTextField tfSucChua;
 	private JTextArea textArea;
 	private JTable table;
 	private DefaultTableModel tableModel;
@@ -63,23 +64,36 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 		lblMGingVin.setBounds(221, 151, 173, 40);
 		add(lblMGingVin);
 
-		JLabel lblTnGingVin = new JLabel("Tên Phòng Học");
-		lblTnGingVin.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblTnGingVin.setBounds(221, 226, 173, 40);
-		add(lblTnGingVin);
-
 		textField = new JTextField();
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textField.setBounds(406, 150, 240, 42);
 		add(textField);
 		textField.setColumns(10);
 
+		JLabel lblTnGingVin = new JLabel("Tên Phòng Học");
+		lblTnGingVin.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblTnGingVin.setBounds(221, 211, 173, 40);
+		add(lblTnGingVin);
+	
 		textField_1 = new JTextField();
 		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_1.setBounds(406, 226, 240, 40);
+		textField_1.setBounds(406, 211, 240, 40);
 		add(textField_1);
 		textField_1.setColumns(10);
 
+		// Suc chua
+		JLabel lbSucChua = new JLabel("Suc chua");
+		lbSucChua.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbSucChua.setBounds(221, 271, 173, 40);
+		add(lbSucChua);
+	
+		tfSucChua = new JTextField();
+		tfSucChua.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tfSucChua.setBounds(406, 271, 240, 40);
+		add(tfSucChua);
+
+		
+		
 		JLabel lblSinThoi = new JLabel("Ghi Chú");
 		lblSinThoi.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSinThoi.setBounds(755, 151, 145, 40);
@@ -126,6 +140,7 @@ public class ChiTietPhongHoc_Panel extends AbsTractChiTietPanel {
 			Phonghoc ph = (Phonghoc) obj;
 			textField.setText(ph.getId_PH() + "");
 			textField_1.setText(ph.getTen_PH());
+			tfSucChua.setText(ph.getSucChua_PH() + "");
 			textArea.setText(ph.getGhichu_PH());
 
 			while (table.getRowCount() > 0) {

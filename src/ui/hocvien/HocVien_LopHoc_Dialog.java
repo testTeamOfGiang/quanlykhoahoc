@@ -72,7 +72,7 @@ public class HocVien_LopHoc_Dialog extends JDialog {
 						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Đăng ký học thành công");
 						dispose();
 					} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Đăng Ký học không thành công");
+						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Đăng Ký học không thành công: "+e1.getMessage());
 						e1.printStackTrace();
 					} catch (ThieuThongTinException e1) {
 						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Hãy Nhập mã lớp vào");

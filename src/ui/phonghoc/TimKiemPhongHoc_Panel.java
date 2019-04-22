@@ -28,7 +28,7 @@ public class TimKiemPhongHoc_Panel extends AbstractTimKiemPanel {
 	private DefaultTableModel tableModel;
 
 	public TimKiemPhongHoc_Panel() {
-		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã Phòng", "Tên Phòng" }) {
+		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã Phòng", "Tên Phòng", "Suc chua" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -95,7 +95,7 @@ public class TimKiemPhongHoc_Panel extends AbstractTimKiemPanel {
 				try {
 					List<Phonghoc> list = MainApp.phongHocDao.find(key);
 					for (Phonghoc ph : list) {
-						tableModel.addRow(new Object[] { stt, ph.getId_PH(), ph.getTen_PH() });
+						tableModel.addRow(new Object[] { stt, ph.getId_PH(), ph.getTen_PH(), ph.getSucChua_PH() });
 						stt += 1;
 					}
 				} catch (SQLException e) {
@@ -106,7 +106,7 @@ public class TimKiemPhongHoc_Panel extends AbstractTimKiemPanel {
 				try {
 					int id = Integer.parseInt(key);
 					Phonghoc ph = MainApp.phongHocDao.findById(id);
-					tableModel.addRow(new Object[] { 1, ph.getId_PH(), ph.getTen_PH() });
+					tableModel.addRow(new Object[] { 1, ph.getId_PH(), ph.getTen_PH(),ph.getSucChua_PH() });
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(TimKiemPhongHoc_Panel.this, "Mã Phòng Học Phải Là Số");
 				} catch (SQLException e) {

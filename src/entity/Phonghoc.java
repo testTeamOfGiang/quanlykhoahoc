@@ -3,9 +3,8 @@ package entity;
 public class Phonghoc {
 
 	private int id_PH;
-
 	private String ghichu_PH;
-
+	private int sucChua_PH;
 	private String ten_PH;
 
 	public Phonghoc() {
@@ -34,5 +33,15 @@ public class Phonghoc {
 	public void setTen_PH(String ten_PH) {
 		this.ten_PH = ten_PH;
 	}
+
+	public int getSucChua_PH() {
+		return sucChua_PH;
+	}
+
+	public void setSucChua_PH(int sucChua_PH) {
+		this.sucChua_PH = sucChua_PH;
+	}
+	
+	
 
 }

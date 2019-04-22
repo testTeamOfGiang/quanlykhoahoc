@@ -37,7 +37,7 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 	}
 
 	public void initComponent() {
-		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã Phòng Học", "Tên Phòng" }) {
+		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã Phòng Học", "Tên Phòng", "Suc chua" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -170,7 +170,8 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 			List<Phonghoc> list = MainApp.phongHocDao.getPage(page);
 			int stt = 1;
 			for (Phonghoc ph : list) {
-				tableModel.addRow(new Object[] { stt, ph.getId_PH(), ph.getTen_PH() });
+				tableModel.addRow(new Object[] { stt, ph.getId_PH(), ph.getTen_PH(), ph.getSucChua_PH()
+					});
 				data.put(stt - 1, ph);
 				stt += 1;
 			}

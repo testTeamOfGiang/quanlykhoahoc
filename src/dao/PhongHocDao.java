@@ -17,10 +17,11 @@ public class PhongHocDao {
 
 	public void add(Phonghoc ph) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "insert into PHONGHOC(ten_PH,ghichu_PH) values(?,?)";
+		String sql = "insert into PHONGHOC(ten_PH,ghichu_PH, succhua_ph) values(?,?, ?)";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, ph.getTen_PH());
 		preparedStatement.setString(2, ph.getGhichu_PH());
+		preparedStatement.setInt(3, ph.getSucChua_PH());
 		preparedStatement.executeUpdate();
 		con.close();
 	}
