@@ -65,6 +65,7 @@ public class GiangVien_Dialog extends JDialog {
 					if (ten.equals("") || sdt.equals("") || dc.equals("") || ngay.equals("")) {
 						throw new ThieuThongTinException();
 					}
+					
 					java.sql.Date date = DateSQL.parseDate(ngay);
 					Giangvien gv = new Giangvien();
 					gv.setTen_GV(ten);
@@ -171,38 +172,14 @@ public class GiangVien_Dialog extends JDialog {
 
 		if (GV != null) {
 			tenGV.setText(GV.getTen_GV());
-			ngaySinh.setText(GV.getNgaysinh_GV().toString().replace("-", "/"));
+			ngaySinh.setText(DateSQL.toVNDate(GV.getNgaysinh_GV()));
 			soDT.setText(GV.getSodt_GV());
 			diaChi.setText(GV.getDiachi_GV());
 			ghiChu.setText(GV.getGhichu_GV());
 		}
-		addTextFildEvent();
+		
 	}
 
-	public void addTextFildEvent() {
-		ngaySinh.setText("dd/mm/yyyy");
-		ngaySinh.setForeground(Color.LIGHT_GRAY);
-		ngaySinh.addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (ngaySinh.getText().equals("")) {
-					ngaySinh.setText("dd/mm/yyyy");
-					ngaySinh.setForeground(Color.LIGHT_GRAY);
-				}
-
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				if(ngaySinh.getText().equals("dd/mm/yyyy")) {
-					ngaySinh.setText("");
-					ngaySinh.setForeground(Color.black);
-				}
-			}
-		});
-
-	}
 
 	public JPanel getContentPanel() {
 		return contentPanel;

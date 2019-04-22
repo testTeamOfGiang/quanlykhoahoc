@@ -151,8 +151,8 @@ public class ChiTietGiangVien_Panel extends AbsTractChiTietPanel {
 			textField.setText(gv.getId_GV() + "");
 			textField_1.setText(gv.getTen_GV());
 			textField_2.setText(gv.getNgaysinh_GV().toString().replace("-", "/"));
-			textField_3.setText(gv.getSodt_GV());
-			textField_4.setText(gv.getDiachi_GV());
+			textField_3.setText(gv.getDiachi_GV());
+			textField_4.setText(gv.getSodt_GV());
 			textArea.setText(gv.getGhichu_GV());
 
 			/* ====================== */
