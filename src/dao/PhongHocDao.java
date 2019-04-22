@@ -17,7 +17,7 @@ public class PhongHocDao {
 
 	public void add(Phonghoc ph) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "insert into PHONGHOC(ten_PH,ghichu_PH, succhua_ph) values(?,?, ?)";
+		String sql = "insert into PHONGHOC(ten_PH,ghichu_PH, succhua_PH) values(?,?, ?)";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, ph.getTen_PH());
 		preparedStatement.setString(2, ph.getGhichu_PH());
@@ -37,7 +37,7 @@ public class PhongHocDao {
 
 	public void update(Phonghoc ph) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
-		String sql = "update PHONGHOC set ten_PH=?,ghichu_PH=?, succhua_ph=? where id_PH=?";
+		String sql = "update PHONGHOC set ten_PH=?,ghichu_PH=?, succhua_PH=? where id_PH=?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, ph.getTen_PH());
 		preparedStatement.setString(2, ph.getGhichu_PH());
@@ -106,17 +106,5 @@ public class PhongHocDao {
 		con.close();
 		return ph;
 	}
-	/*
-	public boolean isFree(LopHoc lh, LichHoc lih) {
-		Connection con = JDBC_Connection.getConnection();
-		String sql = "select * from PHONGHOC inner join where id_PH =?";
-		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		preparedStatement.setInt(1, id);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		while (resultSet.next()) {
-			ph = new PhongHoc_Mapper().map(resultSet);
-		}
-		con.close();
-		return false;
-	}*/
+	
 }

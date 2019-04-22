@@ -13,7 +13,7 @@ public class PhongHoc_Mapper implements Mapper<Phonghoc> {
 		ph.setId_PH(resultSet.getInt("id_PH"));
 		ph.setTen_PH(resultSet.getString("ten_PH"));
 		ph.setGhichu_PH(resultSet.getString("ghichu_PH"));
-		ph.setSucChua_PH(resultSet.getInt("succhua_ph"));
+		ph.setSucChua_PH(resultSet.getInt("succhua_PH"));
 		return ph;
 	}
 
