@@ -72,11 +72,9 @@ public class HocVien_LopHoc_Dialog extends JDialog {
 						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Đăng ký học thành công");
 						dispose();
 					} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Đăng Ký học không thành công: "+e1.getMessage());
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Đăng Ký học không thành công:\n"+e1.getMessage());
 					} catch (ThieuThongTinException e1) {
 						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Hãy Nhập mã lớp vào");
-						e1.printStackTrace();
 					}
 				} else {
 					try {
@@ -94,11 +92,9 @@ public class HocVien_LopHoc_Dialog extends JDialog {
 						}
 						dispose();
 					} catch (SQLException e1) {
-						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Hủy lớp học không thành công");
-						System.out.println(e1.getMessage());
+						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Hủy lớp học không thành công:\n"+e1.getMessage());
 					} catch (ThieuThongTinException e1) {
 						JOptionPane.showMessageDialog(HocVien_LopHoc_Dialog.this, "Hãy Nhập mã lớp vào");
-						System.out.println(e1.getMessage());
 					}
 				}
 			}

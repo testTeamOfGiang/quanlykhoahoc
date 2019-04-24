@@ -16,13 +16,14 @@ import entity.Hocvien;
 import exception.ChuaChonException;
 import exception.DateSaiException;
 import main.MainApp;
+import utils.CheckPhone;
 import utils.DateSQL;
 
 public class HocVien_Dialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	
+
 	private JTextField textField_2;
 	private Hocvien HV;
 	private JTextField txtSDT;
@@ -60,6 +61,9 @@ public class HocVien_Dialog extends JDialog {
 						if (ten.equals("") || sdt.equals("") || diaChi.equals("") || ngaysinh.equals("")) {
 							throw new ChuaChonException();
 						}
+						if (!CheckPhone.check(sdt)) {
+							throw new Exception("Sai định dạng số điện thoại");
+						}
 						Hocvien hv = new Hocvien();
 						hv.setTen_HV(ten);
 						hv.setSodt_HV(sdt);
@@ -71,13 +75,12 @@ public class HocVien_Dialog extends JDialog {
 						dispose();
 					} catch (ChuaChonException ex) {
 						JOptionPane.showMessageDialog(HocVien_Dialog.this, "Hãy Điền Đầy Đủ Thông tin");
-						ex.printStackTrace();
 					} catch (SQLException e2) {
 						JOptionPane.showMessageDialog(HocVien_Dialog.this, "Thêm Học Viên Không Thành Công");
-						e2.printStackTrace();
 					} catch (DateSaiException e1) {
 						JOptionPane.showMessageDialog(HocVien_Dialog.this, "Lỗi ngày sinh sai định dạng");
-						e1.printStackTrace();
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(HocVien_Dialog.this, "Lỗi: " + e1.getMessage());
 					}
 
 				} else {
@@ -88,6 +91,9 @@ public class HocVien_Dialog extends JDialog {
 						String diaChi = textField_2.getText().trim();
 						if (ten.equals("") || sdt.equals("") || diaChi.equals("") || ngaysinh.equals("")) {
 							throw new ChuaChonException();
+						}
+						if (!CheckPhone.check(sdt)) {
+							throw new Exception("sai định dạng số điện thoại");
 						}
 						HV.setTen_HV(ten);
 						HV.setSodt_HV(sdt);
@@ -101,10 +107,10 @@ public class HocVien_Dialog extends JDialog {
 						JOptionPane.showMessageDialog(HocVien_Dialog.this, "Hãy Điền Đầy Đủ Thông tin");
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(HocVien_Dialog.this, "Sửa Học Viên Không Thành Công");
-						e1.printStackTrace();
 					} catch (DateSaiException e1) {
 						JOptionPane.showMessageDialog(HocVien_Dialog.this, "Lỗi ngày sinh sai định dạng");
-						e1.printStackTrace();
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(HocVien_Dialog.this, "Lỗi: " + e1.getMessage());
 					}
 				}
 			}
@@ -131,7 +137,7 @@ public class HocVien_Dialog extends JDialog {
 		lblSinThoi.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSinThoi.setBounds(38, 181, 121, 40);
 		getContentPane().add(lblSinThoi);
-		
+
 		JLabel lblaCh = new JLabel("Địa Chỉ");
 		lblaCh.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblaCh.setBounds(38, 252, 121, 40);
@@ -154,12 +160,12 @@ public class HocVien_Dialog extends JDialog {
 		textField_2.setBounds(205, 252, 412, 40);
 		getContentPane().add(textField_2);
 		textField_2.setColumns(10);
-		
+
 		JLabel lblNgySinh = new JLabel("Ngày sinh");
 		lblNgySinh.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNgySinh.setBounds(38, 102, 121, 40);
 		getContentPane().add(lblNgySinh);
-		
+
 		txtNgaySinh = new JTextField();
 		txtNgaySinh.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		txtNgaySinh.setColumns(10);
