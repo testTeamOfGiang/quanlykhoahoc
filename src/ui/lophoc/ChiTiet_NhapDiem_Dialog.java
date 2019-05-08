@@ -31,10 +31,10 @@ public class ChiTiet_NhapDiem_Dialog extends JDialog {
 	private JTextField tfDiem4;
 	private JTextArea taGhichu_LH;
 	private HocVien_LopHoc hocVien_LopHoc;
-	private ChiTiet_LopHoc parentPanel;
+	private ChiTiet_LopHoc_Panel parentPanel;
 	private Font font;
 
-	public ChiTiet_NhapDiem_Dialog(ChiTiet_LopHoc parentPanel, HocVien_LopHoc hocVien_LopHoc) {
+	public ChiTiet_NhapDiem_Dialog(ChiTiet_LopHoc_Panel parentPanel, HocVien_LopHoc hocVien_LopHoc) {
 		this.hocVien_LopHoc = hocVien_LopHoc;
 		this.parentPanel = parentPanel;
 

@@ -21,7 +21,7 @@ import entity.Hocvien;
 import entity.LopHoc;
 import utils.DateSQL;
 
-public class ChiTiet_CapNhatDSHV extends JDialog {
+public class ChiTiet_CapNhatDSHV_Dialog extends JDialog {
 
 	/**
 	 * 
@@ -32,11 +32,11 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 	private JLabel lbTenHV;
 	private JLabel lbNgaySinh;
 	private JLabel lbSDT;
-	private ChiTiet_LopHoc parentPanel;
+	private ChiTiet_LopHoc_Panel parentPanel;
 	private LopHoc lh;
 	private Hocvien hv;
 
-	public ChiTiet_CapNhatDSHV(ChiTiet_LopHoc parentPanel, LopHoc lh) {
+	public ChiTiet_CapNhatDSHV_Dialog(ChiTiet_LopHoc_Panel parentPanel, LopHoc lh) {
 		this.parentPanel = parentPanel;
 		this.lh = lh;
 
@@ -70,10 +70,14 @@ public class ChiTiet_CapNhatDSHV extends JDialog {
 	private void btnThem_Click() {
 		if (hv != null) {
 			try {
-				new HocVien_LopHocDAO().addHocVien_LopHoc(hv.getId_HV(), lh.getId_LH());
-				JOptionPane.showMessageDialog(this,
-						"Đã thêm " + hv.getTen_HV() + " vào lớp " + lh.getTen_LH() + "!");
-				this.dispose();
+				if (new HocVien_LopHocDAO().isExists(hv.getId_HV(), lh.getId_LH()))
+					JOptionPane.showMessageDialog(this, "Học viên này đã ở trong lớp!");
+				else {
+					new HocVien_LopHocDAO().addHocVien_LopHoc(hv.getId_HV(), lh.getId_LH());
+					JOptionPane.showMessageDialog(this,
+							"Thêm thành công " + hv.getTen_HV() + " vào lớp " + lh.getTen_LH() + "!");
+					this.dispose();
+				}
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(this, "Lỗi kết nối tới CSDL. Vui lòng liên hệ team DEV!");
 				e.printStackTrace();

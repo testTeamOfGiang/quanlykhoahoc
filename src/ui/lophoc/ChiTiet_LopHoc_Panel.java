@@ -37,7 +37,7 @@ import mycustom.LIH_TableCellRenderer;
 import mycustom.LIH_TableModel;
 import ui.abstracts.AbsTractChiTietPanel;
 
-public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
+public class ChiTiet_LopHoc_Panel extends AbsTractChiTietPanel {
 
 	private static final long serialVersionUID = -6867270404171857479L;
 
@@ -66,7 +66,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 	private int LIH_MaxTiet;
 	private int page;
 
-	public ChiTiet_LopHoc() {
+	public ChiTiet_LopHoc_Panel() {
 		dataHV = new HashMap<Integer, HocVien_LopHoc>();
 		dataLIH = new HashMap<Integer, LichHoc>();
 		font = new Font("Tahoma", Font.PLAIN, 16);
@@ -153,7 +153,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 
 	private void btnThemLIH_Click() {
 		LopHoc lh = (LopHoc) obj;
-		new ThemLichHoc_Dialog(ChiTiet_LopHoc.this, lh).setVisible(true);
+		new ThemSuaLichHoc_Dialog(ChiTiet_LopHoc_Panel.this, lh).setVisible(true);
 		;
 		loadDataLichHoc();
 	}
@@ -161,11 +161,11 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 	private void btnNhapDiem_Click() {
 		int current = table.getSelectedRow();
 		if (current != -1) {
-			new ChiTiet_NhapDiem_Dialog(ChiTiet_LopHoc.this, dataHV.get(current)).setVisible(true);
+			new ChiTiet_NhapDiem_Dialog(ChiTiet_LopHoc_Panel.this, dataHV.get(current)).setVisible(true);
 			;
 			loadDataHocVien();
 		} else {
-			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Bạn chưa chọn học viên!");
+			JOptionPane.showMessageDialog(ChiTiet_LopHoc_Panel.this, "Bạn chưa chọn học viên!");
 		}
 
 	}
@@ -173,7 +173,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 	private void btnCapNhatDS_Click() {
 		if (obj != null) {
 			LopHoc lh = (LopHoc) obj;
-			new ChiTiet_CapNhatDSHV(ChiTiet_LopHoc.this, lh).setVisible(true);
+			new ChiTiet_CapNhatDSHV_Dialog(ChiTiet_LopHoc_Panel.this, lh).setVisible(true);
 			loadData();
 		}
 	}
@@ -422,7 +422,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 				tbLichHoc.addRow(vt);
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL", "ERROR",
+			JOptionPane.showMessageDialog(ChiTiet_LopHoc_Panel.this, "Lỗi kết nối tới CSDL", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -525,7 +525,7 @@ public class ChiTiet_LopHoc extends AbsTractChiTietPanel {
 				stt += 1;
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(ChiTiet_LopHoc.this, "Lỗi kết nối tới CSDL!", "ERROR",
+			JOptionPane.showMessageDialog(ChiTiet_LopHoc_Panel.this, "Lỗi kết nối tới CSDL!", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}

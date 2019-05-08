@@ -70,7 +70,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 				JOptionPane.showMessageDialog(null, "Bạn chưa chọn lớp học!");
 			}
 		} else {
-			new Them_Sua_LopHoc(QuanLyLopHoc_Panel.this, data.get(current)).setVisible(true);
+			new Them_Sua_LopHoc_Dialog(QuanLyLopHoc_Panel.this, data.get(current)).setVisible(true);
 		}
 	}
 	
@@ -99,7 +99,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new Them_Sua_LopHoc(QuanLyLopHoc_Panel.this, null).setVisible(true);
+				new Them_Sua_LopHoc_Dialog(QuanLyLopHoc_Panel.this, null).setVisible(true);
 			}
 		});
 		add(btnThem);

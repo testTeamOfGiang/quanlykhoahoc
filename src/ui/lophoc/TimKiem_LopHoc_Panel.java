@@ -21,7 +21,7 @@ import entity.LopHoc;
 import ui.abstracts.AbstractTimKiemPanel;
 import utils.DateSQL;
 
-public class TimKiem_LopHoc extends AbstractTimKiemPanel {
+public class TimKiem_LopHoc_Panel extends AbstractTimKiemPanel {
 
 	private static final long serialVersionUID = 1287215789671796967L;
 	private JTable table;
@@ -30,7 +30,7 @@ public class TimKiem_LopHoc extends AbstractTimKiemPanel {
 	private Font font;
 	private DefaultTableModel tableModel;
 
-	public TimKiem_LopHoc() {
+	public TimKiem_LopHoc_Panel() {
 		font = new Font("Tahoma", Font.PLAIN, 16);
 		initButton_Combox();
 		initTable();
@@ -78,7 +78,7 @@ public class TimKiem_LopHoc extends AbstractTimKiemPanel {
 
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(TimKiem_LopHoc.this, "Lỗi khi kết nối CSDL!");
+			JOptionPane.showMessageDialog(TimKiem_LopHoc_Panel.this, "Lỗi khi kết nối CSDL!");
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();

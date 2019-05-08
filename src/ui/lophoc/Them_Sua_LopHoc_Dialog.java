@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -30,7 +32,7 @@ import entity.Phonghoc;
 import exception.DateSaiException;
 import utils.DateSQL;
 
-public class Them_Sua_LopHoc extends JDialog {
+public class Them_Sua_LopHoc_Dialog extends JDialog {
 
 	private static final long serialVersionUID = -2635979588415181063L;
 
@@ -57,7 +59,7 @@ public class Them_Sua_LopHoc extends JDialog {
 	 * @param parentPanel
 	 * @param lh          đưa vào nếu muốn sửa
 	 */
-	public Them_Sua_LopHoc(QuanLyLopHoc_Panel parentPanel, LopHoc lh) {
+	public Them_Sua_LopHoc_Dialog(QuanLyLopHoc_Panel parentPanel, LopHoc lh) {
 
 		font = new Font("Tahoma", Font.PLAIN, 16);
 		this.parentPanel = parentPanel;
@@ -182,7 +184,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenGV.setText("GV: " + loadTenGV());
 					lbFindTenGV.setForeground(Color.blue);
 				} else {
-					lbFindTenGV.setText("Không tìm thấy giảng viên!");
+					String errMessage = "Không tìm thấy giảng viên!";
+					lbFindTenGV.setText(errMessage);
 					lbFindTenGV.setForeground(Color.red);
 				}
 			}
@@ -194,7 +197,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenGV.setText("GV: " + loadTenGV());
 					lbFindTenGV.setForeground(Color.blue);
 				} else {
-					lbFindTenGV.setText("Không tìm thấy giảng viên!");
+					String errMessage = "Không tìm thấy giảng viên!";
+					lbFindTenGV.setText(errMessage);
 					lbFindTenGV.setForeground(Color.red);
 				}
 			}
@@ -206,7 +210,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenGV.setText("GV: " + loadTenGV());
 					lbFindTenGV.setForeground(Color.blue);
 				} else {
-					lbFindTenGV.setText("Không tìm thấy giảng viên!");
+					String errMessage = "Không tìm thấy giảng viên!";
+					lbFindTenGV.setText(errMessage);
 					lbFindTenGV.setForeground(Color.red);
 				}
 			}
@@ -221,7 +226,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenKH.setText("KH: " + loadTenKH());
 					lbFindTenKH.setForeground(Color.blue);
 				} else {
-					lbFindTenKH.setText("Không tìm thấy khoá học!");
+					String errMessage = "Không tìm thấy khoá học!";
+					lbFindTenKH.setText(errMessage);
 					lbFindTenKH.setForeground(Color.red);
 				}
 			}
@@ -233,7 +239,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenKH.setText("KH: " + loadTenKH());
 					lbFindTenKH.setForeground(Color.blue);
 				} else {
-					lbFindTenKH.setText("Không tìm thấy khoá học!");
+					String errMessage = "Không tìm thấy khoá học!";
+					lbFindTenKH.setText(errMessage);
 					lbFindTenKH.setForeground(Color.red);
 				}
 			}
@@ -245,7 +252,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenKH.setText("KH: " + loadTenKH());
 					lbFindTenKH.setForeground(Color.blue);
 				} else {
-					lbFindTenKH.setText("Không tìm thấy khoá học!");
+					String errMessage = "Không tìm thấy khoá học!";
+					lbFindTenKH.setText(errMessage);
 					lbFindTenKH.setForeground(Color.red);
 				}
 			}
@@ -260,7 +268,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenPH.setText("PH: " + loadTenPH());
 					lbFindTenPH.setForeground(Color.blue);
 				} else {
-					lbFindTenPH.setText("Không tìm thấy phòng học!");
+					String errMessage = "Không tìm thấy phòng học!";
+					lbFindTenPH.setText(errMessage);
 					lbFindTenPH.setForeground(Color.red);
 				}
 			}
@@ -272,7 +281,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenPH.setText("PH: " + loadTenPH());
 					lbFindTenPH.setForeground(Color.blue);
 				} else {
-					lbFindTenPH.setText("Không tìm thấy phòng học!");
+					String errMessage = "Không tìm thấy phòng học!";
+					lbFindTenPH.setText(errMessage);
 					lbFindTenPH.setForeground(Color.red);
 				}
 			}
@@ -284,7 +294,8 @@ public class Them_Sua_LopHoc extends JDialog {
 					lbFindTenPH.setText("PH: " + loadTenPH());
 					lbFindTenPH.setForeground(Color.blue);
 				} else {
-					lbFindTenPH.setText("Không tìm thấy phòng học!");
+					String errMessage = "Không tìm thấy phòng học!";
+					lbFindTenPH.setText(errMessage);
 					lbFindTenPH.setForeground(Color.red);
 				}
 			}
@@ -469,13 +480,13 @@ public class Them_Sua_LopHoc extends JDialog {
 		String ghiChu_LH = taGhichu_LH.getText().trim();
 
 		if (id_KH.isEmpty() || ten_LH.isEmpty() || ngayHoc.isEmpty() || id_PH.isEmpty() || ngayketthuc.isEmpty()) {
-			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Hãy nhập đầy đủ thông tin!");
+			JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this, "Hãy nhập đầy đủ thông tin!");
 			return;
 		}
 
 		try {
 			if (DateSQL.Compare(DateSQL.parseDate(ngayHoc), DateSQL.parseDate(ngayketthuc)) > 0) {
-				JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Ngày kết thúc phải sau ngày bắt đầu học!");
+				JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this, "Ngày kết thúc phải sau ngày bắt đầu học!");
 				return;
 			}
 			LopHoc lh_new = new LopHoc();
@@ -490,26 +501,26 @@ public class Them_Sua_LopHoc extends JDialog {
 			// ADD / UPDATE
 			if (lh == null) {
 				new LopHocDAO().addLopHoc(lh_new);
-				JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Thêm lớp học thành công!");
+				JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this, "Thêm lớp học thành công!");
 
 			} else {
 				lh_new.setId_LH(lh.getId_LH());
 				new LopHocDAO().updateLopHoc(lh_new);
-				JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Cập nhật lớp học thành công!");
+				JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this, "Cập nhật lớp học thành công!");
 			}
 
 			parentPanel.loadData();
 			dispose();
 		} catch (NumberFormatException e1) {
-			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Ngày tháng hoặc ID không hợp lệ!", "Thông báo",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this,
+					"Dữ liệu nhập vào có vấn đề! Vui lòng kiểm tra lại.", "Thông báo", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		} catch (DateSaiException e1) {
-			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this,
+			JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this,
 					"Ngày tháng phải có định dạng dd/MM/yyyy hoặc yyyy/MM/dd!", "Thông báo", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(Them_Sua_LopHoc.this, "Lỗi khi kết nối CSDL!", "ERROR",
+			JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this, "Dữ liệu nhập vào có vấn đề! Vui lòng kiểm tra lại.", "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}

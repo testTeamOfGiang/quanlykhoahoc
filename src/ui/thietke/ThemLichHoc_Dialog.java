@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import ui.lophoc.ChiTiet_LopHoc;
+import ui.lophoc.ChiTiet_LopHoc_Panel;
 
 public class ThemLichHoc_Dialog extends JDialog {
 
@@ -22,7 +22,7 @@ public class ThemLichHoc_Dialog extends JDialog {
 	 */
 	private static final long serialVersionUID = 2505373032096896088L;
 	Font font;
-	private ChiTiet_LopHoc parentPanel;
+	private ChiTiet_LopHoc_Panel parentPanel;
 	public static void main(String[] args) {
 		try {
 			ThemLichHoc_Dialog dialog = new ThemLichHoc_Dialog();

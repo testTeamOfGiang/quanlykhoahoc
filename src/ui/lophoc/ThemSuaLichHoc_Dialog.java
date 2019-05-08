@@ -23,17 +23,17 @@ import dao.LichHocDAO;
 import entity.LichHoc;
 import entity.LopHoc;
 
-public class ThemLichHoc_Dialog extends JDialog {
+public class ThemSuaLichHoc_Dialog extends JDialog {
 
 	private static final long serialVersionUID = -4646071127228369177L;
 
 	Font font;
-	private ChiTiet_LopHoc parentPanel;
+	private ChiTiet_LopHoc_Panel parentPanel;
 	private LopHoc lh;
 	private ArrayList<Checkbox> ckTiets;
 	private JComboBox<String> cbThu;
 
-	public ThemLichHoc_Dialog(ChiTiet_LopHoc parentPanel, LopHoc lh) {
+	public ThemSuaLichHoc_Dialog(ChiTiet_LopHoc_Panel parentPanel, LopHoc lh) {
 		getContentPane().setForeground(Color.GRAY);
 		font = new Font("Tahoma", Font.PLAIN, 16);
 		this.parentPanel = parentPanel;
@@ -63,21 +63,21 @@ public class ThemLichHoc_Dialog extends JDialog {
 		});
 		getContentPane().add(btnHuy);
 
-		JButton btnThem = new JButton("Cập nhật");
-		btnThem.setBounds(455, 370, 97, 40);
-		btnThem.addActionListener(new ActionListener() {
+		JButton btnCapNhat = new JButton("Cập nhật");
+		btnCapNhat.setBounds(455, 370, 97, 40);
+		btnCapNhat.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					btnThem_Click();
+					btnCapNhat_Click();
 				} catch (SQLException e1) {
 
 					e1.printStackTrace();
 				}
 			}
 		});
-		getContentPane().add(btnThem);
+		getContentPane().add(btnCapNhat);
 
 		cbThu = new JComboBox<String>(new String[] { "Hai", "Ba", "Bốn", "Năm", "Sáu", "Bảy", "Chủ Nhật" });
 		cbThu.setFont(font);
@@ -90,7 +90,7 @@ public class ThemLichHoc_Dialog extends JDialog {
 					uncheckAllBoxes();
 					checkTheBox();
 				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Lỗi khi kết nối tới CSDL", "ERROR",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(ThemSuaLichHoc_Dialog.this, "Lỗi khi kết nối tới CSDL", "ERROR",JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				}
 			}
@@ -99,7 +99,7 @@ public class ThemLichHoc_Dialog extends JDialog {
 
 	}
 
-	protected void btnThem_Click() throws SQLException {
+	private void btnCapNhat_Click() throws SQLException {
 		// thu 2 = 0
 		// chu nhat = 6 trong combobox
 		int thu = cbThu.getSelectedIndex() + 2;
@@ -107,6 +107,7 @@ public class ThemLichHoc_Dialog extends JDialog {
 		if (lstTietsChecked.size() == 0) {
 			new LichHocDAO().deleteLichHocById_LH_Thu(lh.getId_LH(), thu);
 			dispose();
+			JOptionPane.showMessageDialog(ThemSuaLichHoc_Dialog.this, "Cập nhật thành công!");
 			return;
 		}
 
@@ -114,7 +115,7 @@ public class ThemLichHoc_Dialog extends JDialog {
 		lstTietsBusy = getLstTietsBusy(thu);
 
 		if (isLichBiTrung(lstTietsBusy, lstTietsChecked)) {
-			JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Lịch đã bị trùng", "Thông báo",
+			JOptionPane.showMessageDialog(ThemSuaLichHoc_Dialog.this, "Lịch đã bị trùng", "Thông báo",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -133,7 +134,7 @@ public class ThemLichHoc_Dialog extends JDialog {
 		lih.setTiet(tiet);
 		new LichHocDAO().addLichHoc(lih);
 		dispose();
-		JOptionPane.showMessageDialog(ThemLichHoc_Dialog.this, "Cập nhật thành công!");
+		JOptionPane.showMessageDialog(ThemSuaLichHoc_Dialog.this, "Cập nhật thành công!");
 	}
 
 	private boolean isLichBiTrung(ArrayList<String> lstTietsBusy, ArrayList<String> lstTietsChecked) {
