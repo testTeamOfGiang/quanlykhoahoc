@@ -332,7 +332,7 @@ public class LopHocDAO {
 	public List<LopHoc> getPage(int page) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
 		List<LopHoc> lstLH = new ArrayList<LopHoc>();
-		String sql = "select * from( select *,ROW_NUMBER() over (order by id_LH DESC) as "
+		String sql = "select * from( select *,ROW_NUMBER() over (order by id_LH ASC) as "
 				+ "rownum from LOPHOC) as lh where lh.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		
