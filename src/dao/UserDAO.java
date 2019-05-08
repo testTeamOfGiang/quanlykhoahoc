@@ -21,6 +21,9 @@ public class UserDAO {
 
 	public int getLevel(User user) throws SQLException {
 		Connection con = JDBC_Connection.getConnection();
+		if (con == null) {
+			System.out.println("Null");
+		}
 		String sql = "select level from ACCOUNT where username = ? and password = ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		preparedStatement.setString(1, user.getUsername());

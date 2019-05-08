@@ -1,5 +1,7 @@
 package mycustom;
 
+import java.util.Vector;
+
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
@@ -10,7 +12,7 @@ public class LIH_TableModel extends DefaultTableModel {
 	}
 
 	public int getStatus(int row, int col) {
-		return ((LIH_Cell) dataVector.get(row).get(col)).getStatus();
+		return ((LIH_Cell) ((Vector<?>) dataVector.get(row)).get(col)).getStatus();
 	}
 
 	@Override
@@ -25,13 +27,13 @@ public class LIH_TableModel extends DefaultTableModel {
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		return ((LIH_Cell) dataVector.get(row).get(col)).getValue();
+		return ((LIH_Cell) ((Vector<?>) dataVector.get(row)).get(col)).getValue();
 
 	}
 
 	@Override
 	public void setValueAt(Object aValue, int row, int column) {
-		((LIH_Cell) dataVector.get(row).get(column)).setValue((String) aValue);
+		((LIH_Cell) ((Vector<?>) dataVector.get(row)).get(column)).setValue((String) aValue);
 	}
 
 	@Override
