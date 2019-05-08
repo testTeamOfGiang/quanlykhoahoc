@@ -12,6 +12,7 @@ import entity.Khoahoc;
 import entity.LopHoc;
 import mapper.KhoaHoc_Mapper;
 import mapper.LopHoc_Mapper;
+import utils.PageRegulation;
 
 public class KhoaHocDao {
 
@@ -51,9 +52,12 @@ public class KhoaHocDao {
 		List<Khoahoc> list = new ArrayList<Khoahoc>();
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "select * from( select *,ROW_NUMBER() over (order by id_KH) as "
-				+ "rownum from KHOAHOC) as kh where kh.rownum BETWEEN ? and 50";
+				+ "rownum from KHOAHOC) as kh where kh.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		preparedStatement.setInt(1, page);
+		page = page < 0 ? 1 : page;
+		int endPage = page < 0 ? 1 : page + 1;
+		preparedStatement.setInt(1, page * PageRegulation.PAGE_LIMIT_KHOAHOC + 1);
+		preparedStatement.setInt(2, endPage*PageRegulation.PAGE_LIMIT_KHOAHOC);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			Khoahoc kh = new KhoaHoc_Mapper().map(resultSet);

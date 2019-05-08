@@ -71,7 +71,10 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 		JButton btnTrc = new JButton("Trước");
 		btnTrc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				loadData();
+				if (page > 0) {
+					page--;
+					loadData();
+				}
 			}
 		});
 		btnTrc.setBounds(492, 582, 106, 40);
@@ -79,6 +82,14 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 
 		JButton btnSau = new JButton("Sau");
 		btnSau.setBounds(801, 582, 106, 40);
+		btnSau.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				page++;
+				loadData();
+			}
+		});
 		add(btnSau);
 
 		JButton btnThm = new JButton("Thêm");
@@ -176,6 +187,10 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<Hocvien> hocViens = MainApp.hocVienDao.getPage(page);
+			if(hocViens.size()==0) {
+				page--;
+				hocViens=MainApp.hocVienDao.getPage(page);
+			}
 			int stt = 1;
 			for (Hocvien hv : hocViens) {
 				tableModel.addRow(new Object[] { stt, hv.getId_HV(), hv.getTen_HV(),

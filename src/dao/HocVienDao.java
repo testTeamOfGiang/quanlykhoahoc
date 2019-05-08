@@ -12,6 +12,7 @@ import entity.Hocvien;
 import entity.LopHoc;
 import mapper.HocVien_Mapper;
 import mapper.LopHoc_Mapper;
+import utils.PageRegulation;
 
 public class HocVienDao {
 
@@ -59,9 +60,12 @@ public class HocVienDao {
 		Connection con = JDBC_Connection.getConnection();
 		ArrayList<Hocvien> hocViens = new ArrayList<Hocvien>();
 		String sql = "select * from( select *,ROW_NUMBER() over (order by id_HV) as "
-				+ "rownum from HOCVIEN) as hv where hv.rownum BETWEEN ? and 50";
+				+ "rownum from HOCVIEN) as hv where hv.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		preparedStatement.setInt(1, page);
+		page = page < 0 ? 0 : page;
+		int endpage = page < 0 ? 1 : page + 1;
+		preparedStatement.setInt(1, page * PageRegulation.PAGE_LIMIT_HOCVIEN + 1);
+		preparedStatement.setInt(2, endpage*PageRegulation.PAGE_LIMIT_HOCVIEN);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			Hocvien hv = new HocVien_Mapper().map(resultSet);

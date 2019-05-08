@@ -47,7 +47,16 @@ public class QuanLyKhoaHoc_Panel extends AbsTractQuanLyPanel {
 			}
 		};
 		JButton btnTrc = new JButton("Trước");
-
+		btnTrc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(page>0) {
+					page--;
+					loadData();
+				}
+			}
+		});
+		btnTrc.setBounds(492, 582, 106, 40);
+		add(btnTrc);
 		table = new JTable(tableModel);
 		table.setRowHeight(40);
 		table.addMouseListener(new MouseAdapter() {
@@ -66,15 +75,18 @@ public class QuanLyKhoaHoc_Panel extends AbsTractQuanLyPanel {
 		scrollPane.setBounds(0, 0, 1400, 550);
 		add(scrollPane);
 
-		btnTrc.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnTrc.setBounds(492, 582, 106, 40);
-		add(btnTrc);
+		
 
 		JButton btnSau = new JButton("Sau");
 		btnSau.setBounds(801, 582, 106, 40);
+		btnSau.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				page++;
+				loadData();
+			}
+		});
 		add(btnSau);
 
 		JButton btnThm = new JButton("Thêm");
@@ -165,6 +177,10 @@ public class QuanLyKhoaHoc_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<Khoahoc> list = MainApp.khoaHocDao.getPage(page);
+			if(list.size()==0) {
+				page--;
+				list=MainApp.khoaHocDao.getPage(page);
+			}
 			int stt = 1;
 			for (Khoahoc kh : list) {
 				tableModel.addRow(new Object[] { stt, kh.getId_KH(), kh.getTen_KH(), kh.getGia_KH() });
