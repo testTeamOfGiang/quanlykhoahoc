@@ -17,6 +17,7 @@ import entity.Giangvien;
 import exception.DateSaiException;
 import exception.ThieuThongTinException;
 import main.MainApp;
+import utils.CheckPhone;
 import utils.DateSQL;
 
 public class GiangVien_Dialog extends JDialog {
@@ -62,6 +63,8 @@ public class GiangVien_Dialog extends JDialog {
 					if (ten.equals("") || sdt.equals("") || dc.equals("") || ngay.equals("")) {
 						throw new ThieuThongTinException();
 					}
+					if(CheckPhone.check(sdt.trim())==false)
+						throw new Exception("Sai định dạng số điện thoại");
 					
 					java.sql.Date date = DateSQL.parseDate(ngay);
 					Giangvien gv = new Giangvien();
@@ -98,6 +101,8 @@ public class GiangVien_Dialog extends JDialog {
 				} catch (DateSaiException e2) {
 					JOptionPane.showMessageDialog(GiangVien_Dialog.this, "Sai Định giạng ngày tháng");
 					e2.printStackTrace();
+				}catch (Exception e2) {
+					JOptionPane.showMessageDialog(GiangVien_Dialog.this, e2.getMessage());
 				}
 
 			}

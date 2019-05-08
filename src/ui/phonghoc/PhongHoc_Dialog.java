@@ -113,7 +113,7 @@ public class PhongHoc_Dialog extends JDialog {
 		});
 		getContentPane().add(btnHy);
 
-		JLabel lbSucChua = new JLabel("Suc chua");
+		JLabel lbSucChua = new JLabel("Sức chứa");
 		lbSucChua.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lbSucChua.setBounds(51, 125, 100, 40);
 		getContentPane().add(lbSucChua);

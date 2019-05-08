@@ -511,14 +511,14 @@ public class Them_Sua_LopHoc_Dialog extends JDialog {
 			dispose();
 		} catch (NumberFormatException e1) {
 			JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this,
-					"Dữ liệu nhập vào có vấn đề! Vui lòng kiểm tra lại.", "Thông báo", JOptionPane.ERROR_MESSAGE);
+					"Dữ liệu nhập vào có vấn đề!\n"+e1.getMessage(), "Thông báo", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		} catch (DateSaiException e1) {
 			JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this,
 					"Ngày tháng phải có định dạng dd/MM/yyyy hoặc yyyy/MM/dd!", "Thông báo", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this, "Dữ liệu nhập vào có vấn đề! Vui lòng kiểm tra lại.", "ERROR",
+			JOptionPane.showMessageDialog(Them_Sua_LopHoc_Dialog.this, "Dữ liệu nhập vào có vấn đề!\n"+e1.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}
