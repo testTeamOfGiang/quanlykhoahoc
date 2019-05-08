@@ -21,6 +21,7 @@ import entity.LopHoc;
 import exception.ChuaChonException;
 import ui.abstracts.AbsTractQuanLyPanel;
 import utils.DateSQL;
+import utils.PageRegulation;
 
 public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 
@@ -43,9 +44,9 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 		if (current == -1) {
 			JOptionPane.showMessageDialog(null, "Hãy chọn một lớp để xoá!");
 		} else {
-			int result = JOptionPane.showOptionDialog(QuanLyLopHoc_Panel.this, "Bạn có chắc muốn xoá?",
-					"Xác nhận xoá", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-					new String[] { "Đồng ý", "Không" }, JOptionPane.NO_OPTION);
+			int result = JOptionPane.showOptionDialog(QuanLyLopHoc_Panel.this, "Bạn có chắc muốn xoá?", "Xác nhận xoá",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[] { "Đồng ý", "Không" },
+					JOptionPane.NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
 				LopHoc lh = data.get(current);
 				try {
@@ -73,7 +74,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 			new Them_Sua_LopHoc_Dialog(QuanLyLopHoc_Panel.this, data.get(current)).setVisible(true);
 		}
 	}
-	
+
 	private void initComponent() {
 		initTable();
 		initButton();
@@ -87,10 +88,28 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 			}
 		});
 		btnTruoc.setBounds(492, 582, 106, 40);
+		btnTruoc.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (page > 0) {
+					page--;
+					loadData();
+				}
+			}
+		});
 		add(btnTruoc);
-		
+
 		JButton btnSau = new JButton("Sau");
 		btnSau.setBounds(801, 582, 106, 40);
+		btnSau.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				page++;
+				loadData();
+			}
+		});
 		add(btnSau);
 
 		JButton btnThem = new JButton("Thêm");
@@ -156,18 +175,23 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<LopHoc> lstLopHocs = new LopHocDAO().getPage(page);
-			int stt = 1;
+			if (lstLopHocs.size() == 0) {
+				page--;
+				lstLopHocs = new LopHocDAO().getPage(page);
+			}
+			int stt = page * PageRegulation.LINES_PER_PAGE + 1;
 			/*
-			 * "STT", "Mã lớp", "Khoá học", "Tên Lớp Học", "Tên giảng viên",  "Ngày học", "Phòng học", "Sĩ số",
-			 * "Ghi chú"
+			 * "STT", "Mã lớp", "Khoá học", "Tên Lớp Học", "Tên giảng viên", "Ngày học",
+			 * "Phòng học", "Sĩ số", "Ghi chú"
 			 */
 			for (LopHoc lh : lstLopHocs) {
 				String[] tenKH_PH_GV = new LopHocDAO().getTenKH_PH_GV(lh.getId_KH(), lh.getId_PH(), lh.getId_GV());
 				String ten_KH = tenKH_PH_GV[0];
 				String ten_PH = tenKH_PH_GV[1];
 				String ten_GV = tenKH_PH_GV[2];
-				tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(),ten_GV, DateSQL.toVNDate(lh.getNgaybatdau()),
-						DateSQL.toVNDate(lh.getNgayketthuc()), ten_PH, lh.getSiso_LH(), lh.getGhichu_LH() });
+				tableModel.addRow(new Object[] { stt, lh.getId_LH(), ten_KH, lh.getTen_LH(), ten_GV,
+						DateSQL.toVNDate(lh.getNgaybatdau()), DateSQL.toVNDate(lh.getNgayketthuc()), ten_PH,
+						lh.getSiso_LH(), lh.getGhichu_LH() });
 				data.put(stt - 1, lh);
 				stt += 1;
 			}
