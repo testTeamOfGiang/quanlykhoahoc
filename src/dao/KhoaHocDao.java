@@ -54,7 +54,7 @@ public class KhoaHocDao {
 		String sql = "select * from( select *,ROW_NUMBER() over (order by id_KH) as "
 				+ "rownum from KHOAHOC) as kh where kh.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		page = page < 0 ? 1 : page;
+		page = page < 0 ? 0 : page;
 		int endPage = page < 0 ? 1 : page + 1;
 		preparedStatement.setInt(1, page * PageRegulation.PAGE_LIMIT_KHOAHOC + 1);
 		preparedStatement.setInt(2, endPage*PageRegulation.PAGE_LIMIT_KHOAHOC);

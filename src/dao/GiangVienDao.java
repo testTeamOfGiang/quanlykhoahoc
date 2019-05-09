@@ -58,7 +58,7 @@ public class GiangVienDao {
 		String sql = "select * from( select *,ROW_NUMBER() over (order by id_GV) as "
 				+ "rownum from GIANGVIEN) as gv where gv.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		page = page < 0 ? 1 : page;
+		page = page < 0 ? 0 : page;
 		int endPage = page < 0 ? 1 : page + 1;
 		preparedStatement.setInt(1, page * PageRegulation.LINES_PER_PAGE + 1);
 		preparedStatement.setInt(2, endPage * PageRegulation.LINES_PER_PAGE);

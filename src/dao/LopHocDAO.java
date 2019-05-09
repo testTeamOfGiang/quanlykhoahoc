@@ -337,7 +337,7 @@ public class LopHocDAO {
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
 		
 		int lineOfPage = PageRegulation.LINES_PER_PAGE;
-		page = page < 0 ? 1 : page;
+		page = page < 0 ? 0 : page;
 		preparedStatement.setInt(1, page * lineOfPage + 1);
 		int endPage = page <= 0 ? 1 : page + 1;
 		preparedStatement.setInt(2, endPage * lineOfPage);
