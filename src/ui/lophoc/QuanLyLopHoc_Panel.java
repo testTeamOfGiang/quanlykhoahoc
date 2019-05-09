@@ -71,7 +71,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 				JOptionPane.showMessageDialog(null, "Bạn chưa chọn lớp học!");
 			}
 		} else {
-			new Them_Sua_LopHoc_Dialog(QuanLyLopHoc_Panel.this, data.get(current)).setVisible(true);
+			new Them_Sua_LopHoc_Dialog(QuanLyLopHoc_Panel.this, data.get(current + page*PageRegulation.LINES_PER_PAGE)).setVisible(true);
 		}
 	}
 
