@@ -109,7 +109,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 					try {
 						throw new ChuaChonException();
 					} catch (ChuaChonException e1) {
-						JOptionPane.showMessageDialog(null, "HÃ£y Chá»�n má»™t giáº£ng viÃªn Ä‘á»ƒ sá»­a");
+						JOptionPane.showMessageDialog(null, "Hãy chọn giảng viên để sửa");
 					}
 				} else {
 					new GiangVien_Dialog(Type.UPDATE, QuanLyGiangVien_Panel.this, data.get(current)).setVisible(true);

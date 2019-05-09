@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 public class JDBC_Connection {
 
 	public static final String url = "jdbc:sqlserver://localhost;database=quanlykhoahoc";
@@ -19,6 +21,7 @@ public class JDBC_Connection {
 			System.err.println("khong tim thay driver");
 		} catch (SQLException e) {
 			System.out.println("khong the ket noi csdl");
+			JOptionPane.showMessageDialog(null, "Không thể kết nối CSDL","thông báo",JOptionPane.ERROR_MESSAGE);
 		}
 		return con;
 	}
