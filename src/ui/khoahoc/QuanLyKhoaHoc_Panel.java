@@ -177,7 +177,7 @@ public class QuanLyKhoaHoc_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<Khoahoc> list = MainApp.khoaHocDao.getPage(page);
-			if(list.size()==0) {
+			if(list.size()==0 && page>0) {
 				page--;
 				list=MainApp.khoaHocDao.getPage(page);
 			}

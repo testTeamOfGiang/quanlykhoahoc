@@ -188,7 +188,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<Giangvien> giangViens = MainApp.giangVienDao.getPage(page);
-			if(giangViens.size()==0) {
+			if(giangViens.size()==0 && page>0) {
 				page--;
 				giangViens=MainApp.giangVienDao.getPage(page);
 			}

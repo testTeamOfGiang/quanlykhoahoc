@@ -180,7 +180,7 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<Phonghoc> list = MainApp.phongHocDao.getPage(page);
-			if(list.size()==0) {
+			if(list.size()==0 && page>0) {
 				page--;
 				list=MainApp.phongHocDao.getPage(page);
 			}

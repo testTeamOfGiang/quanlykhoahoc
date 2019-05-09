@@ -69,10 +69,9 @@ public class PhongHocDao {
 		String sql = "select * from( select *,ROW_NUMBER() over (order by id_PH) as "
 				+ "rownum from PHONGHOC) as ph where ph.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		page = page < 0 ? 0 : page;
-		int endPage = page < 0 ? 1 : page + 1;
+		
 		preparedStatement.setInt(1, page * PageRegulation.LINES_PER_PAGE + 1);
-		preparedStatement.setInt(2, endPage * PageRegulation.LINES_PER_PAGE);
+		preparedStatement.setInt(2, (page+1) * PageRegulation.LINES_PER_PAGE);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			Phonghoc ph = new PhongHoc_Mapper().map(resultSet);

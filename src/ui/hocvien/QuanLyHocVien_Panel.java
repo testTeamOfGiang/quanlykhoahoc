@@ -187,7 +187,7 @@ public class QuanLyHocVien_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<Hocvien> hocViens = MainApp.hocVienDao.getPage(page);
-			if(hocViens.size()==0) {
+			if(hocViens.size()==0 && page>0) {
 				page--;
 				hocViens=MainApp.hocVienDao.getPage(page);
 			}

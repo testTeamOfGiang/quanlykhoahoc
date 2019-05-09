@@ -62,10 +62,8 @@ public class HocVienDao {
 		String sql = "select * from( select *,ROW_NUMBER() over (order by id_HV) as "
 				+ "rownum from HOCVIEN) as hv where hv.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		page = page < 0 ? 0 : page;
-		int endpage = page < 0 ? 1 : page + 1;
 		preparedStatement.setInt(1, page * PageRegulation.PAGE_LIMIT_HOCVIEN + 1);
-		preparedStatement.setInt(2, endpage*PageRegulation.PAGE_LIMIT_HOCVIEN);
+		preparedStatement.setInt(2, (page+1)*PageRegulation.PAGE_LIMIT_HOCVIEN);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			Hocvien hv = new HocVien_Mapper().map(resultSet);
