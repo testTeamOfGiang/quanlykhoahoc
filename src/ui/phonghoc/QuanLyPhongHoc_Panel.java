@@ -37,7 +37,7 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 	}
 
 	public void initComponent() {
-		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã Phòng Học", "Tên Phòng", "Suc chua" }) {
+		tableModel = new DefaultTableModel(new Object[][] {}, new String[] { "STT", "MÃ£ PhÃ²ng Há»�c", "TÃªn PhÃ²ng", "Suc chua" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -64,9 +64,12 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 		scrollPane.setBounds(0, 0, 1400, 550);
 		add(scrollPane);
 		/* ========================================= */
-		JButton btnTrc = new JButton("Trước");
+		JButton btnTrc = new JButton("TrÆ°á»›c");
 		btnTrc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(page>0) {
+					page--;
+				}
 			}
 		});
 		btnTrc.setBounds(492, 582, 106, 40);
@@ -74,9 +77,17 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 
 		JButton btnSau = new JButton("Sau");
 		btnSau.setBounds(801, 582, 106, 40);
+		btnSau.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				page++;
+				loadData();
+			}
+		});
 		add(btnSau);
 
-		JButton btnThm = new JButton("Thêm");
+		JButton btnThm = new JButton("ThÃªm");
 		btnThm.setBounds(389, 676, 106, 40);
 		btnThm.addActionListener(new ActionListener() {
 
@@ -88,7 +99,7 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnThm);
 
-		JButton btnSa = new JButton("Sửa");
+		JButton btnSa = new JButton("Sá»­a");
 		btnSa.setBounds(644, 676, 106, 40);
 		btnSa.addActionListener(new ActionListener() {
 
@@ -102,13 +113,13 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 					Phonghoc ph = data.get(current);
 					new PhongHoc_Dialog(Type.UPDATE, QuanLyPhongHoc_Panel.this, ph).setVisible(true);
 				} catch (ChuaChonException ex) {
-					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Hãy Chọn Một Phòng Học Đê Sửa");
+					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "HÃ£y Chá»�n Má»™t PhÃ²ng Há»�c Ä�Ãª Sá»­a");
 				}
 			}
 		});
 		add(btnSa);
 
-		JButton btnXa = new JButton("Xóa");
+		JButton btnXa = new JButton("XÃ³a");
 		btnXa.setBounds(910, 676, 106, 40);
 		btnXa.addActionListener(new ActionListener() {
 			@Override
@@ -119,17 +130,17 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 						throw new ChuaChonException();
 					}
 					int confirm = JOptionPane.showConfirmDialog(QuanLyPhongHoc_Panel.this,
-							"Bạn có muốn xóa phòng học này");
+							"Báº¡n cÃ³ muá»‘n xÃ³a phÃ²ng há»�c nÃ y");
 					if (confirm == JOptionPane.YES_OPTION) {
 						Phonghoc ph = data.get(current);
 						MainApp.phongHocDao.delete(ph);
 						loadData();
-						JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Xóa Phòng Học Thành Công");
+						JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "XÃ³a PhÃ²ng Há»�c ThÃ nh CÃ´ng");
 					}
 				} catch (ChuaChonException ex) {
 					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Chon phong truoc!");
 				} catch (SQLException e1) {
-					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Xóa Phòng Học Không Thành Công");
+					JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "XÃ³a PhÃ²ng Há»�c KhÃ´ng ThÃ nh CÃ´ng");
 					e1.printStackTrace();
 				}
 
@@ -137,7 +148,7 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnXa);
 
-		JButton btnTmKim = new JButton("Tìm Kiếm");
+		JButton btnTmKim = new JButton("TÃ¬m Kiáº¿m");
 		btnTmKim.setBounds(1106, 676, 97, 40);
 		btnTmKim.addActionListener(new ActionListener() {
 			@Override
@@ -168,6 +179,10 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<Phonghoc> list = MainApp.phongHocDao.getPage(page);
+			if(list.size()==0) {
+				page--;
+				list=MainApp.phongHocDao.getPage(page);
+			}
 			int stt = 1;
 			for (Phonghoc ph : list) {
 				tableModel.addRow(new Object[] { stt, ph.getId_PH(), ph.getTen_PH(), ph.getSucChua_PH()
@@ -176,7 +191,7 @@ public class QuanLyPhongHoc_Panel extends AbsTractQuanLyPanel {
 				stt += 1;
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "Không Thể Load Dữ Liệu");
+			JOptionPane.showMessageDialog(QuanLyPhongHoc_Panel.this, "KhÃ´ng Thá»ƒ Load Dá»¯ Liá»‡u");
 			e.printStackTrace();
 		}
 	}

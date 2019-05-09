@@ -35,7 +35,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		page = 0;
 
 		tableModel = new DefaultTableModel(new Object[][] {},
-				new String[] { "STT", "Mã giảng viên", "Ten giảng viên", "Ngày sinh", "Số đt", "Địa chỉ" }) {
+				new String[] { "STT", "MÃ£ giáº£ng viÃªn", "Ten giáº£ng viÃªn", "NgÃ y sinh", "Sá»‘ Ä‘t", "Ä�á»‹a chá»‰" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -65,9 +65,13 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 
 		/* ========================================== */
 
-		JButton btnTrc = new JButton("Trước");
+		JButton btnTrc = new JButton("TrÆ°á»›c");
 		btnTrc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(page>0) {
+					page--;
+					loadData();
+				}
 			}
 		});
 		btnTrc.setBounds(492, 582, 106, 40);
@@ -75,9 +79,17 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 
 		JButton btnSau = new JButton("Sau");
 		btnSau.setBounds(801, 582, 106, 40);
+		btnSau.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				page++;
+				loadData();
+			}
+		});
 		add(btnSau);
 
-		JButton btnThm = new JButton("Thêm");
+		JButton btnThm = new JButton("ThÃªm");
 		btnThm.setBounds(389, 676, 106, 40);
 		btnThm.addActionListener(new ActionListener() {
 			@Override
@@ -87,7 +99,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnThm);
 
-		JButton btnSa = new JButton("Sửa");
+		JButton btnSa = new JButton("Sá»­a");
 		btnSa.setBounds(644, 676, 106, 40);
 		btnSa.addActionListener(new ActionListener() {
 			@Override
@@ -97,7 +109,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 					try {
 						throw new ChuaChonException();
 					} catch (ChuaChonException e1) {
-						JOptionPane.showMessageDialog(null, "Hãy Chọn một giảng viên để sửa");
+						JOptionPane.showMessageDialog(null, "HÃ£y Chá»�n má»™t giáº£ng viÃªn Ä‘á»ƒ sá»­a");
 					}
 				} else {
 					new GiangVien_Dialog(Type.UPDATE, QuanLyGiangVien_Panel.this, data.get(current)).setVisible(true);
@@ -107,7 +119,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnSa);
 
-		JButton btnXa = new JButton("Xóa");
+		JButton btnXa = new JButton("XÃ³a");
 		btnXa.setBounds(910, 676, 106, 40);
 		btnXa.addActionListener(new ActionListener() {
 			@Override
@@ -117,20 +129,20 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 					try {
 						throw new ChuaChonException();
 					} catch (ChuaChonException e1) {
-						JOptionPane.showMessageDialog(null, "Hãy chọn một giảng viên muốn xóa");
+						JOptionPane.showMessageDialog(null, "HÃ£y chá»�n má»™t giáº£ng viÃªn muá»‘n xÃ³a");
 						e1.printStackTrace();
 					}
 				} else {
 					Giangvien gv = data.get(current);
 					int confirm = JOptionPane.showConfirmDialog(QuanLyGiangVien_Panel.this,
-							"Bạn có muốn xóa giảng viên");
+							"Báº¡n cÃ³ muá»‘n xÃ³a giáº£ng viÃªn");
 					if (confirm == JOptionPane.YES_OPTION) {
 						try {
 							MainApp.giangVienDao.delete(gv);
 							loadData();
-							JOptionPane.showMessageDialog(null, "Xóa giảng viên thành công");
+							JOptionPane.showMessageDialog(null, "XÃ³a giáº£ng viÃªn thÃ nh cÃ´ng");
 						} catch (SQLException e1) {
-							JOptionPane.showMessageDialog(null, "Gặp lỗi lúc xóa giảng viên");
+							JOptionPane.showMessageDialog(null, "Gáº·p lá»—i lÃºc xÃ³a giáº£ng viÃªn");
 							e1.printStackTrace();
 						}
 					}
@@ -139,7 +151,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnXa);
 
-		JButton btnTmKim = new JButton("Tìm Kiếm");
+		JButton btnTmKim = new JButton("TÃ¬m Kiáº¿m");
 		btnTmKim.setBounds(1106, 676, 97, 40);
 		btnTmKim.addActionListener(new ActionListener() {
 
@@ -176,6 +188,10 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<Giangvien> giangViens = MainApp.giangVienDao.getPage(page);
+			if(giangViens.size()==0) {
+				page--;
+				giangViens=MainApp.giangVienDao.getPage(page);
+			}
 			int stt = 1;
 			for (Giangvien gv : giangViens) {
 				tableModel.addRow(new Object[] { stt, gv.getId_GV(), gv.getTen_GV(),
@@ -184,7 +200,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 				stt += 1;
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Lỗi lúc load dữ liệu");
+			JOptionPane.showMessageDialog(null, "Lá»—i lÃºc load dá»¯ liá»‡u");
 			e.printStackTrace();
 		}
 	}

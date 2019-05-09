@@ -12,6 +12,7 @@ import entity.LopHoc;
 import entity.Phonghoc;
 import mapper.LopHoc_Mapper;
 import mapper.PhongHoc_Mapper;
+import utils.PageRegulation;
 
 public class PhongHocDao {
 
@@ -66,9 +67,12 @@ public class PhongHocDao {
 		Connection con = JDBC_Connection.getConnection();
 		List<Phonghoc> list = new ArrayList<Phonghoc>();
 		String sql = "select * from( select *,ROW_NUMBER() over (order by id_PH) as "
-				+ "rownum from PHONGHOC) as ph where ph.rownum BETWEEN ? and 50";
+				+ "rownum from PHONGHOC) as ph where ph.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		preparedStatement.setInt(1, page);
+		page = page < 0 ? 1 : page;
+		int endPage = page < 0 ? 1 : page + 1;
+		preparedStatement.setInt(1, page * PageRegulation.LINES_PER_PAGE + 1);
+		preparedStatement.setInt(2, endPage * PageRegulation.LINES_PER_PAGE);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			Phonghoc ph = new PhongHoc_Mapper().map(resultSet);
@@ -106,5 +110,5 @@ public class PhongHocDao {
 		con.close();
 		return ph;
 	}
-	
+
 }

@@ -12,6 +12,7 @@ import entity.Giangvien;
 import entity.LopHoc;
 import mapper.GiangVien_Mapper;
 import mapper.LopHoc_Mapper;
+import utils.PageRegulation;
 
 public class GiangVienDao {
 
@@ -55,9 +56,12 @@ public class GiangVienDao {
 		ArrayList<Giangvien> list = new ArrayList<Giangvien>();
 		Connection con = JDBC_Connection.getConnection();
 		String sql = "select * from( select *,ROW_NUMBER() over (order by id_GV) as "
-				+ "rownum from GIANGVIEN) as gv where gv.rownum BETWEEN ? and 50";
+				+ "rownum from GIANGVIEN) as gv where gv.rownum BETWEEN ? and ?";
 		PreparedStatement preparedStatement = con.prepareStatement(sql);
-		preparedStatement.setInt(1, page);
+		page = page < 0 ? 1 : page;
+		int endPage = page < 0 ? 1 : page + 1;
+		preparedStatement.setInt(1, page * PageRegulation.LINES_PER_PAGE + 1);
+		preparedStatement.setInt(2, endPage * PageRegulation.LINES_PER_PAGE);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
 			Giangvien gv = new GiangVien_Mapper().map(resultSet);
@@ -111,5 +115,4 @@ public class GiangVienDao {
 		return lop;
 	}
 
-	
 }

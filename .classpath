@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="D:/lib/sqlserver_driver/sqljdbc_7.2/enu/mssql-jdbc-7.2.2.jre8.jar"/>
+	<classpathentry kind="lib" path="D:/mssql_jdbc/Microsoft JDBC Driver 7.2 for SQL Server/sqljdbc_7.2/enu/mssql-jdbc-7.2.2.jre8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
