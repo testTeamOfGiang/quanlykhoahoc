@@ -1,9 +1,4 @@
 /ui/
 /utils/
-/dao/
 /config/
-/entity/
-/exception/
-/main/
-/mapper/
-/mycustom/
+/dao/

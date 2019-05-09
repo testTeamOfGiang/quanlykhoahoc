@@ -175,7 +175,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 
 		try {
 			List<LopHoc> lstLopHocs = new LopHocDAO().getPage(page);
-			if (lstLopHocs.size() == 0) {
+			if (lstLopHocs.size() == 0 && page>0) {
 				page--;
 				lstLopHocs = new LopHocDAO().getPage(page);
 			}
@@ -219,7 +219,7 @@ public class QuanLyLopHoc_Panel extends AbsTractQuanLyPanel {
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int current = table.getSelectedRow();
-					LopHoc lh = data.get(current);
+					LopHoc lh = data.get(current + page * PageRegulation.LINES_PER_PAGE);
 					containerPanel.setObject(lh);
 					containerPanel.showChiTiet();
 				}
