@@ -35,7 +35,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		page = 0;
 
 		tableModel = new DefaultTableModel(new Object[][] {},
-				new String[] { "STT", "MÃ£ giáº£ng viÃªn", "Ten giáº£ng viÃªn", "NgÃ y sinh", "Sá»‘ Ä‘t", "Ä�á»‹a chá»‰" }) {
+				new String[] { "STT", "Mã giảng viên", "Tên giảng viên", "Ngày sinh", "Số DT", "Địa chỉ" }) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -65,7 +65,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 
 		/* ========================================== */
 
-		JButton btnTrc = new JButton("TrÆ°á»›c");
+		JButton btnTrc = new JButton("Trước");
 		btnTrc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(page>0) {
@@ -89,7 +89,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnSau);
 
-		JButton btnThm = new JButton("ThÃªm");
+		JButton btnThm = new JButton("Thêm");
 		btnThm.setBounds(389, 676, 106, 40);
 		btnThm.addActionListener(new ActionListener() {
 			@Override
@@ -99,7 +99,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnThm);
 
-		JButton btnSa = new JButton("Sá»­a");
+		JButton btnSa = new JButton("Sửa");
 		btnSa.setBounds(644, 676, 106, 40);
 		btnSa.addActionListener(new ActionListener() {
 			@Override
@@ -119,7 +119,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnSa);
 
-		JButton btnXa = new JButton("XÃ³a");
+		JButton btnXa = new JButton("Xóa");
 		btnXa.setBounds(910, 676, 106, 40);
 		btnXa.addActionListener(new ActionListener() {
 			@Override
@@ -129,20 +129,20 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 					try {
 						throw new ChuaChonException();
 					} catch (ChuaChonException e1) {
-						JOptionPane.showMessageDialog(null, "HÃ£y chá»�n má»™t giáº£ng viÃªn muá»‘n xÃ³a");
+						JOptionPane.showMessageDialog(null, "Hãy chọn giảng viên muốn xóa");
 						e1.printStackTrace();
 					}
 				} else {
 					Giangvien gv = data.get(current);
 					int confirm = JOptionPane.showConfirmDialog(QuanLyGiangVien_Panel.this,
-							"Báº¡n cÃ³ muá»‘n xÃ³a giáº£ng viÃªn");
+							"Bạn có muốn xóa giảng viên");
 					if (confirm == JOptionPane.YES_OPTION) {
 						try {
 							MainApp.giangVienDao.delete(gv);
 							loadData();
-							JOptionPane.showMessageDialog(null, "XÃ³a giáº£ng viÃªn thÃ nh cÃ´ng");
+							JOptionPane.showMessageDialog(null, "Xóa giảng viên thành công");
 						} catch (SQLException e1) {
-							JOptionPane.showMessageDialog(null, "Gáº·p lá»—i lÃºc xÃ³a giáº£ng viÃªn");
+							JOptionPane.showMessageDialog(null, "Xóa giảng viên thất bại");
 							e1.printStackTrace();
 						}
 					}
@@ -151,7 +151,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 		});
 		add(btnXa);
 
-		JButton btnTmKim = new JButton("TÃ¬m Kiáº¿m");
+		JButton btnTmKim = new JButton("Tìm kiếm");
 		btnTmKim.setBounds(1106, 676, 97, 40);
 		btnTmKim.addActionListener(new ActionListener() {
 
@@ -200,7 +200,7 @@ public class QuanLyGiangVien_Panel extends AbsTractQuanLyPanel {
 				stt += 1;
 			}
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "Lá»—i lÃºc load dá»¯ liá»‡u");
+			JOptionPane.showMessageDialog(null, "Không thể load dữ liệu");
 			e.printStackTrace();
 		}
 	}
